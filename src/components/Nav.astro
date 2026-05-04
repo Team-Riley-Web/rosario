@@ -4,18 +4,30 @@ import cfcLogo from '../assets/images/cfc-logo.png';
 
 <div
   id="site-nav"
-  x-data="{ open: false, scrolled: false }"
-  x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 60 })"
-  class="fixed top-0 inset-x-0 z-50 transition-[background,border-color] duration-400"
+  x-data="{ open: false, scrolled: false, pastMarquee: false }"
+  x-init="
+    const hero = document.getElementById('hero');
+    if (!hero) {
+      scrolled = true;
+      pastMarquee = true;
+    } else {
+      const update = () => {
+        const y = window.scrollY;
+        scrolled = y > 60;
+        pastMarquee = y > hero.offsetHeight;
+      };
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    }
+  "
+  class="fixed top-0 inset-x-0 z-50"
   :class="scrolled ? 'scrolled' : ''"
 >
 
-  <!-- Announcement bar -->
+  <!-- Announcement bar — fades to full opacity on scroll, then collapses over -->
   <div
-    id="announcement"
-    class="overflow-hidden transition-all duration-300 ease-in-out"
-    :style="scrolled ? 'max-height: 0; opacity: 0' : 'max-height: 40px; opacity: 1'"
-    style="background: oklch(13% 0.010 255);"
+    class="overflow-hidden announcement-bar"
+    :style="`background: oklch(13% 0.010 255 / ${scrolled ? '1' : '0.6'}); max-height: ${pastMarquee ? '0' : '45px'};`"
   >
     <div class="text-center py-2.5 px-6">
       <a
@@ -30,23 +42,35 @@ import cfcLogo from '../assets/images/cfc-logo.png';
 
   <!-- Main nav bar -->
   <nav
-    class="relative flex items-center transition-all duration-300 ease-in-out"
+    class="relative flex items-center transition-[height] duration-300 ease-in-out"
     :class="scrolled ? 'h-[56px]' : 'h-[72px]'"
     style="max-width: 1440px; margin: 0 auto; padding: 0 40px;"
   >
 
-    <!-- Logo -->
+    <!-- Logo — always visible -->
     <a href="/" class="flex items-center gap-3 shrink-0 z-10 group">
       <img
         src={cfcLogo.src}
         alt="CFC Skincare"
         class="w-10 h-10 rounded-full object-cover shrink-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[15deg]"
       />
-      <span class="hidden lg:block font-mono text-[11px] tracking-[0.22em] uppercase text-ink">CFC Skincare</span>
+      <span
+        class="hidden lg:block font-mono text-[11px] tracking-[0.22em] uppercase transition-colors duration-300"
+        :class="scrolled ? 'text-ink' : 'text-white'"
+      >CFC Skincare</span>
     </a>
 
-    <!-- Desktop links — centered absolute -->
-    <ul class="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-10 list-none">
+    <!-- Desktop nav links — only shown once scrolled -->
+    <ul
+      x-show="scrolled"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease-in duration-150"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+      class="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-10 list-none"
+    >
       {[
         ['The System', '/#system'],
         ['Shop', '/shop'],
@@ -56,71 +80,82 @@ import cfcLogo from '../assets/images/cfc-logo.png';
         <li>
           <a
             href={href}
-            class="font-mono text-[10px] tracking-[0.18em] uppercase text-ink-soft hover:text-ink transition-colors duration-200 relative leading-none"
+            class="nav-link font-mono text-[10px] tracking-[0.18em] uppercase text-ink-soft hover:text-ink transition-colors duration-200 relative leading-none"
             style="padding-bottom: 3px;"
           >
-            <span
-              class="absolute bottom-0 left-0 h-px bg-gold transition-all duration-300"
-              style="width: 0; right: 100%;"
-            ></span>
             {label}
           </a>
         </li>
       ))}
     </ul>
 
-    <!-- Right: icons + CTA -->
-    <div class="hidden lg:flex items-center gap-5 ml-auto z-10">
-      <button
-        @click="$store.search.isOpen ? $store.search.close() : $store.search.open()"
-        class="text-ink-soft hover:text-ink transition-colors"
-        aria-label="Search"
-      >
-        <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-          <circle cx="11" cy="11" r="8"/>
-          <path stroke-linecap="round" d="m21 21-4.35-4.35"/>
-        </svg>
-      </button>
-      <a href="https://www.cfcskincare.shop/account" class="text-ink-soft hover:text-ink transition-colors" aria-label="Account">
-        <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
-        </svg>
-      </a>
-      <button
-        @click="$store.cart.open()"
-        class="relative text-ink-soft hover:text-ink transition-colors"
-        aria-label="Cart"
-      >
-        <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <path stroke-linecap="round" d="M16 10a4 4 0 0 1-8 0"/>
-        </svg>
-        <span
-          x-show="$store.cart.totalQuantity > 0"
-          x-text="$store.cart.totalQuantity"
-          class="absolute -top-2 -right-2 w-4 h-4 flex items-center justify-center bg-gold text-white text-[9px] font-bold rounded-full leading-none"
-        ></span>
-      </button>
+    <!-- Desktop right side -->
+    <div class="hidden lg:flex items-center ml-auto z-10" style="gap: 20px;">
 
-      <!-- Divider -->
-      <div class="w-px h-5 bg-rule mx-1"></div>
+      <!-- Icons + divider — only shown once scrolled -->
+      <div
+        x-show="scrolled"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="flex items-center"
+        style="gap: 20px;"
+      >
+        <button
+          @click="$store.search.isOpen ? $store.search.close() : $store.search.open()"
+          class="text-ink-soft hover:text-ink transition-colors"
+          aria-label="Search"
+        >
+          <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"/>
+            <path stroke-linecap="round" d="m21 21-4.35-4.35"/>
+          </svg>
+        </button>
+        <a href="https://www.cfcskincare.shop/account" class="text-ink-soft hover:text-ink transition-colors" aria-label="Account">
+          <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+        <button
+          @click="$store.cart.open()"
+          class="relative text-ink-soft hover:text-ink transition-colors"
+          aria-label="Cart"
+        >
+          <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path stroke-linecap="round" d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span
+            x-show="$store.cart.totalQuantity > 0"
+            x-text="$store.cart.totalQuantity"
+            class="absolute -top-2 -right-2 w-4 h-4 flex items-center justify-center bg-gold text-white text-[9px] font-bold rounded-full leading-none"
+          ></span>
+        </button>
+        <div class="w-px h-5 bg-rule"></div>
+      </div>
 
+      <!-- Shop Now — always visible on desktop -->
       <a
         href="/shop"
-        class="inline-flex items-center bg-ink text-white font-mono text-[10px] tracking-[0.18em] uppercase transition-colors duration-200 hover:bg-gold-deep"
+        class="inline-flex items-center font-mono text-[10px] tracking-[0.18em] uppercase transition-colors duration-200"
+        :class="scrolled ? 'bg-ink text-white hover:bg-gold-deep' : 'bg-white/10 text-white border border-white/25 hover:bg-white/20'"
         style="padding: 10px 22px;"
       >
         Shop Now
       </a>
     </div>
 
-    <!-- Mobile: icons + hamburger -->
+    <!-- Mobile right — always visible, color adapts to hero/scrolled -->
     <div class="lg:hidden flex items-center gap-4 ml-auto">
       <button
         @click="$store.search.isOpen ? $store.search.close() : $store.search.open()"
-        class="text-ink-soft hover:text-ink transition-colors"
+        class="transition-colors"
+        :class="scrolled ? 'text-ink-soft hover:text-ink' : 'text-white/70 hover:text-white'"
         aria-label="Search"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -130,7 +165,8 @@ import cfcLogo from '../assets/images/cfc-logo.png';
       </button>
       <button
         @click="$store.cart.open()"
-        class="relative text-ink-soft hover:text-ink transition-colors"
+        class="relative transition-colors"
+        :class="scrolled ? 'text-ink-soft hover:text-ink' : 'text-white/70 hover:text-white'"
         aria-label="Cart"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -146,7 +182,8 @@ import cfcLogo from '../assets/images/cfc-logo.png';
       </button>
       <button
         @click="open = !open"
-        class="p-1.5 text-ink-soft hover:text-ink transition-colors"
+        class="p-1.5 transition-colors"
+        :class="scrolled ? 'text-ink-soft hover:text-ink' : 'text-white/70 hover:text-white'"
         aria-label="Menu"
       >
         <span x-show="!open" class="block space-y-1.5">
@@ -281,17 +318,20 @@ import cfcLogo from '../assets/images/cfc-logo.png';
 </div>
 
 <style>
+  #site-nav {
+    transition: background 0.5s ease, backdrop-filter 0.5s ease, border-color 0.5s ease;
+  }
+
   #site-nav.scrolled {
     background: rgba(253, 251, 247, 0.95);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid oklch(88% 0.006 72);
   }
 
-  /* Nav link underline animation */
-  nav ul a {
+  .nav-link {
     position: relative;
   }
-  nav ul a::after {
+  .nav-link::after {
     content: '';
     position: absolute;
     bottom: -3px;
@@ -301,10 +341,11 @@ import cfcLogo from '../assets/images/cfc-logo.png';
     background: oklch(64% 0.115 72);
     transition: width 0.3s cubic-bezier(0.16,1,0.3,1);
   }
-  nav ul a:hover::after {
+  .nav-link:hover::after {
     width: 100%;
   }
-  nav ul a span {
-    display: none;
+
+  .announcement-bar {
+    transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease;
   }
 </style>

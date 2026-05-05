@@ -1,9 +1,17 @@
-const SHOPIFY_DOMAIN = 'cfcskincare.myshopify.com';
-const STOREFRONT_TOKEN = '1aeb21fd7bfa3d087439e773d0422e12';
-const API_VERSION = '2024-01';
+const importEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
+const processEnv = typeof process === 'undefined' ? {} : process.env;
+const env = { ...processEnv, ...importEnv };
+const SHOPIFY_DOMAIN = env.PUBLIC_SHOPIFY_STORE_DOMAIN ?? env.SHOPIFY_STORE_DOMAIN ?? 'cfcskincare.myshopify.com';
+const STOREFRONT_TOKEN = env.PUBLIC_SHOPIFY_STOREFRONT_TOKEN ?? env.SHOPIFY_STOREFRONT_TOKEN ?? '';
+const API_VERSION = env.PUBLIC_SHOPIFY_API_VERSION ?? env.SHOPIFY_API_VERSION ?? '2024-01';
 const STOREFRONT_URL = `https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`;
+const USE_MOCKS = env.PUBLIC_SHOPIFY_USE_MOCKS === 'true' || env.SHOPIFY_USE_MOCKS === 'true';
 
 async function gql<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
+  if (!STOREFRONT_TOKEN && !USE_MOCKS) {
+    throw new Error('Missing Shopify Storefront API token');
+  }
+
   const res = await fetch(STOREFRONT_URL, {
     method: 'POST',
     headers: {
@@ -12,6 +20,7 @@ async function gql<T>(query: string, variables: Record<string, unknown> = {}): P
     },
     body: JSON.stringify({ query, variables }),
   });
+  if (!res.ok) throw new Error(`Shopify API error: ${res.status}`);
   const json = await res.json();
   if (json.errors) throw new Error(json.errors[0].message);
   return json.data as T;
@@ -74,7 +83,7 @@ export interface SearchProduct {
   variantId: string;
 }
 
-function parseCart(raw: any): Cart {
+export function parseCart(raw: any): Cart {
   return {
     id: raw.id,
     checkoutUrl: raw.checkoutUrl,

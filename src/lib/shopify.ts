@@ -1,10 +1,20 @@
-const SHOPIFY_DOMAIN = 'cfcskincare.myshopify.com';
-const STOREFRONT_TOKEN = '1aeb21fd7bfa3d087439e773d0422e12';
-const API_VERSION = '2024-01';
+const importEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
+const processEnv = typeof process === 'undefined' ? {} : process.env;
+const env = { ...processEnv, ...importEnv };
+
+const USE_MOCKS = env.SHOPIFY_USE_MOCKS === 'true' || env.PUBLIC_SHOPIFY_USE_MOCKS === 'true';
+
+export const SHOPIFY_DOMAIN = env.SHOPIFY_STORE_DOMAIN ?? env.PUBLIC_SHOPIFY_STORE_DOMAIN ?? 'cfcskincare.myshopify.com';
+const STOREFRONT_TOKEN = env.SHOPIFY_STOREFRONT_TOKEN ?? env.PUBLIC_SHOPIFY_STOREFRONT_TOKEN ?? '';
+const API_VERSION = env.SHOPIFY_API_VERSION ?? env.PUBLIC_SHOPIFY_API_VERSION ?? '2024-01';
 
 export const STOREFRONT_URL = `https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`;
 
 export async function shopifyFetch<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
+  if (!STOREFRONT_TOKEN && !USE_MOCKS) {
+    throw new Error('Missing Shopify Storefront API token');
+  }
+
   const res = await fetch(STOREFRONT_URL, {
     method: 'POST',
     headers: {
@@ -78,6 +88,53 @@ const PRODUCT_FIELDS = `
   }
 `;
 
+function getMockProducts(): ShopifyProduct[] {
+  return [
+    {
+      id: 'gid://shopify/Product/1001',
+      title: 'CFC Gentle Cleanser',
+      handle: 'gentle-cleanser',
+      description: 'A test-safe cleanser fixture for local and CI shopping flow tests.',
+      availableForSale: true,
+      tags: ['Cleanse'],
+      priceRange: { minVariantPrice: { amount: '28.00', currencyCode: 'USD' } },
+      images: { edges: [{ node: { url: '/favicon.png', altText: 'CFC Gentle Cleanser' } }] },
+      variants: {
+        edges: [{ node: { id: 'gid://shopify/ProductVariant/2001', title: 'Default Title', price: { amount: '28.00' } } }],
+      },
+      collections: { edges: [{ node: { title: 'Cleanse' } }] },
+    },
+    {
+      id: 'gid://shopify/Product/1002',
+      title: 'CFC Treatment Serum',
+      handle: 'treatment-serum',
+      description: 'A test-safe serum fixture with a named variant.',
+      availableForSale: true,
+      tags: ['Treat'],
+      priceRange: { minVariantPrice: { amount: '46.00', currencyCode: 'USD' } },
+      images: { edges: [{ node: { url: '/favicon.png', altText: 'CFC Treatment Serum' } }] },
+      variants: {
+        edges: [{ node: { id: 'gid://shopify/ProductVariant/2002', title: '1 oz', price: { amount: '46.00' } } }],
+      },
+      collections: { edges: [{ node: { title: 'Treat' } }] },
+    },
+    {
+      id: 'gid://shopify/Product/1003',
+      title: 'CFC Sold Out SPF',
+      handle: 'sold-out-spf',
+      description: 'A test-safe unavailable fixture.',
+      availableForSale: false,
+      tags: ['Protect'],
+      priceRange: { minVariantPrice: { amount: '34.00', currencyCode: 'USD' } },
+      images: { edges: [{ node: { url: '/favicon.png', altText: 'CFC Sold Out SPF' } }] },
+      variants: {
+        edges: [{ node: { id: 'gid://shopify/ProductVariant/2003', title: 'Default Title', price: { amount: '34.00' } } }],
+      },
+      collections: { edges: [{ node: { title: 'Protect' } }] },
+    },
+  ];
+}
+
 const PRODUCTS_QUERY = `
   query GetProducts($first: Int!, $after: String, $sortKey: ProductSortKeys) {
     products(first: $first, after: $after, sortKey: $sortKey) {
@@ -110,6 +167,8 @@ const COLLECTION_PRODUCTS_QUERY = `
 `;
 
 export async function getProducts(first = 24, sortKey = 'BEST_SELLING'): Promise<ShopifyProduct[]> {
+  if (USE_MOCKS) return getMockProducts().slice(0, first);
+
   try {
     const data = await shopifyFetch<{ products: { edges: Array<{ node: ShopifyProduct }> } }>(
       PRODUCTS_QUERY,
@@ -122,6 +181,8 @@ export async function getProducts(first = 24, sortKey = 'BEST_SELLING'): Promise
 }
 
 export async function getAllProducts(sortKey = 'BEST_SELLING'): Promise<ShopifyProduct[]> {
+  if (USE_MOCKS) return getMockProducts();
+
   const products: ShopifyProduct[] = [];
   let after: string | null = null;
   let hasNextPage = true;
@@ -150,6 +211,11 @@ export async function getAllProducts(sortKey = 'BEST_SELLING'): Promise<ShopifyP
 }
 
 export async function getCollectionProducts(handle: string, first = 24): Promise<ShopifyProduct[]> {
+  if (USE_MOCKS) return getMockProducts().filter(product => {
+    const text = product.collections.edges.map(({ node }) => node.title.toLowerCase()).join(' ');
+    return handle === 'featured' || text.includes(handle.toLowerCase());
+  }).slice(0, first);
+
   try {
     const data = await shopifyFetch<{
       collection: { products: { edges: Array<{ node: ShopifyProduct }> } } | null;

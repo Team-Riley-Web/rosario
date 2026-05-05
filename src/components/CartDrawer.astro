@@ -67,6 +67,14 @@
 
   <!-- Empty state -->
   <div
+    x-show="$store.cart.errorMessage"
+    x-text="$store.cart.errorMessage"
+    class="mx-6 mt-4 rounded-md border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+    role="alert"
+  ></div>
+
+  <!-- Empty state -->
+  <div
     x-show="$store.cart.items.length === 0 && !$store.cart.isLoading"
     class="flex-1 flex flex-col items-center justify-center px-6 text-center"
   >

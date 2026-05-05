@@ -28,19 +28,18 @@ import productsImg from '../assets/images/group.jpg';
           Every formula is plant-based <em>and</em> medical-grade. Purity-tested. Locally produced in Louisiana. Designed around a protocol that works in under five minutes — at every age, every stage.
         </p>
 
-        <!-- Credential grid: outer border + 1px gap -->
-        <div
-          style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid oklch(88% 0.006 72);"
-        >
+        <!-- Credential grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: oklch(88% 0.006 72); border: 1px solid oklch(88% 0.006 72);">
           {[
             ['NP Founded', 'Clinical knowledge, not marketing'],
             ['Chemist Formulated', 'Medical-grade efficacy'],
             ['Purity-Tested', 'Every batch, every time'],
             ['Louisiana-Made', 'Full quality control'],
           ].map(([title, desc]) => (
-            <div class="bg-parchment p-6">
-              <p class="font-display text-[18px] font-normal text-ink mb-1">{title}</p>
-              <p class="font-sans font-light text-[12px] text-ink-soft">{desc}</p>
+            <div class="bg-parchment" style="padding: 28px;">
+              <div class="h-px bg-gold mb-4" style="width: 20px;"></div>
+              <p class="font-display text-[19px] font-normal text-ink leading-tight mb-2">{title}</p>
+              <p class="font-mono text-ink-soft uppercase" style="font-size: 9px; letter-spacing: 0.16em; line-height: 1.6;">{desc}</p>
             </div>
           ))}
         </div>
@@ -111,7 +110,7 @@ import productsImg from '../assets/images/group.jpg';
             ['vs. Clean beauty', 'Formulated by a medical professional for efficacy, not just ingredient safety.'],
           ].map(([label, desc]) => (
             <div class="flex items-start gap-4 font-sans font-light text-[14px] text-ink-soft leading-relaxed" style="padding: 24px 0; border-bottom: 1px solid oklch(88% 0.006 72);">
-              <div class="shrink-0 flex items-center justify-center" style="width: 16px; height: 16px; border: 1px solid oklch(64% 0.115 72); margin-top: 1px;">
+              <div class="shrink-0 flex items-center justify-center" style="width: 18px; height: 18px; border: 1px solid oklch(64% 0.115 72); border-radius: 50%; margin-top: 1px;">
                 <svg class="text-gold" width="10" height="8" viewBox="0 0 10 8" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M1 4l2.5 2.5L9 1"/>
                 </svg>

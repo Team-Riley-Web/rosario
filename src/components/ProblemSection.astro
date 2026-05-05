@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import moonImg from '../assets/images/moon.png';
+
 const problems = [
   {
     number: '01',
@@ -23,7 +26,7 @@ const problems = [
 ];
 ---
 
-<section class="bg-white" id="problem" style="padding: 140px 0;">
+<section class="bg-white relative" id="problem" style="padding: 140px 0;">
   <div style="max-width: 1440px; margin: 0 auto; padding: 0 40px;">
     <div class="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-16 lg:gap-24">
 
@@ -45,6 +48,15 @@ const problems = [
         <p class="font-sans font-light text-[14px] text-ink-soft leading-[1.7]">
           Women in their 30s, 40s, 50s, and beyond are being failed at every turn. Here is why nothing has worked.
         </p>
+
+        <!-- Ghost moon -->
+        <!--<div class="hidden lg:block pointer-events-none select-none" aria-hidden="true" style="margin-top: 56px;">-->
+        <!--  <Image-->
+        <!--    src={moonImg}-->
+        <!--    alt=""-->
+        <!--    class="w-64 h-auto opacity-10"-->
+        <!--  />-->
+        <!--</div>-->
       </div>
 
       <!-- Right: numbered list -->
@@ -55,8 +67,8 @@ const problems = [
             style={`display: grid; grid-template-columns: 64px 1fr; gap: 24px; padding: 40px 0; border-bottom: 1px solid oklch(88% 0.006 72); transition-delay: ${i * 80}ms;`}
           >
             <span
-              class="font-display font-light leading-none select-none transition-colors duration-300 group-hover:text-gold-light"
-              style="font-size: 60px; color: oklch(88% 0.006 72); margin-top: 2px;"
+              class="font-display font-light leading-none select-none text-rule transition-colors duration-300 group-hover:text-gold"
+              style="font-size: 60px; margin-top: 2px;"
             >
               {number}
             </span>
@@ -69,6 +81,15 @@ const problems = [
           </div>
         ))}
       </div>
+
+      <!-- Ghost moon -->
+      <!--<div class="hidden lg:block pointer-events-none select-none absolute left-0 bottom-0" aria-hidden="true" style="margin-top: 56px;">-->
+      <!--  <Image-->
+      <!--      src={moonImg}-->
+      <!--      alt=""-->
+      <!--      class="w-96 h-auto opacity-5"-->
+      <!--  />-->
+      <!--</div>-->
     </div>
   </div>
 </section>

@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import cfcLogo from '../assets/images/cfc-logo.png';
 ---
 
@@ -48,11 +49,14 @@ import cfcLogo from '../assets/images/cfc-logo.png';
   >
 
     <!-- Logo — always visible -->
-    <a href="/" class="flex items-center gap-3 shrink-0 z-10 group">
-      <img
-        src={cfcLogo.src}
+    <a href="/" class="flex items-center gap-3 shrink-0 z-10">
+      <Image
+        src={cfcLogo}
         alt="CFC Skincare"
-        class="w-10 h-10 rounded-full object-cover shrink-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[15deg]"
+        width={40}
+        height={40}
+        densities={[1, 2, 3]}
+        class="w-10 h-10 rounded-full object-cover shrink-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
       />
       <span
         class="hidden lg:block font-mono text-[11px] tracking-[0.22em] uppercase transition-colors duration-300"

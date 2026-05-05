@@ -43,7 +43,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://cfcskinc
       rel="stylesheet"
     />
 
-    <style>
+    <style is:global>
       [x-cloak] { display: none !important; }
 
       /* Scroll reveal */

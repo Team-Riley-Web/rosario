@@ -1,0 +1,62 @@
+---
+const videoUrl = 'https://www.cfcskincare.shop/cdn/shop/videos/c/vp/28aa11f052cb467888c21cfe22b7f013/28aa11f052cb467888c21cfe22b7f013.HD-1080p-2.5Mbps-67327798.mp4?v=0';
+---
+
+<section class="bg-ink" style="padding: 120px 0;">
+  <div style="max-width: 1440px; margin: 0 auto; padding: 0 40px;">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+      <!-- Left: copy -->
+      <div class="reveal-left">
+        <div class="flex items-center gap-4 mb-7">
+          <div class="h-px" style="width: 24px; background: rgba(255,255,255,0.12);"></div>
+          <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">See It In Action</span>
+        </div>
+
+        <h2
+          class="font-display font-light text-white mb-6"
+          style="font-size: clamp(42px, 4.5vw, 68px); line-height: 1.0; letter-spacing: -0.02em;"
+        >
+          Results you can<br/>
+          <em style="font-style: italic; color: oklch(80% 0.08 78);">photograph.</em>
+        </h2>
+
+        <p class="font-sans font-light text-[14px] leading-[1.75] mb-10" style="color: rgba(255,255,255,0.45); max-width: 380px;">
+          Three steps. Five minutes. A protocol built around your skin — not a shelf full of products that never quite work together.
+        </p>
+
+        <a
+          href="/shop"
+          class="inline-flex items-center font-mono text-[10px] tracking-[0.2em] uppercase transition-colors duration-200"
+          style="background: oklch(64% 0.115 72); color: oklch(13% 0.010 255); padding: 14px 32px;"
+          onmouseover="this.style.background='oklch(80% 0.08 78)'"
+          onmouseout="this.style.background='oklch(64% 0.115 72)'"
+        >
+          Shop the System
+        </a>
+      </div>
+
+      <!-- Right: portrait video with controls -->
+      <div class="reveal-right flex justify-center lg:justify-end">
+        <div style="width: 100%; max-width: 380px;">
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            class="w-full"
+            style="aspect-ratio: 9/16; object-fit: cover; display: block;"
+          >
+            <source src={videoUrl} type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  video::-webkit-media-controls-panel {
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  }
+</style>

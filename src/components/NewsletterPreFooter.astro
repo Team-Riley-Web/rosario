@@ -55,30 +55,27 @@
     btn.textContent = 'Subscribing...';
     btn.disabled = true;
 
-    try {
-      await fetch('https://www.cfcskincare.shop/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          form_type: 'customer',
-          'contact[email]': email,
-          'contact[tags]': 'newsletter',
-        }),
-      });
+    // mode: 'no-cors' sends the request as an opaque form post — same as a
+    // native HTML form submission. Shopify processes it and adds the email to
+    // the marketing list. We can't read the response, so we always show success.
+    await fetch('https://cfcskincare.myshopify.com/contact', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        form_type: 'customer',
+        utf8: '✓',
+        'contact[email]': email,
+        'contact[tags]': 'newsletter',
+      }),
+    });
 
-      if (msg) {
-        msg.textContent = 'You are in. Welcome to the CFC community.';
-        msg.classList.remove('hidden');
-      }
-      form.reset();
-    } catch {
-      if (msg) {
-        msg.textContent = 'Something went wrong. Please email us directly.';
-        msg.classList.remove('hidden');
-      }
-    } finally {
-      btn.textContent = 'Subscribe';
-      btn.disabled = false;
+    if (msg) {
+      msg.textContent = 'You\'re in. Welcome to the CFC community.';
+      msg.classList.remove('hidden');
     }
+    form.reset();
+    btn.textContent = 'Subscribe';
+    btn.disabled = false;
   });
 </script>

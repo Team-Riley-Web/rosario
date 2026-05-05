@@ -1,0 +1,296 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import { getAllProducts, getProductByHandle, formatPrice, getCheckoutUrl } from '../../lib/shopify';
+import type { ShopifyProductDetail } from '../../lib/shopify';
+
+export async function getStaticPaths() {
+  const products = await getAllProducts();
+  return products.map((p) => ({ params: { handle: p.handle } }));
+}
+
+const { handle } = Astro.params;
+const product = await getProductByHandle(handle!) as ShopifyProductDetail | null;
+
+if (!product) return Astro.redirect('/shop');
+
+const images = product.images.edges.map(e => e.node);
+const variants = product.variants.edges.map(e => e.node);
+const hasVariantChoice = variants.length > 1 && variants[0]?.title !== 'Default Title';
+const firstAvailableId = variants.find(v => v.availableForSale)?.id ?? variants[0]?.id ?? '';
+
+const minPrice = formatPrice(product.priceRange.minVariantPrice.amount);
+const maxPrice = formatPrice(product.priceRange.maxVariantPrice.amount);
+const priceDisplay = minPrice !== maxPrice ? `${minPrice} – ${maxPrice}` : minPrice;
+
+function getStep(p: ShopifyProductDetail): { label: string; num: string } | null {
+  const text = [p.title, ...p.tags, ...p.collections.edges.map(e => e.node.title)].join(' ').toLowerCase();
+  if (text.includes('cleanser') || text.includes('cleanse')) return { label: 'Cleanse', num: '01' };
+  if (text.includes('spf') || text.includes('sunscreen') || text.includes('sun protection')) return { label: 'Protect', num: '03' };
+  if (text.includes('serum') || text.includes('moistur') || text.includes('treat') || text.includes('retinol') || text.includes('eye') || text.includes('firm') || text.includes('scrub') || text.includes('serum')) return { label: 'Treat', num: '02' };
+  return null;
+}
+const step = getStep(product);
+const variantsJson = JSON.stringify(variants.map(v => ({ id: v.id, title: v.title, available: v.availableForSale })));
+---
+
+<Layout
+  title={`${product.title} — CFC Skincare`}
+  description={product.description?.slice(0, 155) || 'Medical-grade, plant-based skincare by CFC.'}
+  image={images[0]?.url}
+>
+  <Nav />
+  <main class="bg-white">
+
+    <!-- Breadcrumb -->
+    <div class="fixed top-0 inset-x-0 z-40 pointer-events-none">
+      <!-- spacer only — Nav handles the bar -->
+    </div>
+
+    <div class="pt-[130px]">
+      <div class="border-b border-rule">
+        <div class="max-w-[1280px] mx-auto px-10 py-3.5 flex items-center gap-2">
+          <a
+            href="/shop"
+            class="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.18em] uppercase text-ink-soft hover:text-gold transition-colors duration-200"
+          >
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+            All Products
+          </a>
+          <span class="text-rule font-mono text-[9px]">/</span>
+          <span class="font-mono text-[9px] tracking-[0.12em] uppercase text-ink-soft truncate max-w-[200px]">{product.title}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product section -->
+    <section class="py-16 lg:py-24">
+      <div class="max-w-[1280px] mx-auto px-10">
+        <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 xl:gap-20 items-start">
+
+          <!-- Left: image gallery -->
+          <div x-data="{ active: 0 }" class="reveal-left lg:sticky lg:top-[100px]">
+
+            <!-- Main image -->
+            <div class="relative overflow-hidden bg-parchment aspect-[3/4]">
+              {images.length > 0 ? images.map((img, i) => (
+                <img
+                  src={img.url}
+                  alt={img.altText ?? product.title}
+                  class="absolute inset-0 w-full h-full object-cover transition-opacity duration-400"
+                  x-show={`active === ${i}`}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  width="900"
+                  height="1200"
+                />
+              )) : (
+                <div class="w-full h-full flex items-center justify-center">
+                  <span class="font-display text-5xl text-rule">CFC</span>
+                </div>
+              )}
+
+              {step && (
+                <span class="absolute top-4 left-4 bg-white text-gold-deep font-mono text-[9px] tracking-[0.12em] uppercase px-2 py-1">
+                  {step.label}
+                </span>
+              )}
+              {!product.availableForSale && (
+                <span class="absolute top-4 right-4 bg-ink text-white font-mono text-[9px] tracking-[0.12em] uppercase px-2 py-1">
+                  Sold Out
+                </span>
+              )}
+            </div>
+
+            <!-- Thumbnails -->
+            {images.length > 1 && (
+              <div class="flex gap-2 mt-3 flex-wrap">
+                {images.map((img, i) => (
+                  <button
+                    @click={`active = ${i}`}
+                    :class={`active === ${i} ? 'border-gold' : 'border-rule hover:border-ink/40'`}
+                    class="w-[72px] h-[96px] shrink-0 overflow-hidden border-2 transition-colors duration-200"
+                    aria-label={`Image ${i + 1}`}
+                  >
+                    <img
+                      src={img.url}
+                      alt={img.altText ?? product.title}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <!-- Right: product info -->
+          <div class="reveal-right">
+
+            <!-- Step / category -->
+            {step && (
+              <div class="flex items-center gap-3 mb-5">
+                <div class="h-px bg-gold w-6"></div>
+                <span class="font-mono text-[9px] tracking-[0.2em] uppercase text-gold">
+                  Step {step.num} · {step.label}
+                </span>
+              </div>
+            )}
+
+            <h1
+              class="font-display font-light text-ink leading-[1.05] tracking-[-0.01em] mb-4"
+              style="font-size: clamp(28px, 3.2vw, 44px);"
+            >
+              {product.title}
+            </h1>
+
+            <p class="font-display text-[26px] font-normal text-ink mb-7">{priceDisplay}</p>
+
+            {product.description && (
+              <p class="font-sans font-light text-[14px] leading-[1.8] text-ink-soft mb-8 max-w-[460px]">
+                {product.description.slice(0, 220)}{product.description.length > 220 ? '…' : ''}
+              </p>
+            )}
+
+            <!-- Variant + cart block -->
+            <div
+              x-data={`{ adding: false, added: false, selectedId: ${JSON.stringify(firstAvailableId)}, variants: ${variantsJson} }`}
+            >
+              {hasVariantChoice && (
+                <div class="mb-6">
+                  <p class="font-mono text-[9px] tracking-[0.18em] uppercase text-ink-soft mb-3">Select Option</p>
+                  <div class="flex flex-wrap gap-2">
+                    {variants.map((v) => (
+                      <button
+                        @click={`selectedId = ${JSON.stringify(v.id)}`}
+                        :class={`selectedId === ${JSON.stringify(v.id)} ? 'bg-ink text-white border-ink' : 'bg-white text-ink border-rule hover:border-ink'`}
+                        class="font-mono text-[10px] tracking-[0.1em] uppercase border px-4 py-2.5 transition-all duration-200"
+                        disabled={!v.availableForSale || undefined}
+                        style={!v.availableForSale ? 'opacity: 0.4; cursor: not-allowed;' : undefined}
+                      >
+                        {v.title}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {product.availableForSale ? (
+                <button
+                  @click={`if (!adding && !added) {
+                    adding = true;
+                    await $store.cart.addItem(selectedId);
+                    adding = false;
+                    added = true;
+                    setTimeout(() => { added = false; }, 2000);
+                  }`}
+                  :disabled="adding || undefined"
+                  class="w-full font-mono text-[10px] tracking-[0.2em] uppercase py-4 mb-3 transition-all duration-200"
+                  :class="added ? 'bg-gold-deep text-white' : 'bg-ink text-white hover:bg-gold-deep'"
+                >
+                  <span x-show="!adding && !added">Add to Cart</span>
+                  <span x-show="adding" x-cloak>Adding…</span>
+                  <span x-show="added" x-cloak>Added to Cart ✓</span>
+                </button>
+              ) : (
+                <button
+                  disabled
+                  class="w-full bg-rule text-ink-soft font-mono text-[10px] tracking-[0.2em] uppercase py-4 mb-3 cursor-not-allowed"
+                >
+                  Sold Out
+                </button>
+              )}
+
+              <a
+                href={firstAvailableId ? getCheckoutUrl(firstAvailableId) : `https://www.cfcskincare.shop/products/${product.handle}`}
+                target="_blank"
+                rel="noopener"
+                class="block w-full text-center font-mono text-[10px] tracking-[0.2em] uppercase py-4 border border-rule text-ink-soft hover:border-ink hover:text-ink transition-colors duration-200"
+              >
+                Buy Now
+              </a>
+            </div>
+
+            <!-- Trust indicators -->
+            <div class="border-t border-rule mt-8 pt-7 space-y-3.5">
+              {[
+                ['NP-C Formulated', 'Clinical knowledge, not a marketing department'],
+                ['Purity-Tested', 'Every batch, every time'],
+                ['Louisiana-Made', 'Local production, full quality control'],
+              ].map(([label, desc]) => (
+                <div class="flex items-start gap-3">
+                  <div class="shrink-0 flex items-center justify-center mt-[3px] w-[14px] h-[14px] border border-gold rounded-full">
+                    <svg class="text-gold" width="7" height="5" viewBox="0 0 10 8" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M1 4l2.5 2.5L9 1"/>
+                    </svg>
+                  </div>
+                  <span class="font-sans font-light text-[13px] text-ink-soft">
+                    <strong class="font-medium text-ink">{label}</strong> — {desc}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Full description -->
+    {product.descriptionHtml && (
+      <section class="bg-parchment border-t border-rule py-20">
+        <div class="max-w-[780px] mx-auto px-10">
+          <div class="flex items-center gap-4 mb-10">
+            <div class="h-px bg-gold w-6"></div>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Product Details</span>
+          </div>
+          <div class="product-description" set:html={product.descriptionHtml} />
+        </div>
+      </section>
+    )}
+
+  </main>
+</Layout>
+
+<style>
+  .product-description :global(p) {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.85;
+    color: oklch(50% 0.006 255);
+    margin-bottom: 1rem;
+  }
+  .product-description :global(strong) {
+    font-weight: 500;
+    color: oklch(13% 0.010 255);
+  }
+  .product-description :global(h1),
+  .product-description :global(h2),
+  .product-description :global(h3) {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
+    color: oklch(13% 0.010 255);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .product-description :global(ul),
+  .product-description :global(ol) {
+    padding-left: 1.25rem;
+    margin-bottom: 1rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.85;
+    color: oklch(50% 0.006 255);
+  }
+  .product-description :global(li) {
+    margin-bottom: 0.35rem;
+  }
+  /* Strip Shopify editor noise */
+  .product-description :global([data-start]),
+  .product-description :global([data-end]) {
+    all: revert;
+  }
+</style>

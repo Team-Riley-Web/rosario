@@ -45,6 +45,16 @@ export interface ShopifyProduct {
   collections: { edges: Array<{ node: { title: string } }> };
 }
 
+export interface ShopifyProductDetail extends Omit<ShopifyProduct, 'priceRange' | 'variants' | 'images'> {
+  descriptionHtml: string;
+  priceRange: {
+    minVariantPrice: { amount: string; currencyCode: string };
+    maxVariantPrice: { amount: string; currencyCode: string };
+  };
+  images: { edges: Array<{ node: { url: string; altText: string | null } }> };
+  variants: { edges: Array<{ node: { id: string; title: string; price: { amount: string }; availableForSale: boolean } }> };
+}
+
 function isRetailProduct(product: ShopifyProduct): boolean {
   const text = [
     product.title,
@@ -239,4 +249,62 @@ export function formatPrice(amount: string, currency = 'USD'): string {
 
 export function getCheckoutUrl(variantId: string): string {
   return `https://${SHOPIFY_DOMAIN}/cart/${variantId.replace('gid://shopify/ProductVariant/', '')}:1`;
+}
+
+const PRODUCT_DETAIL_QUERY = `
+  query GetProduct($handle: String!) {
+    product(handle: $handle) {
+      id
+      title
+      handle
+      description
+      descriptionHtml
+      availableForSale
+      tags
+      priceRange {
+        minVariantPrice { amount currencyCode }
+        maxVariantPrice { amount currencyCode }
+      }
+      images(first: 8) {
+        edges { node { url altText } }
+      }
+      variants(first: 20) {
+        edges { node { id title availableForSale price { amount } } }
+      }
+      collections(first: 3) {
+        edges { node { title } }
+      }
+    }
+  }
+`;
+
+export async function getProductByHandle(handle: string): Promise<ShopifyProductDetail | null> {
+  if (USE_MOCKS) {
+    const mock = getMockProducts().find(p => p.handle === handle);
+    if (!mock) return null;
+    return {
+      ...mock,
+      descriptionHtml: `<p>${mock.description}</p>`,
+      priceRange: {
+        ...mock.priceRange,
+        maxVariantPrice: mock.priceRange.minVariantPrice,
+      },
+      images: mock.images,
+      variants: {
+        edges: mock.variants.edges.map(e => ({
+          node: { ...e.node, availableForSale: mock.availableForSale },
+        })),
+      },
+    };
+  }
+
+  try {
+    const data = await shopifyFetch<{ product: ShopifyProductDetail | null }>(
+      PRODUCT_DETAIL_QUERY,
+      { handle }
+    );
+    return data.product;
+  } catch {
+    return null;
+  }
 }

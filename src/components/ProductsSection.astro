@@ -225,7 +225,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                   x-transition:enter="transition ease-out duration-200"
                   x-transition:enter-start="opacity-0 scale-95"
                   x-transition:enter-end="opacity-100 scale-100"
-                  class="transition-all duration-200"
+                  class="transition-all duration-200 h-full"
                   style={isInitiallyVisible ? undefined : 'display: none;'}
                   :style={`{ order: productOrder(${JSON.stringify(product.id)}) }`}
                 >

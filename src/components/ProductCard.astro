@@ -11,19 +11,17 @@ const { product } = Astro.props;
 const image = product.images.edges[0]?.node;
 const variant = product.variants.edges[0]?.node;
 const price = formatPrice(product.priceRange.minVariantPrice.amount);
-const checkoutUrl = variant && product.availableForSale ? getCheckoutUrl(variant.id) : `https://www.cfcskincare.shop/products/${product.handle}`;
+const productPageUrl = `/products/${product.handle}`;
 const step = product.tags.find(t => ['cleanse','treat','protect'].includes(t.toLowerCase()));
 ---
 
 <article
   x-data="{ adding: false, added: false }"
-  class="group flex flex-col bg-white hover:bg-parchment-2 transition-colors duration-300 overflow-hidden"
+  class="group flex flex-col h-full bg-white hover:bg-parchment-2 transition-colors duration-300 overflow-hidden"
 >
   <!-- Product image: 3/4 aspect -->
   <a
-    href={`https://www.cfcskincare.shop/products/${product.handle}`}
-    target="_blank"
-    rel="noopener"
+    href={productPageUrl}
     class="block relative overflow-hidden bg-parchment aspect-[1/1] sm:aspect-[3/4]"
   >
     {image ? (
@@ -54,9 +52,7 @@ const step = product.tags.find(t => ['cleanse','treat','protect'].includes(t.toL
   <!-- Product info -->
   <div class="p-5 flex flex-col flex-1">
     <a
-      href={`https://www.cfcskincare.shop/products/${product.handle}`}
-      target="_blank"
-      rel="noopener"
+      href={productPageUrl}
     >
       <h3 class="font-display text-[18px] font-normal text-ink leading-snug mb-1.5 line-clamp-2">
         {product.title}

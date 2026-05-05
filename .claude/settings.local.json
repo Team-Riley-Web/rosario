@@ -11,7 +11,9 @@
       "Bash(bd dolt *)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "WebFetch(domain:www.cfcskincare.shop)"
+      "WebFetch(domain:www.cfcskincare.shop)",
+      "Read(//Users/joshuariley/Downloads/**)",
+      "Bash(python3 -c ' *)"
     ]
   }
 }

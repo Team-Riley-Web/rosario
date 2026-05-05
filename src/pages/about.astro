@@ -1,0 +1,425 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
+import founderImg from '../assets/images/brittani.jpg';
+import groupImg from '../assets/images/group.jpg';
+import familyImg from '../assets/images/family.jpg';
+---
+
+<Layout
+  title="About CFC Skincare — Built by a Nurse Practitioner"
+  description="CFC Skincare is a medical-grade, plant-based system created by Brittany, NP-C — built for women who are done guessing."
+>
+  <Nav />
+
+  <main>
+
+    <!-- Page hero -->
+    <section class="bg-ink pt-[160px] pb-[100px] relative overflow-hidden">
+      <div class="max-w-[1440px] mx-auto px-10 relative z-10">
+        <div class="reveal max-w-[680px]">
+          <div class="flex items-center gap-4 mb-8">
+            <div class="h-px bg-gold w-6"></div>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">About CFC</span>
+          </div>
+          <h1
+            class="font-display font-light text-white leading-[1.0] tracking-[-0.02em] mb-8"
+            style="font-size: clamp(52px, 5.5vw, 84px);"
+          >
+            Built by someone who actually<br/>
+            <em style="font-style: italic;">understands your skin.</em>
+          </h1>
+          <p class="font-sans font-light text-[16px] leading-[1.75] max-w-[520px]" style="color: rgba(255,255,255,0.55);">
+            CFC Skincare is the bridge between clinical efficacy and clean beauty — a medical-grade, plant-based system created by a nurse practitioner, for women who are done guessing.
+          </p>
+        </div>
+      </div>
+      <!-- Decorative rule -->
+      <div class="absolute bottom-0 inset-x-0 h-px" style="background: rgba(255,255,255,0.06);"></div>
+    </section>
+
+    <!-- Mission -->
+    <section class="bg-parchment py-[120px]">
+      <div class="max-w-[1440px] mx-auto px-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-start">
+
+          <div class="reveal-left">
+            <div class="flex items-center gap-4 mb-7">
+              <div class="h-px bg-gold w-6"></div>
+              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Our Mission</span>
+            </div>
+            <h2 class="font-display font-light text-ink leading-[1.08] tracking-[-0.01em]" style="font-size: clamp(32px, 3.2vw, 48px);">
+              To empower every woman to embrace her unique skin journey — with the right knowledge and the right products.
+            </h2>
+          </div>
+
+          <div class="reveal-right">
+            <p class="font-sans font-light text-[15px] leading-[1.8] text-ink-soft mb-6">
+              At CFC Skincare, our mission is to empower adults, teens, and tweens to embrace their unique skin journeys by educating them on the importance of healthy skincare habits and the selection of effective products.
+            </p>
+            <p class="font-sans font-light text-[15px] leading-[1.8] text-ink-soft mb-10">
+              We believe that understanding the right active ingredients is essential for nurturing youthful skin. By providing access to medical-grade skincare solutions, we ensure our community receives the purest, most effective ingredients for their skin — and the confidence that comes with it.
+            </p>
+
+            <!-- Guarantees -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-rule border border-rule">
+              {[
+                ['Easy Shipping', 'Or local pick up'],
+                ['Your Satisfaction', 'Our top priority'],
+                ['Medical-Grade', 'Skin care always'],
+              ].map(([title, desc]) => (
+                <div class="bg-white p-6">
+                  <div class="h-px bg-gold mb-4 w-5"></div>
+                  <p class="font-display text-[17px] font-normal text-ink mb-1">{title}</p>
+                  <p class="font-mono text-ink-soft uppercase text-[9px] tracking-[0.14em]">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Founder -->
+    <section class="bg-white py-[120px]">
+      <div class="max-w-[1440px] mx-auto px-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+          <!-- Photo -->
+          <div class="reveal-left relative overflow-hidden aspect-[3/4]">
+            <Image
+              src={founderImg}
+              alt="Brittany, NP-C — Founder of CFC Skincare"
+              class="w-full h-full object-cover object-top"
+              widths={[600, 900, 1200]}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+            <!-- Inset credential badge -->
+            <div class="absolute bottom-6 left-6 bg-ink px-5 py-4 max-w-[220px]">
+              <p class="font-display italic font-light text-white mb-2 text-[14px] leading-[1.4]">
+                "I built the system I wished existed when I was the patient."
+              </p>
+              <p class="font-mono text-gold uppercase text-[9px] tracking-[0.2em]">Brittany, NP-C · Founder</p>
+            </div>
+          </div>
+
+          <!-- Copy -->
+          <div class="reveal-right">
+            <div class="flex items-center gap-4 mb-7">
+              <div class="h-px bg-gold w-6"></div>
+              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">The Founder</span>
+            </div>
+
+            <h2 class="font-display font-light text-ink mb-6 leading-[1.05] tracking-[-0.01em]" style="font-size: clamp(32px, 3vw, 46px);">
+              A nurse practitioner who decided to fix the problem herself.
+            </h2>
+
+            <p class="font-sans font-light text-[15px] leading-[1.8] text-ink-soft mb-5">
+              Brittany, NP-C spent years in clinical practice watching patients struggle with the same problem: a skincare industry that prioritized marketing over medicine. Twelve-step routines, conflicting advice, and products formulated for aesthetics rather than efficacy.
+            </p>
+            <p class="font-sans font-light text-[15px] leading-[1.8] text-ink-soft mb-5">
+              She partnered with a licensed cosmetic chemist to develop what didn't exist — a medical-grade, plant-based system that delivers real clinical results in under five minutes. Every formula is purity-tested. Every batch is produced locally in Louisiana, under full quality control.
+            </p>
+            <p class="font-sans font-light text-[15px] leading-[1.8] text-ink-soft mb-10">
+              CFC is not a product line. It is a protocol — designed by someone who has seen, clinically, what skin actually needs.
+            </p>
+
+            <!-- Credentials -->
+            <div class="border-t border-rule">
+              {[
+                ['NP-C Founded', 'Clinical knowledge, not a marketing department'],
+                ['Chemist Formulated', 'Medical-grade efficacy, verified'],
+                ['Purity-Tested', 'Every batch, every time'],
+                ['Louisiana-Made', 'Local production, full quality control'],
+              ].map(([label, desc]) => (
+                <div class="flex items-start gap-4 py-4 border-b border-rule">
+                  <div class="shrink-0 flex items-center justify-center mt-[3px] w-[16px] h-[16px] border border-gold rounded-full">
+                    <svg class="text-gold" width="8" height="6" viewBox="0 0 10 8" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M1 4l2.5 2.5L9 1"/>
+                    </svg>
+                  </div>
+                  <span class="font-sans font-light text-[14px] text-ink-soft">
+                    <strong class="font-medium text-ink">{label}</strong> — {desc}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Who we serve -->
+    <section class="bg-ink py-[120px]">
+      <div class="max-w-[1440px] mx-auto px-10">
+
+        <div class="reveal text-center mb-16">
+          <div class="flex items-center justify-center gap-4 mb-7">
+            <div class="h-px w-6" style="background: rgba(255,255,255,0.08);"></div>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Who We Serve</span>
+            <div class="h-px w-6" style="background: rgba(255,255,255,0.08);"></div>
+          </div>
+          <h2 class="font-display font-light text-white leading-none tracking-[-0.02em]" style="font-size: clamp(38px, 4vw, 60px);">
+            Built for real women. At every stage.
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px">
+          {[
+            {
+              name: 'The Career-Driven Executive',
+              ages: 'Ages 45–58',
+              detail: 'She runs boardrooms and wants her skin to match her performance. Needs results in under 5 minutes — no complex routines, no compromises.',
+              wants: ['Visible pigmentation reduction', 'Stress-related dullness fix', 'Freedom from foundation'],
+            },
+            {
+              name: 'The Active Empty Nester',
+              ages: 'Ages 48–62',
+              detail: 'Reclaiming herself after years of putting others first. Ready to invest in her skin for the first time — and wants something that truly works.',
+              wants: ['Hormone-related skin changes', 'Sun damage from active lifestyle', 'Simplified effective routine'],
+            },
+            {
+              name: 'The Millennial Mom',
+              ages: 'Ages 32–42',
+              detail: 'Skin-aware and ingredient-conscious. Wants clean and clinical — and has been told she can only have one. CFC gives her both.',
+              wants: ['Clean but effective formulas', 'Post-pregnancy skin concerns', 'Efficient morning routine'],
+            },
+            {
+              name: 'The Med-Spa Seeker',
+              ages: 'Ages 42–60',
+              detail: 'Already invests in treatments. Looking for at-home care that extends her results — not something that contradicts her NP\'s advice.',
+              wants: ['Protocol-aligned home care', 'Treatment result extension', 'NP-formulated credibility'],
+            },
+            {
+              name: 'The Skin-of-Color Achiever',
+              ages: 'Ages 30–52',
+              detail: 'Has been burned by products that weren\'t made with her skin in mind. CFC is formulated for every skin tone — and she can feel the difference.',
+              wants: ['Hyperpigmentation focus', 'No harsh reactions', 'Formulated with her skin in mind'],
+            },
+            {
+              name: 'Teens & Tweens',
+              ages: 'Ages 11–19',
+              detail: 'Building healthy habits early. CFC\'s gentle, medical-grade formulas teach the right fundamentals — without the harsh ingredients designed for adults.',
+              wants: ['Safe gentle formulas', 'Education on active ingredients', 'Confidence from clear skin'],
+            },
+          ].map(({ name, ages, detail, wants }, i) => (
+            <div
+              class="reveal flex flex-col p-10"
+              style={`background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); transition-delay: ${i * 60}ms;`}
+              onmouseover="this.style.background='rgba(255,255,255,0.055)'"
+              onmouseout="this.style.background='rgba(255,255,255,0.03)'"
+            >
+              <div class="h-px bg-gold mb-6 w-6"></div>
+              <p class="font-mono text-[9px] tracking-[0.2em] uppercase text-gold mb-2">{ages}</p>
+              <h3 class="font-display text-[22px] font-normal text-white mb-4 leading-tight">{name}</h3>
+              <p class="font-sans font-light text-[13px] leading-[1.7] mb-6" style="color: rgba(255,255,255,0.5);">{detail}</p>
+              <ul class="mt-auto space-y-2">
+                {wants.map(w => (
+                  <li class="flex items-center gap-3 font-mono text-[9px] tracking-[0.1em] uppercase" style="color: rgba(255,255,255,0.35);">
+                    <span class="h-px bg-gold shrink-0 w-3"></span>
+                    {w}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Hours + Contact -->
+    <section class="bg-white py-[100px]">
+      <div class="max-w-[1440px] mx-auto px-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+
+          <!-- Hours -->
+          <div class="reveal-left">
+            <div class="flex items-center gap-4 mb-8">
+              <div class="h-px bg-gold w-6"></div>
+              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Hours</span>
+            </div>
+            <div class="border-t border-rule">
+              {[
+                ['Monday',    '8:30 AM – 5:00 PM'],
+                ['Tuesday',   '8:30 AM – 3:30 PM'],
+                ['Wednesday', '8:30 AM – 5:00 PM'],
+                ['Thursday',  '8:30 AM – 5:00 PM'],
+                ['Friday',    '8:30 AM – 3:30 PM'],
+                ['Online',    '24 / 7'],
+              ].map(([day, hours]) => (
+                <div class="flex items-center justify-between py-4 border-b border-rule">
+                  <span class="font-mono text-[10px] tracking-[0.15em] uppercase text-ink-soft">{day}</span>
+                  <span class="font-sans font-light text-[14px] text-ink">{hours}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="reveal-right">
+            <div class="flex items-center gap-4 mb-8">
+              <div class="h-px bg-gold w-6"></div>
+              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Get In Touch</span>
+            </div>
+
+            <p class="font-sans font-light text-[15px] leading-[1.8] text-ink-soft mb-10">
+              Questions about your skin, the protocol, or which products are right for you? Brittany and the CFC team respond to every message personally.
+            </p>
+
+            <div class="space-y-5 mb-10">
+              <a
+                href="mailto:brittani@cfcskincare.shop"
+                class="flex items-center gap-4 group"
+              >
+                <div class="w-10 h-10 border border-rule flex items-center justify-center shrink-0 transition-colors group-hover:border-gold">
+                  <svg class="w-4 h-4 text-ink-soft group-hover:text-gold transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+                  </svg>
+                </div>
+                <span class="font-mono text-[11px] tracking-[0.12em] text-ink-soft group-hover:text-gold transition-colors">brittani@cfcskincare.shop</span>
+              </a>
+
+              <a
+                href="https://www.instagram.com/cfcskincare"
+                target="_blank"
+                rel="noopener"
+                class="flex items-center gap-4 group"
+              >
+                <div class="w-10 h-10 border border-rule flex items-center justify-center shrink-0 transition-colors group-hover:border-gold">
+                  <svg class="w-4 h-4 text-ink-soft group-hover:text-gold transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <rect x="2" y="2" width="20" height="20" rx="5"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none"/>
+                  </svg>
+                </div>
+                <span class="font-mono text-[11px] tracking-[0.12em] text-ink-soft group-hover:text-gold transition-colors">@cfcskincare</span>
+              </a>
+
+              <a
+                href="https://www.facebook.com/cfcskincareline"
+                target="_blank"
+                rel="noopener"
+                class="flex items-center gap-4 group"
+              >
+                <div class="w-10 h-10 border border-rule flex items-center justify-center shrink-0 transition-colors group-hover:border-gold">
+                  <svg class="w-4 h-4 text-ink-soft group-hover:text-gold transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                  </svg>
+                </div>
+                <span class="font-mono text-[11px] tracking-[0.12em] text-ink-soft group-hover:text-gold transition-colors">CFC Skincare</span>
+              </a>
+            </div>
+
+            <a
+              href="/#contact"
+              class="link-arrow font-mono text-[10px] tracking-[0.18em] uppercase text-gold"
+            >
+              Request a consultation
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter: Let's Stay in Touch -->
+    <section class="bg-ink py-[100px]">
+      <div class="max-w-[700px] mx-auto px-10 text-center">
+
+        <div class="reveal">
+          <div class="flex items-center justify-center gap-4 mb-7">
+            <div class="h-px w-6" style="background: rgba(255,255,255,0.08);"></div>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Stay Connected</span>
+            <div class="h-px w-6" style="background: rgba(255,255,255,0.08);"></div>
+          </div>
+
+          <h2 class="font-display font-light text-white mb-4 leading-none tracking-[-0.02em]" style="font-size: clamp(36px, 4vw, 56px);">
+            Let's Stay in Touch
+          </h2>
+          <p class="font-sans font-light text-[14px] leading-[1.75] mb-10" style="color: rgba(255,255,255,0.5);">
+            Be the first to know about new collections, exclusive offers, and skincare insights from Brittany, NP-C.
+          </p>
+
+          <form
+            id="newsletter-form"
+            class="flex flex-col sm:flex-row gap-2 max-w-[480px] mx-auto"
+            novalidate
+          >
+            <input
+              type="email"
+              name="email"
+              placeholder="Your email address"
+              required
+              class="flex-1 bg-transparent border font-mono text-[11px] tracking-[0.08em] text-white placeholder-[rgba(255,255,255,0.3)] outline-none transition-colors focus:border-gold px-5 py-4"
+              style="border-color: rgba(255,255,255,0.15);"
+              onfocus="this.style.borderColor='oklch(64% 0.115 72)'"
+              onblur="this.style.borderColor='rgba(255,255,255,0.15)'"
+            />
+            <button
+              type="submit"
+              class="font-mono text-[10px] tracking-[0.18em] uppercase px-8 py-4 bg-gold text-ink transition-colors duration-200 hover:bg-gold-light whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+
+          <p id="newsletter-msg" class="mt-4 font-mono text-[10px] tracking-[0.1em] uppercase hidden" style="color: rgba(255,255,255,0.5);"></p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  // Newsletter form — wire to Klaviyo / Shopify customer API as needed
+  const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+  const msg  = document.getElementById('newsletter-msg');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();
+    if (!email) return;
+
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    btn.textContent = 'Subscribing…';
+    btn.disabled = true;
+
+    try {
+      // TODO: replace with Klaviyo list subscribe endpoint or Shopify customer API
+      const res = await fetch('https://www.cfcskincare.shop/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          form_type: 'customer',
+          'contact[email]': email,
+          'contact[tags]': 'newsletter',
+        }),
+      });
+
+      if (msg) {
+        msg.textContent = 'You\'re in. Welcome to the CFC community.';
+        msg.classList.remove('hidden');
+      }
+      form.reset();
+    } catch {
+      if (msg) {
+        msg.textContent = 'Something went wrong. Please email us directly.';
+        msg.classList.remove('hidden');
+      }
+    } finally {
+      btn.textContent = 'Subscribe';
+      btn.disabled = false;
+    }
+  });
+</script>

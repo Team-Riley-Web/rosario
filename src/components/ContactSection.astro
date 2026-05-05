@@ -4,34 +4,33 @@ import { Image } from 'astro:assets';
 ---
 
 <section class="bg-parchment" id="contact" style="padding: 140px 0;">
-  <div style="max-width: 1440px; margin: 0 auto; padding: 0 40px;">
+  <div class="max-w-[1440px] mx-auto px-10">
     <div class="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-16 lg:gap-24 items-start">
 
       <!-- Left: content -->
       <div class="reveal-left">
         <div class="flex items-center gap-4 mb-7">
-          <div class="h-px bg-gold" style="width: 24px;"></div>
+          <div class="h-px bg-gold w-6"></div>
           <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Get In Touch</span>
         </div>
 
-        <h2 class="font-display font-light text-ink mb-5" style="font-size: clamp(36px, 3.5vw, 52px); line-height: 1.05; letter-spacing: -0.01em;">
+        <h2 class="font-display font-light text-ink mb-5 leading-[1.05] tracking-[-0.01em]" style="font-size: clamp(36px, 3.5vw, 52px);">
           Your skin deserves a personal conversation.
         </h2>
 
-        <p class="font-sans font-light text-[14px] text-ink-soft leading-[1.7] mb-8" style="max-width: 400px;">
+        <p class="font-sans font-light text-[14px] text-ink-soft leading-[1.7] mb-8 max-w-[400px]">
           The CFC founder — a nurse practitioner — is available for consultation. Tell us about your skin and we'll help you find the right protocol.
         </p>
 
         <!-- Founder note -->
         <div
-          class="bg-white grid gap-5 mb-8 items-start"
-          style="padding: 28px; border: 1px solid oklch(88% 0.006 72); grid-template-columns: 64px 1fr;"
+          class="bg-white grid gap-5 mb-8 items-start p-7 border border-rule"
+          style="grid-template-columns: 64px 1fr;"
         >
           <Image
             src={founderImg}
             alt="CFC Founder NP"
-            class="object-cover object-top shrink-0"
-            style="width: 64px; height: 64px;"
+            class="object-cover object-top shrink-0 w-16 h-16"
             widths={[128]}
             sizes="64px"
           />
@@ -44,18 +43,17 @@ import { Image } from 'astro:assets';
         </div>
 
         <!-- Trust stats: 3 columns -->
-        <div class="grid grid-cols-3" style="border: 1px solid oklch(88% 0.006 72);">
+        <div class="grid grid-cols-3 border border-rule">
           {[
             ['24h', 'Response time'],
             ['100%', 'Confidential'],
             ['Free', 'Consultation'],
           ].map(([stat, label], i) => (
             <div
-              class="text-center"
-              style={`padding: 20px; ${i < 2 ? 'border-right: 1px solid oklch(88% 0.006 72);' : ''}`}
+              class={`text-center p-5 ${i < 2 ? 'border-r border-rule' : ''}`}
             >
               <p class="font-display text-[30px] font-light text-ink leading-none mb-2">{stat}</p>
-              <p class="font-mono text-ink-soft uppercase" style="font-size: 9px; letter-spacing: 0.15em;">{label}</p>
+              <p class="font-mono text-ink-soft uppercase text-[9px] tracking-[0.15em]">{label}</p>
             </div>
           ))}
         </div>
@@ -76,8 +74,8 @@ import { Image } from 'astro:assets';
               body: new URLSearchParams(new FormData($el)).toString()
             }).then(() => { submitted = true });
           "
-          class="bg-white"
-          style="border: 1px solid oklch(88% 0.006 72); padding: 56px;"
+          class="bg-white border border-rule"
+          style="padding: 56px;"
         >
           <input type="hidden" name="form-name" value="consultation" />
           <p class="hidden">

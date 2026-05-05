@@ -33,8 +33,7 @@ import cfcLogo from '../assets/images/cfc-logo.png';
     <div class="text-center py-2.5 px-6">
       <a
         href="/shop"
-        class="font-mono text-[10px] tracking-[0.18em] uppercase"
-        style="color: oklch(80% 0.08 78);"
+        class="font-mono text-[10px] tracking-[0.18em] uppercase text-gold-light hover:underline underline-offset-2 transition-all duration-200"
       >
         Subscribe &amp; Save 30% Off &mdash; Shop Now
       </a>
@@ -43,9 +42,8 @@ import cfcLogo from '../assets/images/cfc-logo.png';
 
   <!-- Main nav bar -->
   <nav
-    class="relative flex items-center transition-[height] duration-300 ease-in-out"
+    class="relative flex items-center transition-[height] duration-300 ease-in-out max-w-[1440px] mx-auto px-10"
     :class="scrolled ? 'h-[56px]' : 'h-[72px]'"
-    style="max-width: 1440px; margin: 0 auto; padding: 0 40px;"
   >
 
     <!-- Logo — always visible -->
@@ -84,8 +82,7 @@ import cfcLogo from '../assets/images/cfc-logo.png';
         <li>
           <a
             href={href}
-            class="nav-link font-mono text-[10px] tracking-[0.18em] uppercase text-ink-soft hover:text-ink transition-colors duration-200 relative leading-none"
-            style="padding-bottom: 3px;"
+            class="nav-link font-mono text-[10px] tracking-[0.18em] uppercase text-ink-soft hover:text-ink transition-colors duration-200 relative leading-none pb-[3px]"
           >
             {label}
           </a>
@@ -94,7 +91,7 @@ import cfcLogo from '../assets/images/cfc-logo.png';
     </ul>
 
     <!-- Desktop right side -->
-    <div class="hidden lg:flex items-center ml-auto z-10" style="gap: 20px;">
+    <div class="hidden lg:flex items-center ml-auto z-10 gap-5">
 
       <!-- Icons + divider — only shown once scrolled -->
       <div
@@ -105,8 +102,7 @@ import cfcLogo from '../assets/images/cfc-logo.png';
         x-transition:leave="transition ease-in duration-150"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
-        class="flex items-center"
-        style="gap: 20px;"
+        class="flex items-center gap-5"
       >
         <button
           @click="$store.search.isOpen ? $store.search.close() : $store.search.open()"
@@ -146,9 +142,8 @@ import cfcLogo from '../assets/images/cfc-logo.png';
       <!-- Shop Now — always visible on desktop -->
       <a
         href="/shop"
-        class="inline-flex items-center font-mono text-[10px] tracking-[0.18em] uppercase transition-colors duration-200"
-        :class="scrolled ? 'bg-ink text-white hover:bg-gold-deep' : 'bg-white/10 text-white border border-white/25 hover:bg-white/20'"
-        style="padding: 10px 22px;"
+        class="inline-flex items-center font-mono text-[10px] tracking-[0.18em] uppercase transition-colors duration-200 px-[22px] py-[10px]"
+        :class="scrolled ? 'bg-ink text-white hover:bg-gold-deep' : 'bg-[rgba(255,255,255,0.1)] text-white border border-[rgba(255,255,255,0.25)] hover:bg-gold hover:border-gold hover:text-ink'"
       >
         Shop Now
       </a>
@@ -159,7 +154,7 @@ import cfcLogo from '../assets/images/cfc-logo.png';
       <button
         @click="$store.search.isOpen ? $store.search.close() : $store.search.open()"
         class="transition-colors"
-        :class="scrolled ? 'text-ink-soft hover:text-ink' : 'text-white/70 hover:text-white'"
+        :class="scrolled ? 'text-ink-soft hover:text-ink' : 'text-[rgba(255,255,255,0.7)] hover:text-white'"
         aria-label="Search"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -170,7 +165,7 @@ import cfcLogo from '../assets/images/cfc-logo.png';
       <button
         @click="$store.cart.open()"
         class="relative transition-colors"
-        :class="scrolled ? 'text-ink-soft hover:text-ink' : 'text-white/70 hover:text-white'"
+        :class="scrolled ? 'text-ink-soft hover:text-ink' : 'text-[rgba(255,255,255,0.7)] hover:text-white'"
         aria-label="Cart"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -187,7 +182,7 @@ import cfcLogo from '../assets/images/cfc-logo.png';
       <button
         @click="open = !open"
         class="p-1.5 transition-colors"
-        :class="scrolled ? 'text-ink-soft hover:text-ink' : 'text-white/70 hover:text-white'"
+        :class="scrolled ? 'text-ink-soft hover:text-ink' : 'text-[rgba(255,255,255,0.7)] hover:text-white'"
         aria-label="Menu"
       >
         <span x-show="!open" class="block space-y-1.5">

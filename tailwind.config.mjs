@@ -5,21 +5,21 @@ export default {
     extend: {
       colors: {
         ink: {
-          DEFAULT: 'oklch(13% 0.010 255)',
-          mid: 'oklch(30% 0.008 255)',
-          soft: 'oklch(50% 0.006 255)',
+          DEFAULT: 'oklch(13% 0.010 255 / <alpha-value>)',
+          mid: 'oklch(30% 0.008 255 / <alpha-value>)',
+          soft: 'oklch(50% 0.006 255 / <alpha-value>)',
         },
         parchment: {
-          DEFAULT: 'oklch(97.5% 0.008 75)',
-          2: 'oklch(95% 0.012 72)',
+          DEFAULT: 'oklch(97.5% 0.008 75 / <alpha-value>)',
+          2: 'oklch(95% 0.012 72 / <alpha-value>)',
         },
         gold: {
-          DEFAULT: 'oklch(64% 0.115 72)',
-          light: 'oklch(80% 0.08 78)',
-          deep: 'oklch(52% 0.10 68)',
+          DEFAULT: 'oklch(64% 0.115 72 / <alpha-value>)',
+          light: 'oklch(80% 0.08 78 / <alpha-value>)',
+          deep: 'oklch(52% 0.10 68 / <alpha-value>)',
         },
-        white: 'oklch(99.5% 0.003 75)',
-        rule: 'oklch(88% 0.006 72)',
+        white: 'oklch(99.5% 0.003 75 / <alpha-value>)',
+        rule: 'oklch(88% 0.006 72 / <alpha-value>)',
       },
       fontFamily: {
         display: ['Cormorant Garamond', 'Georgia', 'serif'],

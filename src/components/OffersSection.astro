@@ -53,30 +53,26 @@ const offers = [
 ---
 
 <section class="bg-parchment" id="offers" style="padding: 140px 0;">
-  <div style="max-width: 1440px; margin: 0 auto; padding: 0 40px;">
+  <div class="max-w-[1440px] mx-auto px-10">
 
     <!-- Header -->
-    <div class="reveal text-center mx-auto mb-16" style="max-width: 560px;">
+    <div class="reveal text-center mx-auto mb-16 max-w-[560px]">
       <div class="flex items-center justify-center gap-4 mb-7">
-        <div class="h-px bg-gold" style="width: 24px;"></div>
+        <div class="h-px bg-gold w-6"></div>
         <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Choose Your System</span>
       </div>
-      <h2 class="font-display font-light text-ink mb-4" style="font-size: clamp(38px, 4vw, 58px); line-height: 1.0; letter-spacing: -0.02em;">
+      <h2 class="font-display font-light text-ink mb-4 leading-none tracking-[-0.02em]" style="font-size: clamp(38px, 4vw, 58px);">
         Start where<br/>you are.
       </h2>
       <p class="font-sans font-light text-[14px] text-ink-soft">Save 30% when you subscribe — and never run out of what your skin needs.</p>
     </div>
 
     <!-- Cards grid: 2px gap -->
-    <div class="grid grid-cols-1 lg:grid-cols-3" style="gap: 2px;">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-px">
       {offers.map(({ name, tagline, price, priceRange, description, includes, cta, href, featured }, i) => (
         <div
-          class="reveal relative flex flex-col"
-          style={`
-            ${featured ? 'background: oklch(13% 0.010 255);' : 'background: oklch(99.5% 0.003 75);'}
-            padding: 52px 48px;
-            transition-delay: ${i * 100}ms;
-          `}
+          class={`reveal relative flex flex-col ${featured ? 'bg-ink' : 'bg-white'}`}
+          style={`padding: 52px 48px; transition-delay: ${i * 100}ms;`}
         >
           {featured && (
             <div class="absolute -top-[18px] left-1/2 -translate-x-1/2">
@@ -87,42 +83,56 @@ const offers = [
           )}
 
           <!-- Tagline -->
-          <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3" style={featured ? 'color: oklch(64% 0.115 72);' : 'color: oklch(64% 0.115 72);'}>
+          <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 text-gold">
             {tagline}
           </p>
 
           <!-- Name -->
-          <h3 class="font-display text-[28px] font-normal mb-5" style={featured ? 'color: oklch(99.5% 0.003 75);' : 'color: oklch(13% 0.010 255);'}>
+          <h3 class={`font-display text-[28px] font-normal mb-5 ${featured ? 'text-white' : 'text-ink'}`}>
             {name}
           </h3>
 
           <!-- Divider -->
-          <div class="mb-6" style={featured ? 'border-top: 1px solid rgba(255,255,255,0.08);' : 'border-top: 1px solid oklch(88% 0.006 72);'}></div>
+          <div
+            class={`mb-6 border-t ${featured ? '' : 'border-rule'}`}
+            style={featured ? 'border-color: rgba(255,255,255,0.08);' : undefined}
+          ></div>
 
           <!-- Price -->
           <div class="mb-5">
             <span
-              class="font-display font-light"
-              style={`font-size: 52px; line-height: 1; ${featured ? 'color: oklch(99.5% 0.003 75);' : 'color: oklch(13% 0.010 255);'}`}
+              class={`font-display font-light text-[52px] leading-none ${featured ? 'text-white' : 'text-ink'}`}
             >{price}</span>
-            <p class="font-mono text-[10px] tracking-[0.1em] mt-2" style={featured ? 'color: rgba(255,255,255,0.4);' : 'color: oklch(50% 0.006 255);'}>
+            <p
+              class={`font-mono text-[10px] tracking-[0.1em] mt-2 ${!featured ? 'text-ink-soft' : ''}`}
+              style={featured ? 'color: rgba(255,255,255,0.45);' : undefined}
+            >
               {priceRange}
             </p>
           </div>
 
           <!-- Divider -->
-          <div class="mb-6" style={featured ? 'border-top: 1px solid rgba(255,255,255,0.08);' : 'border-top: 1px solid oklch(88% 0.006 72);'}></div>
+          <div
+            class={`mb-6 border-t ${featured ? '' : 'border-rule'}`}
+            style={featured ? 'border-color: rgba(255,255,255,0.08);' : undefined}
+          ></div>
 
           <!-- Description -->
-          <p class="font-sans font-light text-[13px] leading-relaxed mb-7" style={featured ? 'color: rgba(255,255,255,0.6);' : 'color: oklch(50% 0.006 255);'}>
+          <p
+            class={`font-sans font-light text-[13px] leading-relaxed mb-7 ${!featured ? 'text-ink-soft' : ''}`}
+            style={featured ? 'color: rgba(255,255,255,0.65);' : undefined}
+          >
             {description}
           </p>
 
           <!-- Includes -->
           <ul class="space-y-2.5 mb-8 flex-1">
             {includes.map(item => (
-              <li class="flex items-start gap-3 font-sans font-light text-[13px]" style={featured ? 'color: rgba(255,255,255,0.65);' : 'color: oklch(50% 0.006 255);'}>
-                <span class="h-px bg-gold shrink-0 mt-2" style="width: 14px;"></span>
+              <li
+                class={`flex items-start gap-3 font-sans font-light text-[13px] ${!featured ? 'text-ink-soft' : ''}`}
+                style={featured ? 'color: rgba(255,255,255,0.7);' : undefined}
+              >
+                <span class="h-px bg-gold shrink-0 mt-2 w-3.5"></span>
                 {item}
               </li>
             ))}
@@ -131,10 +141,7 @@ const offers = [
           <!-- CTA -->
           <a
             href={href}
-            class="block text-center font-mono text-[10px] tracking-[0.18em] uppercase py-4 transition-all duration-200"
-            style={featured
-              ? 'background: oklch(64% 0.115 72); color: oklch(13% 0.010 255);'
-              : 'border: 1px solid oklch(13% 0.010 255); color: oklch(13% 0.010 255);'}
+            class={`block text-center font-mono text-[10px] tracking-[0.18em] uppercase py-4 transition-all duration-200 ${featured ? 'bg-gold text-ink' : 'border border-ink text-ink'}`}
             onmouseover={featured
               ? "this.style.background='oklch(80% 0.08 78)'"
               : "this.style.background='oklch(13% 0.010 255)'; this.style.color='oklch(99.5% 0.003 75)'"}

@@ -4,8 +4,8 @@ import founderImg from '../assets/images/brit.jpg';
 import productsImg from '../assets/images/group.jpg';
 ---
 
-<section class="bg-white" id="about" style="padding: 140px 0;">
-  <div style="max-width: 1440px; margin: 0 auto; padding: 0 40px;">
+<section class="bg-white py-[140px]" id="about">
+  <div class="max-w-[1440px] mx-auto px-10">
 
     <!-- Top grid: 6/6 -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-stretch mb-0">
@@ -13,11 +13,11 @@ import productsImg from '../assets/images/group.jpg';
       <!-- Left: copy + credentials -->
       <div class="reveal-left">
         <div class="flex items-center gap-4 mb-7">
-          <div class="h-px bg-gold" style="width: 24px;"></div>
+          <div class="h-px bg-gold w-6"></div>
           <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">About CFC</span>
         </div>
 
-        <h2 class="font-display font-light text-ink mb-6" style="font-size: clamp(38px, 4vw, 58px); line-height: 1.05; letter-spacing: -0.01em;">
+        <h2 class="font-display font-light text-ink mb-6 leading-[1.05] tracking-[-0.01em]" style="font-size: clamp(38px, 4vw, 58px);">
           Built by someone who actually understands your skin.
         </h2>
 
@@ -29,17 +29,17 @@ import productsImg from '../assets/images/group.jpg';
         </p>
 
         <!-- Credential grid -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: oklch(88% 0.006 72); border: 1px solid oklch(88% 0.006 72);">
+        <div class="grid grid-cols-2 gap-px bg-rule border border-rule">
           {[
             ['NP Founded', 'Clinical knowledge, not marketing'],
             ['Chemist Formulated', 'Medical-grade efficacy'],
             ['Purity-Tested', 'Every batch, every time'],
             ['Louisiana-Made', 'Full quality control'],
           ].map(([title, desc]) => (
-            <div class="bg-parchment" style="padding: 28px;">
-              <div class="h-px bg-gold mb-4" style="width: 20px;"></div>
+            <div class="bg-parchment p-7">
+              <div class="h-px bg-gold mb-4 w-5"></div>
               <p class="font-display text-[19px] font-normal text-ink leading-tight mb-2">{title}</p>
-              <p class="font-mono text-ink-soft uppercase" style="font-size: 9px; letter-spacing: 0.16em; line-height: 1.6;">{desc}</p>
+              <p class="font-mono text-ink-soft uppercase text-[9px] tracking-[0.16em] leading-[1.6]">{desc}</p>
             </div>
           ))}
         </div>
@@ -47,7 +47,7 @@ import productsImg from '../assets/images/group.jpg';
 
       <!-- Right: founder image with inset quote card -->
       <div class="reveal-right relative">
-        <div class="relative overflow-hidden h-full" style="aspect-ratio: 3/4;">
+        <div class="relative overflow-hidden h-full aspect-[3/4]">
           <Image
             src={founderImg}
             alt="CFC Founder — Brittany, NP"
@@ -57,32 +57,31 @@ import productsImg from '../assets/images/group.jpg';
           />
           <!-- Inset quote card -->
           <div
-            class="absolute bottom-6 right-6 bg-ink"
-            style="padding: 16px 20px; max-width: 240px;"
+            class="absolute bottom-6 right-6 bg-ink max-w-[240px] px-5 py-4"
           >
-            <p class="font-display italic font-light text-white mb-3" style="font-size: 15px; line-height: 1.4;">
+            <p class="font-display italic font-light text-white mb-3 text-[15px] leading-[1.4]">
               "I built the system I wished existed when I was the patient."
             </p>
-            <p class="font-mono text-gold uppercase" style="font-size: 9px; letter-spacing: 0.2em;">Brittany, NP-C · Founder</p>
+            <p class="font-mono text-gold uppercase text-[9px] tracking-[0.2em]">Brittany, NP-C · Founder</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Full-width quote band -->
-    <div class="reveal text-center" style="background: oklch(97.5% 0.008 75); padding: 80px 40px; margin: 80px -40px;">
-      <div class="text-gold mb-5" style="font-size: 18px; letter-spacing: 6px;">★★★★★</div>
-      <p class="font-display italic font-light text-ink mx-auto mb-5" style="font-size: clamp(24px, 2.8vw, 40px); line-height: 1.2; max-width: 800px;">
+    <div class="reveal text-center bg-parchment py-20 px-10" style="margin: 80px -40px;">
+      <div class="text-gold mb-5 text-lg tracking-[6px]">★★★★★</div>
+      <p class="font-display italic font-light text-ink mx-auto mb-5 leading-[1.2] max-w-[800px]" style="font-size: clamp(24px, 2.8vw, 40px);">
         "I stopped wearing foundation to work. I didn't even notice when it stopped feeling necessary."
       </p>
       <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-ink-soft">— CFC Customer</p>
     </div>
 
     <!-- Bottom grid: 5/7 -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center" style="padding-top: 80px;">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center pt-20">
 
       <!-- Left: products image -->
-      <div class="reveal-left overflow-hidden group" style="aspect-ratio: 4/5;">
+      <div class="reveal-left overflow-hidden group aspect-[4/5]">
         <Image
           src={productsImg}
           alt="CFC Skincare product collection"
@@ -95,22 +94,22 @@ import productsImg from '../assets/images/group.jpg';
       <!-- Right: differentiators -->
       <div class="reveal-right">
         <div class="flex items-center gap-4 mb-7">
-          <div class="h-px bg-gold" style="width: 24px;"></div>
+          <div class="h-px bg-gold w-6"></div>
           <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">The Difference</span>
         </div>
 
-        <h3 class="font-display font-light text-ink mb-8" style="font-size: clamp(30px, 3vw, 42px); line-height: 1.05; letter-spacing: -0.01em;">
+        <h3 class="font-display font-light text-ink mb-8 leading-[1.05] tracking-[-0.01em]" style="font-size: clamp(30px, 3vw, 42px);">
           The only medical-grade, plant-based system created by a nurse practitioner.
         </h3>
 
-        <div style="border-top: 1px solid oklch(88% 0.006 72);">
+        <div class="border-t border-rule">
           {[
             ['vs. Luxury brands', 'Clinical results at a fraction of the price, with transparent ingredients and direct access to the NP who created them.'],
             ['vs. Clinical brands', 'Plant-based, locally made, and accessible without a dermatologist referral.'],
             ['vs. Clean beauty', 'Formulated by a medical professional for efficacy, not just ingredient safety.'],
           ].map(([label, desc]) => (
-            <div class="flex items-start gap-4 font-sans font-light text-[14px] text-ink-soft leading-relaxed" style="padding: 24px 0; border-bottom: 1px solid oklch(88% 0.006 72);">
-              <div class="shrink-0 flex items-center justify-center" style="width: 18px; height: 18px; border: 1px solid oklch(64% 0.115 72); border-radius: 50%; margin-top: 1px;">
+            <div class="flex items-start gap-4 font-sans font-light text-[14px] text-ink-soft leading-relaxed border-b border-rule py-6">
+              <div class="shrink-0 flex items-center justify-center mt-[1px] w-[18px] h-[18px] border border-gold rounded-full">
                 <svg class="text-gold" width="10" height="8" viewBox="0 0 10 8" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M1 4l2.5 2.5L9 1"/>
                 </svg>

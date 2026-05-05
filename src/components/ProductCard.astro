@@ -24,8 +24,7 @@ const step = product.tags.find(t => ['cleanse','treat','protect'].includes(t.toL
     href={`https://www.cfcskincare.shop/products/${product.handle}`}
     target="_blank"
     rel="noopener"
-    class="block relative overflow-hidden bg-parchment"
-    style="aspect-ratio: 3/4;"
+    class="block relative overflow-hidden bg-parchment aspect-[3/4]"
   >
     {image ? (
       <img
@@ -64,7 +63,7 @@ const step = product.tags.find(t => ['cleanse','treat','protect'].includes(t.toL
       </h3>
     </a>
     <p class="font-sans font-light text-[12px] text-ink-soft leading-relaxed line-clamp-2 mb-4 flex-1">
-      {product.description || ' '}
+      {product.description || ' '}
     </p>
     <div class="flex items-center justify-between mt-auto">
       <span class="font-display text-[20px] font-normal text-ink">{price}</span>

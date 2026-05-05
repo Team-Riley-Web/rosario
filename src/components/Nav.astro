@@ -1,6 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import cfcLogo from '../assets/images/cfc-logo.png';
+
+export interface Props {
+  position?: 'fixed' | 'sticky';
+}
+const { position = 'fixed' } = Astro.props;
 ---
 
 <div
@@ -21,7 +26,7 @@ import cfcLogo from '../assets/images/cfc-logo.png';
       update();
     }
   "
-  class="sticky lg:fixed top-0 inset-x-0 z-50"
+  class={`top-0 inset-x-0 z-50 ${position === 'sticky' ? 'sticky' : 'sticky lg:fixed'}`}
   :class="scrolled ? 'scrolled' : ''"
 >
 

@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
+import FoilStamp from '../../components/motifs/FoilStamp.astro';
 import { getAllProducts, getProductByHandle, formatPrice, getCheckoutUrl } from '../../lib/shopify';
 import type { ShopifyProductDetail } from '../../lib/shopify';
 
@@ -39,35 +40,29 @@ const variantsJson = JSON.stringify(variants.map(v => ({ id: v.id, title: v.titl
   description={product.description?.slice(0, 155) || 'Medical-grade, plant-based skincare by CFC.'}
   image={images[0]?.url}
 >
-  <Nav />
+  <Nav position="sticky" />
   <main class="bg-white">
 
-    <!-- Breadcrumb -->
-    <div class="fixed top-0 inset-x-0 z-40 pointer-events-none">
-      <!-- spacer only — Nav handles the bar -->
-    </div>
-
-    <div class="pt-[130px]">
-      <div class="border-b border-rule">
-        <div class="max-w-[1280px] mx-auto px-10 py-3.5 flex items-center gap-2">
-          <a
-            href="/shop"
-            class="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.18em] uppercase text-ink-soft hover:text-gold transition-colors duration-200"
-          >
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-            </svg>
-            All Products
-          </a>
-          <span class="text-rule font-mono text-[9px]">/</span>
-          <span class="font-mono text-[9px] tracking-[0.12em] uppercase text-ink-soft truncate max-w-[200px]">{product.title}</span>
-        </div>
+    <!-- Breadcrumb bar -->
+    <div class="bg-gradient-to-r from-ink to-black">
+      <div class="max-w-[1440px] mx-auto px-10 py-3 flex items-center gap-2.5">
+        <a
+          href="/shop"
+          class="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.18em] uppercase text-gold-light hover:text-gold transition-colors duration-200"
+        >
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+          All Products
+        </a>
+        <span class="font-mono text-[9px] text-white/20">/</span>
+        <span class="font-mono text-[9px] tracking-[0.12em] uppercase text-white truncate max-w-[240px]">{product.title}</span>
       </div>
     </div>
 
     <!-- Product section -->
     <section class="py-16 lg:py-24">
-      <div class="max-w-[1280px] mx-auto px-10">
+      <div class="max-w-5xl mx-auto px-10">
         <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 xl:gap-20 items-start">
 
           <!-- Left: image gallery -->
@@ -239,13 +234,40 @@ const variantsJson = JSON.stringify(variants.map(v => ({ id: v.id, title: v.titl
 
     <!-- Full description -->
     {product.descriptionHtml && (
-      <section class="bg-parchment border-t border-rule py-20">
-        <div class="max-w-[780px] mx-auto px-10">
-          <div class="flex items-center gap-4 mb-10">
-            <div class="h-px bg-gold w-6"></div>
-            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Product Details</span>
+      <section class="pb-20">
+        <div class="max-w-5xl mx-auto px-10">
+          <div class="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-10 xl:gap-20">
+
+            <!-- Left: label + stamps -->
+            <div class="lg:pt-6 flex flex-wrap items-center gap-4 lg:flex-col lg:items-start lg:gap-5">
+              <div class="flex items-center gap-4">
+                <div class="h-px bg-gold w-6 shrink-0"></div>
+                <span class="font-mono text-[10px] font-semibold tracking-[0.2em] uppercase text-ink whitespace-nowrap">Product Details</span>
+              </div>
+
+              <div class="hidden lg:flex flex-col gap-2.5 w-full">
+                <FoilStamp
+                  title={['Formulated', 'By NP']}
+                  sub="Medical Grade"
+                  class="w-full"
+                />
+                <FoilStamp
+                  title={['100% Plant', 'Verified']}
+                  sub="Ingredients"
+                  class="w-full"
+                />
+                <FoilStamp
+                  title={['Purity', 'Tested']}
+                  sub="Every Batch"
+                  class="w-full"
+                />
+              </div>
+            </div>
+
+            <!-- Right: content -->
+            <div class="product-description" set:html={product.descriptionHtml} />
+
           </div>
-          <div class="product-description" set:html={product.descriptionHtml} />
         </div>
       </section>
     )}

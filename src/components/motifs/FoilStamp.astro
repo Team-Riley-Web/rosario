@@ -1,0 +1,60 @@
+---
+interface Props {
+  crest?: string;
+  title: string | string[];
+  sub?: string | string[];
+  variant?: 'light' | 'dark';
+  shape?: 'sharp' | 'round';
+  class?: string;
+}
+
+const {
+  crest,
+  title,
+  sub,
+  variant = 'light',
+  shape = 'sharp',
+  class: className = '',
+} = Astro.props;
+
+const titleLines = Array.isArray(title) ? title : [title];
+const subLines = sub ? (Array.isArray(sub) ? sub : [sub]) : [];
+const isDark = variant === 'dark';
+---
+
+<div
+  class:list={[
+    'inline-flex flex-col items-center gap-2 px-[22px] py-[18px]',
+    'font-mono text-[9px] tracking-[0.22em] uppercase leading-snug text-center',
+    'border',
+    isDark
+      ? 'bg-ink text-gold-light border-gold-light'
+      : 'bg-white text-gold-deep border-gold',
+    shape === 'round' ? 'rounded-full px-6 py-6' : '',
+    className,
+  ]}
+>
+  {crest && (
+    <span
+      class:list={[
+        'font-display italic font-normal text-2xl leading-none normal-case tracking-normal',
+        isDark ? 'text-gold-light' : 'text-gold',
+      ]}
+    >{crest}</span>
+  )}
+
+  {crest && <span class="w-8 h-px bg-current opacity-50" />}
+
+  {titleLines.map((line) => (
+    <span class="font-medium">{line}</span>
+  ))}
+
+  {subLines.length > 0 && (
+    <>
+      {!crest && <span class="w-8 h-px bg-current opacity-50" />}
+      {subLines.map((line) => (
+        <span class="text-[8px] opacity-70">{line}</span>
+      ))}
+    </>
+  )}
+</div>

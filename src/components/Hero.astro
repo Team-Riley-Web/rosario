@@ -80,8 +80,8 @@ import videoSrc from '../assets/videos/stock-video.mp4';
         </a>
       </div>
 
-      <!-- Step indicators -->
-      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 28px; display: flex; gap: 0;">
+      <!-- Step indicators — desktop only (mobile shown below TrustBar) -->
+      <div class="hidden lg:flex" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 28px; gap: 0;">
         {['Cleanse', 'Treat', 'Protect'].map((s, i) => (
           <div
             style={`flex: 1; padding: ${i === 0 ? '0 20px 0 0' : i === 2 ? '0 0 0 20px' : '0 20px'}; ${i < 2 ? 'border-right: 1px solid rgba(255,255,255,0.08);' : ''}`}

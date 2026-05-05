@@ -10,39 +10,41 @@ const videoUrl = 'https://www.cfcskincare.shop/cdn/shop/videos/c/vp/28aa11f052cb
 
       <!-- Left: copy -->
       <div class="reveal-left">
-        <div class="flex items-center gap-4 mb-7">
-          <div class="h-px w-6 bg-[rgba(255,255,255,0.12)]"></div>
-          <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">See It In Action</span>
+        <div class="z-10">
+          <div class="flex items-center gap-4 mb-7">
+            <div class="h-px w-6 bg-[rgba(255,255,255,0.12)]"></div>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">See It In Action</span>
+          </div>
+
+          <h2
+            class="font-display font-light text-white mb-6 leading-none tracking-[-0.02em]"
+            style="font-size: clamp(42px, 4.5vw, 68px);"
+          >
+            Results you can<br/>
+            <em class="text-gold-light" style="font-style: italic;">photograph.</em>
+          </h2>
+
+          <p class="font-sans font-light text-[14px] leading-[1.75] mb-10 max-w-[380px]" style="color: rgba(255,255,255,0.55);">
+            Three steps. Five minutes. A protocol built around your skin — not a shelf full of products that never quite work together.
+          </p>
+
+          <a
+            href="/shop"
+            class="inline-flex items-center font-mono text-[10px] tracking-[0.2em] uppercase transition-colors duration-200 text-ink"
+            style="background: oklch(64% 0.115 72); padding: 14px 32px;"
+            onmouseover="this.style.background='oklch(80% 0.08 78)'"
+            onmouseout="this.style.background='oklch(64% 0.115 72)'"
+          >
+            Shop the System
+          </a>
         </div>
 
-        <h2
-          class="font-display font-light text-white mb-6 leading-none tracking-[-0.02em]"
-          style="font-size: clamp(42px, 4.5vw, 68px);"
-        >
-          Results you can<br/>
-          <em class="text-gold-light" style="font-style: italic;">photograph.</em>
-        </h2>
-
-        <p class="font-sans font-light text-[14px] leading-[1.75] mb-10 max-w-[380px]" style="color: rgba(255,255,255,0.55);">
-          Three steps. Five minutes. A protocol built around your skin — not a shelf full of products that never quite work together.
-        </p>
-
-        <a
-          href="/shop"
-          class="inline-flex items-center font-mono text-[10px] tracking-[0.2em] uppercase transition-colors duration-200 text-ink"
-          style="background: oklch(64% 0.115 72); padding: 14px 32px;"
-          onmouseover="this.style.background='oklch(80% 0.08 78)'"
-          onmouseout="this.style.background='oklch(64% 0.115 72)'"
-        >
-          Shop the System
-        </a>
-
         <!-- Ghost moon -->
-        <div class="hidden lg:flex pointer-events-none select-none absolute left-0 top-0 bottom-0 items-center">
+        <div class="hidden lg:flex pointer-events-none select-none absolute z-0 -left-30 top-0 bottom-0 items-center">
           <Image
             src={moonImg}
-            alt=""
-            class="w-96 h-auto opacity-5"
+            alt="moon graphic"
+            class="h-[700px] w-auto opacity-5 z-0"
           />
         </div>
 

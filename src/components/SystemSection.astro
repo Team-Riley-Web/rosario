@@ -52,8 +52,7 @@ const steps = [
 
       <!-- Image (alternates sides) -->
       <div
-        class="relative overflow-hidden group h-[420px] lg:h-auto"
-        style={imageRight ? 'order: 2;' : 'order: 1;'}
+        class={`relative overflow-hidden group h-[300px] lg:h-auto ${imageRight ? 'order-2' : 'order-2 lg:order-1'}`}
       >
         <Image
           src={image}
@@ -66,8 +65,7 @@ const steps = [
 
       <!-- Content -->
       <div
-        class="relative overflow-hidden flex flex-col justify-center"
-        style={`padding: 72px 80px; ${imageRight ? 'order: 1;' : 'order: 2;'}`}
+        class={`relative overflow-hidden flex flex-col justify-center px-8 py-12 lg:px-20 lg:py-[72px] ${imageRight ? 'order-1' : 'order-1 lg:order-2'}`}
       >
         <!-- Ghost number -->
         <span

@@ -1,0 +1,14 @@
+<!-- Mobile-only: Cleanse / Treat / Protect strip shown below TrustBar -->
+<div class="bg-ink lg:hidden" style="border-top: 1px solid rgba(255,255,255,0.06);">
+  <div class="flex">
+    {(['Cleanse', 'Treat', 'Protect'] as const).map((s, i) => (
+      <div
+        class="flex-1 py-6 text-center"
+        style={i < 2 ? 'border-right: 1px solid rgba(255,255,255,0.08);' : ''}
+      >
+        <div class="font-mono text-gold mb-1.5 text-[9px] tracking-[0.2em]">0{i + 1}</div>
+        <div class="font-display text-[17px] font-normal" style="color: rgba(255,255,255,0.85);">{s}</div>
+      </div>
+    ))}
+  </div>
+</div>

@@ -1,8 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import alainaImg from '../assets/images/bottle.jpg';
-import kidImg from '../assets/images/kids2.jpg';
-
 const testimonials = [
   {
     quote: "I haven't worn foundation to work in three months. I didn't even notice when it stopped feeling necessary. That's when I knew something had actually changed.",
@@ -30,7 +26,7 @@ const testimonials = [
 <section class="bg-ink py-[140px]" id="testimonials">
   <div class="max-w-[1440px] mx-auto px-10">
 
-    <!-- Header: 2-column -->
+    <!-- Header -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16 items-end">
       <div class="reveal-left">
         <div class="flex items-center gap-4 mb-7">
@@ -38,7 +34,7 @@ const testimonials = [
           <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Real Women. Real Skin.</span>
         </div>
         <h2 class="font-display font-light text-white leading-none tracking-[-0.02em]" style="font-size: clamp(42px, 4.5vw, 68px);">
-          The results speak for themselves.
+          The results speak<br/>for themselves.
         </h2>
       </div>
       <div class="reveal-right">
@@ -48,44 +44,85 @@ const testimonials = [
       </div>
     </div>
 
-    <!-- Grid: 3 cols, 6 cells -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-px">
-
-      {[
-        { testimonial: testimonials[0], delay: 0 },
-        { isImage: true, src: alainaImg, alt: 'Woman applying CFC skincare', delay: 80 },
-        { testimonial: testimonials[1], delay: 160 },
-        { isImage: true, src: kidImg, alt: 'Young woman with radiant skin', delay: 240 },
-        { testimonial: testimonials[2], delay: 320 },
-        { testimonial: testimonials[3], delay: 400 },
-      ].map((cell) => cell.isImage ? (
-        <div class="reveal aspect-[1/1.08] overflow-hidden" style={`transition-delay: ${cell.delay}ms;`}>
-          <Image
-            src={cell.src}
-            alt={cell.alt}
-            class="w-full h-full object-cover object-top"
-            widths={[400, 700]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-        </div>
-      ) : (
+    <!-- Carousel -->
+    <div
+      x-data="{ active: 0 }"
+      class="reveal"
+    >
+      <!-- Track -->
+      <div class="overflow-hidden">
         <div
-          class="reveal aspect-[1/1.08] flex flex-col px-10 py-12 overflow-hidden"
-          style={`background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); transition-delay: ${cell.delay}ms;`}
-          onmouseover="this.style.background='rgba(255,255,255,0.055)'"
-          onmouseout="this.style.background='rgba(255,255,255,0.03)'"
+          class="flex transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          :style="`transform: translateX(-${active * 100}%)`"
         >
-          <div class="text-gold text-[12px] tracking-[4px] mb-4">★★★★★</div>
-          <p class="font-display italic font-light flex-1 mb-6 text-[19px] leading-[1.5]" style="color: rgba(255,255,255,0.8);">
-            "{cell.testimonial.quote}"
-          </p>
-          <div class="pt-5" style="border-top: 1px solid rgba(255,255,255,0.08);">
-            <p class="font-display text-[16px] font-normal text-white">{cell.testimonial.name}</p>
-            <p class="font-mono text-[9px] tracking-[0.15em] uppercase mt-1" style="color: rgba(255,255,255,0.35);">{cell.testimonial.detail}</p>
-          </div>
+          {testimonials.map((t) => (
+            <div class="w-full shrink-0 px-1">
+              <div
+                class="flex flex-col px-8 sm:px-12 py-12 h-full"
+                style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);"
+              >
+                <div class="text-gold text-[12px] tracking-[4px] mb-6">★★★★★</div>
+                <p
+                  class="font-display italic font-light flex-1 mb-8 leading-[1.5]"
+                  style={`font-size: clamp(18px, 2vw, 24px); color: rgba(255,255,255,0.85);`}
+                >
+                  "{t.quote}"
+                </p>
+                <div class="pt-5" style="border-top: 1px solid rgba(255,255,255,0.08);">
+                  <p class="font-display text-[17px] font-normal text-white">{t.name}</p>
+                  <p class="font-mono text-[9px] tracking-[0.15em] uppercase mt-1" style="color: rgba(255,255,255,0.35);">{t.detail}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
 
+      <!-- Controls -->
+      <div class="flex items-center justify-between mt-8">
+
+        <!-- Prev -->
+        <button
+          @click="active = Math.max(0, active - 1)"
+          :disabled="active === 0"
+          :class="active === 0 ? 'opacity-25 cursor-not-allowed' : 'hover:border-gold'"
+          class="w-10 h-10 flex items-center justify-center border transition-all duration-200"
+          style="border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7);"
+          aria-label="Previous"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <!-- Dots -->
+        <div class="flex items-center gap-2">
+          {testimonials.map((_, i) => (
+            <button
+              @click={`active = ${i}`}
+              :class={`active === ${i} ? 'bg-gold w-5' : 'bg-[rgba(255,255,255,0.2)] w-1.5 hover:bg-[rgba(255,255,255,0.4)]'`}
+              class="h-1.5 rounded-full transition-all duration-300"
+              aria-label={`Go to testimonial ${i + 1}`}
+            ></button>
+          ))}
+        </div>
+
+        <!-- Next -->
+        <button
+          @click={`active = Math.min(${testimonials.length - 1}, active + 1)`}
+          :disabled={`active === ${testimonials.length - 1}`}
+          :class={`active === ${testimonials.length - 1} ? 'opacity-25 cursor-not-allowed' : 'hover:border-gold'`}
+          class="w-10 h-10 flex items-center justify-center border transition-all duration-200"
+          style="border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7);"
+          aria-label="Next"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+      </div>
     </div>
+
   </div>
 </section>

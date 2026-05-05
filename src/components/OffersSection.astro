@@ -67,7 +67,7 @@ const offers = [
     </div>
 
     <!-- Cards grid: 2px gap -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-px">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-px">
       {offers.map(({ name, tagline, price, priceRange, description, includes, cta, href, featured }, i) => (
         <div
           class={`reveal relative flex flex-col ${featured ? 'bg-ink' : 'bg-white'}`}

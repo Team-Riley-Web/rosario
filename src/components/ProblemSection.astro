@@ -54,11 +54,11 @@ const problems = [
       <div class="border-t border-rule">
         {problems.map(({ number, title, body }, i) => (
           <div
-            class="reveal group border-b border-rule"
-            style={`display: grid; grid-template-columns: 64px 1fr; gap: 24px; padding: 40px 0; transition-delay: ${i * 80}ms;`}
+            class="reveal group border-b border-rule flex flex-col items-center text-center lg:flex-row lg:items-start lg:text-left"
+            style={`gap: 20px; padding: 40px 0; transition-delay: ${i * 80}ms;`}
           >
             <span
-              class="font-display font-light leading-none select-none text-rule transition-colors duration-300 group-hover:text-gold text-[60px] mt-[2px]"
+              class="font-display font-light leading-none select-none text-rule transition-colors duration-300 group-hover:text-gold text-[60px] shrink-0 lg:w-16 lg:mt-[2px]"
             >
               {number}
             </span>

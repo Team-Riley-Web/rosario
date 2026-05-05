@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import moonImg from '../assets/images/moon.png';
+import leafImg from '../assets/images/leaf.jpg';
 
 const problems = [
   {
@@ -37,26 +37,17 @@ const problems = [
           <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">The Problem</span>
         </div>
 
-        <h2 class="font-display font-light text-ink mb-6 leading-[1.05] tracking-[-0.01em]" style="font-size: clamp(36px, 3.5vw, 52px);">
+        <h2 class="bg-white/50 font-display font-light text-ink mb-6 leading-[1.05] tracking-[-0.01em]" style="font-size: clamp(36px, 3.5vw, 52px);">
           You haven't found the right skincare.
         </h2>
 
-        <p class="font-display text-[22px] italic font-light text-ink-soft leading-relaxed mb-6">
-          "The industry hasn't built it — until now."
+        <p class="bg-white/50 font-display text-[22px] italic font-light text-ink-soft leading-relaxed mb-6">
+          The industry hasn't built it — until now.
         </p>
 
-        <p class="font-sans font-light text-[14px] text-ink-soft leading-[1.7]">
+        <p class="bg-white/50 font-sans font-light text-[14px] text-ink-soft leading-[1.7]">
           Women in their 30s, 40s, 50s, and beyond are being failed at every turn. Here is why nothing has worked.
         </p>
-
-        <!-- Ghost moon -->
-        <!--<div class="hidden lg:block pointer-events-none select-none mt-14" aria-hidden="true">-->
-        <!--  <Image-->
-        <!--    src={moonImg}-->
-        <!--    alt=""-->
-        <!--    class="w-64 h-auto opacity-10"-->
-        <!--  />-->
-        <!--</div>-->
       </div>
 
       <!-- Right: numbered list -->
@@ -81,14 +72,33 @@ const problems = [
         ))}
       </div>
 
-      <!-- Ghost moon -->
-      <!--<div class="hidden lg:block pointer-events-none select-none absolute left-0 bottom-0 mt-14" aria-hidden="true">-->
-      <!--  <Image-->
-      <!--      src={moonImg}-->
-      <!--      alt=""-->
-      <!--      class="w-96 h-auto opacity-5"-->
-      <!--  />-->
-      <!--</div>-->
+      <!-- Ghost leaf — fades in as section scrolls into view -->
+      <div
+        x-data="{ op: 0.04 }"
+        x-init="
+          const section = $el.closest('section');
+          const update = () => {
+            const rect = section.getBoundingClientRect();
+            const vh = window.innerHeight;
+            const start = vh;
+            const end = -(section.offsetHeight / 2);
+            const progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
+            op = 0.15 - progress * 0.10;
+          };
+          window.addEventListener('scroll', update, { passive: true });
+          update();
+        "
+        :style="`opacity: ${op}`"
+        class="hidden lg:block pointer-events-none select-none absolute left-0 bottom-0"
+        style="transition: opacity 0.15s ease;"
+        aria-hidden="true"
+      >
+        <Image
+          src={leafImg}
+          alt=""
+          class="w-96 h-auto"
+        />
+      </div>
     </div>
   </div>
 </section>

@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
-import alainaImg from '../assets/images/imgi_27_alaina3.jpg';
-import kidImg from '../assets/images/kid.jpg';
+import alainaImg from '../assets/images/bottle.jpg';
+import kidImg from '../assets/images/kids2.jpg';
 
 const testimonials = [
   {
@@ -59,18 +59,18 @@ const testimonials = [
         { testimonial: testimonials[2], delay: 320 },
         { testimonial: testimonials[3], delay: 400 },
       ].map((cell) => cell.isImage ? (
-        <div class="reveal min-h-[340px] overflow-hidden" style={`transition-delay: ${cell.delay}ms;`}>
+        <div class="reveal aspect-[1/1.08] overflow-hidden" style={`transition-delay: ${cell.delay}ms;`}>
           <Image
             src={cell.src}
             alt={cell.alt}
-            class="w-full h-full min-h-[340px] object-cover object-top"
+            class="w-full h-full object-cover object-top"
             widths={[400, 700]}
             sizes="(max-width: 768px) 100vw, 33vw"
           />
         </div>
       ) : (
         <div
-          class="reveal flex flex-col px-10 py-12"
+          class="reveal aspect-[1/1.08] flex flex-col px-10 py-12 overflow-hidden"
           style={`background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); transition-delay: ${cell.delay}ms;`}
           onmouseover="this.style.background='rgba(255,255,255,0.055)'"
           onmouseout="this.style.background='rgba(255,255,255,0.03)'"

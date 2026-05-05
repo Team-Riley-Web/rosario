@@ -1,10 +1,12 @@
 ---
+import {Image} from "astro:assets";
+import moonImg from '../assets/images/moon.png';
 const videoUrl = 'https://www.cfcskincare.shop/cdn/shop/videos/c/vp/28aa11f052cb467888c21cfe22b7f013/28aa11f052cb467888c21cfe22b7f013.HD-1080p-2.5Mbps-67327798.mp4?v=0';
 ---
 
-<section class="bg-ink py-[120px]">
+<section class="bg-ink py-[120px] relative">
   <div class="max-w-[1024px] mx-auto px-10">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative">
 
       <!-- Left: copy -->
       <div class="reveal-left">
@@ -34,6 +36,16 @@ const videoUrl = 'https://www.cfcskincare.shop/cdn/shop/videos/c/vp/28aa11f052cb
         >
           Shop the System
         </a>
+
+        <!-- Ghost moon -->
+        <div class="hidden lg:flex pointer-events-none select-none absolute left-0 top-0 bottom-0 items-center">
+          <Image
+            src={moonImg}
+            alt=""
+            class="w-96 h-auto opacity-5"
+          />
+        </div>
+
       </div>
 
       <!-- Right: portrait video with controls -->

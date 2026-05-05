@@ -1,4 +1,7 @@
 ---
+import {Image} from "astro:assets";
+import leafImg from '../assets/images/leaf2.jpg';
+
 const testimonials = [
   {
     quote: "I haven't worn foundation to work in three months. I didn't even notice when it stopped feeling necessary. That's when I knew something had actually changed.",
@@ -23,8 +26,8 @@ const testimonials = [
 ];
 ---
 
-<section class="bg-ink py-[140px]" id="testimonials">
-  <div class="max-w-[1024px] mx-auto px-10">
+<section class="bg-ink py-[140px] relative overflow-hidden" id="testimonials">
+  <div class="max-w-4xl mx-auto px-10 relative z-10">
 
     <!-- Header -->
     <div class="reveal text-center mb-16">
@@ -34,14 +37,14 @@ const testimonials = [
         <div class="h-px w-6 bg-[rgba(255,255,255,0.08)]"></div>
       </div>
       <h2 class="font-display font-light text-white leading-none tracking-[-0.02em]" style="font-size: clamp(42px, 4.5vw, 68px);">
-        The results speak<br/>for themselves.
+        Real Results
       </h2>
     </div>
 
     <!-- Carousel -->
     <div
       x-data="{ active: 0 }"
-      class="reveal"
+      class="reveal z-10"
     >
       <!-- Track -->
       <div class="overflow-hidden">
@@ -55,14 +58,14 @@ const testimonials = [
                 class="flex flex-col px-8 sm:px-12 py-12 h-full"
                 style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);"
               >
-                <div class="text-gold text-[12px] tracking-[4px] mb-6">★★★★★</div>
+                <div class="text-gold text-[12px] tracking-[4px] mb-6 text-center">★★★★★</div>
                 <p
-                  class="font-display italic font-light flex-1 mb-8 leading-[1.5]"
+                  class="font-display font-light flex-1 mb-8 leading-[1.5] text-center"
                   style={`font-size: clamp(18px, 2vw, 24px); color: rgba(255,255,255,0.85);`}
                 >
                   "{t.quote}"
                 </p>
-                <div class="pt-5" style="border-top: 1px solid rgba(255,255,255,0.08);">
+                <div class="pt-5 text-center" style="border-top: 1px solid rgba(255,255,255,0.08);">
                   <p class="font-display text-[17px] font-normal text-white">{t.name}</p>
                   <p class="font-mono text-[9px] tracking-[0.15em] uppercase mt-1" style="color: rgba(255,255,255,0.35);">{t.detail}</p>
                 </div>
@@ -117,6 +120,14 @@ const testimonials = [
 
       </div>
     </div>
+  </div>
 
+  <!-- Ghost leaf — fades in as section scrolls into view -->
+  <div class="hidden lg:block pointer-events-none select-none absolute right-0 bottom-0 z-0">
+    <Image
+        src={leafImg}
+        alt=""
+        class="w-80 h-auto invert opacity-35"
+    />
   </div>
 </section>

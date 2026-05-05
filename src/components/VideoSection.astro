@@ -1,6 +1,7 @@
 ---
 import {Image} from "astro:assets";
 import moonImg from '../assets/images/moon.png';
+import posterImg from '../assets/images/videoposter.png';
 const videoUrl = 'https://www.cfcskincare.shop/cdn/shop/videos/c/vp/28aa11f052cb467888c21cfe22b7f013/28aa11f052cb467888c21cfe22b7f013.HD-1080p-2.5Mbps-67327798.mp4?v=0';
 ---
 
@@ -52,11 +53,12 @@ const videoUrl = 'https://www.cfcskincare.shop/cdn/shop/videos/c/vp/28aa11f052cb
 
       <!-- Right: portrait video with controls -->
       <div class="reveal-right flex justify-center lg:justify-end">
-        <div class="w-full max-w-[380px]">
+        <div class="w-full lg:max-w-[380px]">
           <video
             controls
             playsinline
             preload="metadata"
+            poster={posterImg.src}
             class="w-full aspect-[9/16] object-cover block"
           >
             <source src={videoUrl} type="video/mp4" />

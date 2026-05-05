@@ -28,7 +28,7 @@ import cfcLogo from '../assets/images/cfc-logo.png';
   <!-- Announcement bar — fades to full opacity on scroll, then collapses over -->
   <div
     class="overflow-hidden announcement-bar"
-    :style="`background: oklch(13% 0.010 255 / ${scrolled ? '1' : '0.6'}); max-height: ${pastMarquee ? '0' : '45px'};`"
+    :style="`background: oklch(13% 0.010 255 / ${scrolled || window.innerWidth < 1024 ? '1' : '0.6'}); max-height: ${pastMarquee ? '0' : '45px'};`"
   >
     <div class="text-center py-2.5 px-6">
       <a

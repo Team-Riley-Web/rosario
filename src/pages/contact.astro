@@ -1,10 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
 import { Image } from 'astro:assets';
 import founderImg from '../assets/images/brittani.jpg';
 import groupImg from '../assets/images/group2.jpg';
+import bottleImg from '../assets/images/bottle.jpg';
 ---
 
 <Layout
@@ -14,45 +14,74 @@ import groupImg from '../assets/images/group2.jpg';
   <Nav />
 
   <main>
-    <section class="bg-ink pt-[160px] pb-[90px] relative overflow-hidden">
+    <section class="bg-ink pt-[160px] pb-[100px] relative overflow-hidden">
+      <div class="absolute inset-0 hidden lg:block">
+        <Image
+          src={bottleImg}
+          alt="CFC Skincare cleanser bottle"
+          class="absolute inset-y-0 right-0 w-[58%] h-full object-cover object-center"
+          widths={[900, 1300, 1800, 2200]}
+          sizes="58vw"
+          loading="eager"
+        />
+        <div class="absolute inset-0" style="background: linear-gradient(90deg, oklch(13% 0.010 255) 0%, oklch(13% 0.010 255) 42%, rgba(18,21,25,0.72) 66%, rgba(18,21,25,0.28) 100%);"></div>
+      </div>
       <div class="max-w-[1440px] mx-auto px-6 sm:px-10 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-14 lg:gap-24 items-end">
-          <div class="reveal max-w-[760px]">
-            <div class="flex items-center gap-4 mb-8">
-              <div class="h-px bg-gold w-6"></div>
-              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Contact CFC</span>
-            </div>
-            <h1
-              class="font-display font-light text-white leading-[1.0] tracking-[-0.02em] mb-8"
-              style="font-size: clamp(52px, 6vw, 92px);"
-            >
-              Start with a real conversation.
-            </h1>
-            <p class="font-sans font-light text-[16px] leading-[1.75] max-w-[560px]" style="color: rgba(255,255,255,0.58);">
-              Tell us what your skin is doing, what you have already tried, and where you want help. Product guidance, routine support, order questions, and local pickup details all start here.
-            </p>
+        <div class="reveal max-w-[760px]">
+          <div class="flex items-center gap-4 mb-8">
+            <div class="h-px bg-gold w-6"></div>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Contact CFC</span>
           </div>
+          <h1
+            class="font-display font-light text-white leading-[1.0] tracking-[-0.02em] mb-8"
+            style="font-size: clamp(52px, 6vw, 92px);"
+          >
+            Start with a real conversation.
+          </h1>
+          <p class="font-sans font-light text-[16px] leading-[1.75] max-w-[560px]" style="color: rgba(255,255,255,0.58);">
+            Tell us what your skin is doing, what you have already tried, and where you want help. Product guidance, routine support, order questions, and local pickup details all start here.
+          </p>
+        </div>
 
-          <div class="reveal-right border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-7 sm:p-8">
-            <div class="grid gap-5 items-start" style="grid-template-columns: 72px 1fr;">
-              <Image
-                src={founderImg}
-                alt="Brittany, NP-C — Founder of CFC Skincare"
-                class="object-cover object-top w-[72px] h-[72px]"
-                widths={[144]}
-                sizes="72px"
-              />
-              <div>
-                <p class="font-display text-[20px] font-normal text-white mb-2">Founder-led guidance</p>
-                <p class="font-sans font-light text-[13px] leading-relaxed" style="color: rgba(255,255,255,0.55);">
-                  Messages are reviewed by the CFC team for practical, product-specific next steps.
-                </p>
-              </div>
-            </div>
-          </div>
+        <div class="reveal mt-14 overflow-hidden aspect-[16/10] border border-[rgba(255,255,255,0.08)] lg:hidden">
+          <Image
+            src={bottleImg}
+            alt="CFC Skincare cleanser bottle"
+            class="w-full h-full object-cover object-center"
+            widths={[640, 960, 1280]}
+            sizes="100vw"
+          />
         </div>
       </div>
       <div class="absolute bottom-0 inset-x-0 h-px" style="background: rgba(255,255,255,0.06);"></div>
+    </section>
+
+    <section class="bg-white py-[70px]">
+      <div class="max-w-[1440px] mx-auto px-6 sm:px-10">
+        <div class="grid grid-cols-1 md:grid-cols-[7fr_5fr] gap-px bg-rule border border-rule">
+          <div class="reveal-left bg-white overflow-hidden aspect-[16/9] md:aspect-[21/10]">
+            <Image
+              src={groupImg}
+              alt="CFC Skincare products and consultation space"
+              class="w-full h-full object-cover object-center"
+              widths={[720, 1080, 1440, 2000]}
+              sizes="(max-width: 768px) 100vw, 58vw"
+            />
+          </div>
+          <div class="reveal-right bg-parchment p-8 sm:p-10 lg:p-12 flex flex-col justify-center">
+            <div class="flex items-center gap-4 mb-8">
+              <div class="h-px bg-gold w-6"></div>
+              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Product Guidance</span>
+            </div>
+            <h2 class="font-display font-light text-ink leading-[1.08] tracking-[-0.01em] mb-5" style="font-size: clamp(30px, 3vw, 44px);">
+              Share the details. We will help you choose the right next step.
+            </h2>
+            <p class="font-sans font-light text-[14px] leading-[1.8] text-ink-soft">
+              Product matching works best when we know your current routine, main concern, sensitivities, and whether you need order or pickup support.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="bg-parchment py-[110px]">
@@ -71,6 +100,22 @@ import groupImg from '../assets/images/group2.jpg';
             <p class="font-sans font-light text-[14px] text-ink-soft leading-[1.8] mb-9 max-w-[420px]">
               Use the form for skin consultations, product matching, order support, local pickup questions, wholesale inquiries, or press requests.
             </p>
+
+            <div class="bg-white border border-rule grid gap-5 mb-8 items-start p-6" style="grid-template-columns: 64px 1fr;">
+              <Image
+                src={founderImg}
+                alt="Brittany, NP-C — Founder of CFC Skincare"
+                class="object-cover object-top w-16 h-16"
+                widths={[128]}
+                sizes="64px"
+              />
+              <div>
+                <p class="font-display text-[18px] font-normal text-ink mb-1.5">Founder-led guidance</p>
+                <p class="font-sans font-light text-[13px] leading-relaxed text-ink-soft">
+                  Messages are reviewed by the CFC team for practical, product-specific next steps.
+                </p>
+              </div>
+            </div>
 
             <div class="border border-rule bg-white">
               {[
@@ -313,5 +358,4 @@ import groupImg from '../assets/images/group2.jpg';
     </section>
   </main>
 
-  <Footer />
 </Layout>

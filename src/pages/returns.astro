@@ -1,0 +1,46 @@
+---
+import PolicyPage from '../components/PolicyPage.astro';
+
+const sections = [
+  {
+    title: 'Return window',
+    paragraphs: [
+      'If you are not satisfied with your purchase, contact us within 14 days of delivery to request help with a return or replacement.',
+      'Items must be unused, in original packaging when possible, and accompanied by proof of purchase unless we approve a different arrangement.',
+    ],
+  },
+  {
+    title: 'Non-returnable items',
+    paragraphs: [
+      'For safety and hygiene reasons, opened skincare products may not be eligible for return unless they arrive damaged, defective, or incorrect.',
+    ],
+  },
+  {
+    title: 'Damaged or incorrect orders',
+    paragraphs: [
+      'If your order arrives damaged or you receive the wrong item, contact us as soon as possible with your order number and a photo of the issue. We will review the case and work toward a replacement, refund, or store credit when appropriate.',
+    ],
+  },
+  {
+    title: 'Refund timing',
+    paragraphs: [
+      'Approved refunds are returned to the original payment method. Processing time depends on your bank or card issuer.',
+    ],
+  },
+  {
+    title: 'How to start a return',
+    paragraphs: [
+      'Use the contact page to tell us what you ordered, why you want to return it, and whether you prefer a refund, replacement, or store credit. We will reply with next steps.',
+    ],
+  },
+];
+---
+
+<PolicyPage
+  title="Returns Policy"
+  description="Return and replacement guidance for CFC Skincare orders."
+  eyebrow="Returns Policy"
+  intro="This page explains how to request help with returns, replacements, damaged items, or incorrect orders."
+  updatedLabel="Effective date: May 5, 2026"
+  sections={sections}
+/>

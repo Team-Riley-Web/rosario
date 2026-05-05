@@ -1,0 +1,48 @@
+---
+import PolicyPage from '../components/PolicyPage.astro';
+
+const sections = [
+  {
+    title: 'What we collect',
+    paragraphs: [
+      'We collect information you share directly with us when you place an order, submit a form, subscribe to updates, or contact us for support. This can include your name, email address, phone number, shipping details, and the content of your message.',
+      'We also collect limited technical information such as browser type, device data, pages visited, and approximate location data to help us keep the site secure and understand how it is used.',
+    ],
+  },
+  {
+    title: 'How we use information',
+    paragraphs: [
+      'We use your information to process orders, provide customer support, reply to consultation requests, improve the site, and send marketing messages when you opt in.',
+      'We do not sell your personal information. We may share it with trusted service providers that help us operate the business, such as Shopify, payment processors, shipping carriers, and analytics tools.',
+    ],
+  },
+  {
+    title: 'Cookies and analytics',
+    paragraphs: [
+      'We may use cookies and similar technologies to remember your preferences, measure site performance, and improve the shopping experience.',
+      'You can control cookies through your browser settings, but some site features may not work properly if you disable them.',
+    ],
+  },
+  {
+    title: 'Your choices',
+    paragraphs: [
+      'You can request access, correction, or deletion of your personal information by contacting us. You can also unsubscribe from promotional emails at any time using the link in the message or by contacting us directly.',
+    ],
+  },
+  {
+    title: 'Contact',
+    paragraphs: [
+      'Questions about this policy can be sent to the contact page on this site. We may update this policy from time to time, and the updated version will be posted here with a new effective date.',
+    ],
+  },
+];
+---
+
+<PolicyPage
+  title="Privacy Policy"
+  description="How CFC Skincare collects, uses, and protects your information."
+  eyebrow="Privacy Policy"
+  intro="This policy explains how CFC Skincare handles information when you browse the site, place orders, or contact us."
+  updatedLabel="Effective date: May 5, 2026"
+  sections={sections}
+/>

@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from './Nav.astro';
+
+export interface PolicySection {
+  title: string;
+  paragraphs: string[];
+  bullets?: string[];
+}
+
+export interface Props {
+  title: string;
+  description: string;
+  eyebrow: string;
+  intro: string;
+  updatedLabel: string;
+  sections: PolicySection[];
+}
+
+const { title, description, eyebrow, intro, updatedLabel, sections } = Astro.props as Props;
+---
+
+<Layout title={title} description={description}>
+  <Nav />
+
+  <main>
+    <section class="bg-ink pt-[160px] pb-[84px] relative overflow-hidden">
+      <div class="max-w-[1440px] mx-auto px-6 sm:px-10">
+        <div class="max-w-[760px]">
+          <div class="flex items-center gap-4 mb-8">
+            <div class="h-px bg-gold w-6"></div>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">{eyebrow}</span>
+          </div>
+          <h1 class="font-display font-light text-white leading-[1.02] tracking-[-0.02em] mb-6" style="font-size: clamp(44px, 5vw, 76px);">
+            {title}
+          </h1>
+          <p class="font-sans font-light text-[16px] leading-[1.75] max-w-[620px]" style="color: rgba(255,255,255,0.58);">
+            {intro}
+          </p>
+          <p class="mt-8 font-mono text-[10px] tracking-[0.18em] uppercase text-white/45">
+            {updatedLabel}
+          </p>
+        </div>
+      </div>
+      <div class="absolute bottom-0 inset-x-0 h-px" style="background: rgba(255,255,255,0.06);"></div>
+    </section>
+
+    <section class="bg-parchment py-[92px]">
+      <div class="max-w-[1440px] mx-auto px-6 sm:px-10">
+        <div class="max-w-[920px] mx-auto">
+          <div class="space-y-14">
+            {sections.map((section) => (
+              <article class="reveal">
+                <div class="flex items-center gap-4 mb-5">
+                  <div class="h-px bg-gold w-6"></div>
+                  <h2 class="font-display text-ink font-normal leading-tight tracking-[-0.01em]" style="font-size: clamp(26px, 2.4vw, 38px);">
+                    {section.title}
+                  </h2>
+                </div>
+                <div class="space-y-5">
+                  {section.paragraphs.map((paragraph) => (
+                    <p class="font-sans font-light text-[15px] leading-[1.85] text-ink-soft">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+                {section.bullets && (
+                  <ul class="mt-6 grid gap-3">
+                    {section.bullets.map((bullet) => (
+                      <li class="flex items-start gap-3 font-sans font-light text-[15px] leading-[1.75] text-ink-soft">
+                        <span class="mt-2 h-px w-5 bg-gold shrink-0"></span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

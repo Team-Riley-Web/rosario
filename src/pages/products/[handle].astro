@@ -2,7 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import FoilStamp from '../../components/motifs/FoilStamp.astro';
-import { getAllProducts, getProductByHandle, formatPrice, getCheckoutUrl, SHOPIFY_DOMAIN } from '../../lib/shopify';
+import ProductCard from '../../components/ProductCard.astro';
+import { CalendarSync, ShoppingBag } from '@lucide/astro';
+import { getAllProducts, getProductByHandle, getFeaturedProducts, formatPrice, getCheckoutUrl, SHOPIFY_DOMAIN } from '../../lib/shopify';
 import type { ShopifyProductDetail } from '../../lib/shopify';
 
 export async function getStaticPaths() {
@@ -17,6 +19,7 @@ if (!product) return Astro.redirect('/shop');
 
 const images = product.images.edges.map(e => e.node);
 const variants = product.variants.edges.map(e => e.node);
+const relatedProducts = product.relatedProducts?.length ? product.relatedProducts : await getFeaturedProducts();
 const hasVariantChoice = variants.length > 1 && variants[0]?.title !== 'Default Title';
 const firstAvailableId = variants.find(v => v.availableForSale)?.id ?? variants[0]?.id ?? '';
 
@@ -295,50 +298,47 @@ const variantsJson = JSON.stringify(variants.map(v => ({
 
               {hasSellingPlans && (
                 <div class="mb-6">
-                  <p class="font-display text-[24px] text-ink mb-4">Purchase Options</p>
+                  <p class="font-mono text-[9px] tracking-[0.18em] uppercase text-ink-soft mb-3">Purchase Options</p>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button
                       type="button"
                       @click="selectOneTime()"
                       :class="purchaseOption === 'one-time' ? 'border-gold-deep text-gold-deep' : 'border-rule text-ink-soft hover:border-gold'"
-                      class="relative min-h-[92px] w-full border bg-white px-5 py-4 text-left transition-all duration-200"
+                      class="relative min-h-[76px] w-full border bg-white px-4 py-3 text-left transition-all duration-200"
                     >
-                      <span class="flex items-center gap-4">
-                        <svg class="h-9 w-9 shrink-0" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M15 20h15l-1.5 13h-12L15 20Z"/>
-                          <path d="M19 20v-3.5a5.5 5.5 0 0 1 11 0V20"/>
-                          <path d="M9 29c4 0 5.5 6 11 6h13c2.5 0 4 1.5 4 3.5S35.5 42 33 42H20.5C15 42 11 38 7 34"/>
-                        </svg>
-                        <span class="font-display text-[22px] leading-tight">One-time Purchase</span>
+                      <span class="flex items-center gap-3">
+                        <ShoppingBag class="h-7 w-7 shrink-0" stroke-width={1.7} />
+                        <span class="font-display text-[17px] leading-tight">One-time Purchase</span>
                       </span>
                     </button>
 
-                    <template x-for="plan in currentSellingPlans()" :key="plan.id">
+                    {sellingPlans.map((plan) => {
+                      const label = displayPlanName(plan, 0);
+                      const discountLabel = displayDiscount(plan, 0);
+                      return (
                       <button
                         type="button"
-                        @click="selectSubscription(plan.id)"
-                        :class="selectedSellingPlanId === plan.id ? 'border-gold-deep text-gold-deep' : 'border-rule text-ink-soft hover:border-gold'"
-                        class="relative min-h-[92px] w-full border bg-white px-5 py-4 text-left transition-all duration-200"
+                        @click={`selectSubscription(${JSON.stringify(plan.id)})`}
+                        :class={`selectedSellingPlanId === ${JSON.stringify(plan.id)} ? 'border-gold-deep text-gold-deep' : 'border-rule text-ink-soft hover:border-gold'`}
+                        class="relative min-h-[76px] w-full border bg-white px-4 py-3 text-left transition-all duration-200"
                       >
                         <span
-                          class="absolute -top-3 right-3 bg-gold-deep px-2.5 py-1 font-display text-[16px] leading-none text-white"
-                          x-show="plan.discountLabel"
-                          x-text="plan.discountLabel"
-                        ></span>
-                        <span class="flex items-center gap-4">
-                          <svg class="h-9 w-9 shrink-0" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <rect x="10" y="12" width="24" height="24"/>
-                            <path d="M16 8v8M28 8v8M10 19h24M16 25h4M24 25h4M16 31h4"/>
-                            <path d="M35 29a7 7 0 1 0 2 5"/>
-                            <path d="M38 28v6h-6"/>
-                          </svg>
+                          class="absolute -top-3 right-3 bg-gold-deep px-2 py-1 font-mono text-[9px] leading-none tracking-[0.08em] uppercase text-white"
+                        >
+                          {discountLabel}
+                        </span>
+                        <span class="flex items-center gap-3">
+                          <CalendarSync class="h-7 w-7 shrink-0" stroke-width={1.7} />
                           <span>
-                            <span class="block font-display text-[22px] leading-tight" x-text="plan.name"></span>
-                            <span class="block font-sans text-[12px] font-light mt-1 opacity-70" x-show="plan.deliveryOption" x-text="plan.deliveryOption"></span>
+                            <span class="block font-display text-[17px] leading-tight">{label}</span>
+                            {plan.deliveryOption && (
+                              <span class="block font-sans text-[11px] font-light mt-0.5 opacity-70">{plan.deliveryOption}</span>
+                            )}
                           </span>
                         </span>
                       </button>
-                    </template>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -450,6 +450,23 @@ const variantsJson = JSON.stringify(variants.map(v => ({
             <!-- Right: content -->
             <div class="product-description" set:html={product.descriptionHtml} />
 
+          </div>
+        </div>
+      </section>
+    )}
+
+    {relatedProducts.length > 0 && (
+      <section class="bg-parchment py-20">
+        <div class="max-w-5xl mx-auto px-10">
+          <div class="flex items-center gap-4 mb-10">
+            <div class="h-px bg-gold w-6 shrink-0"></div>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Recommended Products</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px">
+            {relatedProducts.slice(0, 4).map((relatedProduct) => (
+              <ProductCard product={relatedProduct} />
+            ))}
           </div>
         </div>
       </section>

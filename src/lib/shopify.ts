@@ -99,6 +99,7 @@ export interface ShopifyProductDetail extends Omit<ShopifyProduct, 'priceRange' 
       };
     }>;
   };
+  relatedProducts?: ShopifyProduct[];
 }
 
 function isRetailProduct(product: ShopifyProduct): boolean {
@@ -367,6 +368,17 @@ const PRODUCT_DETAIL_QUERY = `
           }
         }
       }
+      metafield(namespace: "custom", key: "related_products") {
+        references(first: 4) {
+          edges {
+            node {
+              ... on Product {
+                ${PRODUCT_FIELDS}
+              }
+            }
+          }
+        }
+      }
       collections(first: 3) {
         edges { node { title } }
       }
@@ -399,7 +411,15 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
       PRODUCT_DETAIL_QUERY,
       { handle }
     );
-    return data.product;
+    if (!data.product) return null;
+    const rawReferences = (data.product as ShopifyProductDetail & {
+      metafield?: { references?: { edges: Array<{ node: ShopifyProduct }> } } | null;
+    }).metafield?.references?.edges.map(({ node }) => node) ?? [];
+
+    return {
+      ...data.product,
+      relatedProducts: filterRetailProducts(rawReferences),
+    };
   } catch {
     return null;
   }

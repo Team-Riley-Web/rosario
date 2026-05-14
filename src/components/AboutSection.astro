@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import founderImg from '../assets/images/brit.jpg';
 import productsImg from '../assets/images/group.jpg';
+import teenImg from '../assets/images/kids2.jpg';
 ---
 
 <section class="bg-white py-[140px]" id="about">
@@ -125,6 +126,58 @@ import productsImg from '../assets/images/group.jpg';
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
           </svg>
         </a>
+      </div>
+    </div>
+
+    <!-- Teen section -->
+    <div class="reveal mt-24 overflow-hidden" style="background: #D2E2E2;">
+      <div class="grid grid-cols-1 lg:grid-cols-2 items-stretch">
+        <div class="relative min-h-[420px] lg:min-h-[560px]">
+          <Image
+            src={teenImg}
+            alt="Teen skincare routine with CFC products"
+            class="absolute inset-0 w-full h-full object-cover object-center"
+            widths={[700, 1000, 1400]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+        </div>
+
+        <div class="flex items-center px-8 py-16 sm:px-12 lg:px-16 lg:py-20">
+          <div class="max-w-[560px]">
+            <div class="flex items-center gap-4 mb-7">
+              <div class="h-px bg-gold w-6"></div>
+              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Teen Skincare</span>
+            </div>
+
+            <h3 class="font-display font-light text-ink mb-7 leading-[1.02] tracking-[-0.01em]" style="font-size: clamp(36px, 4vw, 62px);">
+              Start simple. Stay consistent. Let skin breathe.
+            </h3>
+
+            <p class="font-sans font-light text-[16px] text-ink-soft mb-10 leading-[1.75]">
+              CFC gives teens and tweens a clear routine built around gentle cleansing, lightweight hydration, and daily protection, without crowding the counter or overwhelming sensitive skin.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/15 mb-10">
+              {[
+                ['01', 'Easy routine'],
+                ['02', 'Age-aware care'],
+                ['03', 'Clean feel'],
+              ].map(([num, label]) => (
+                <div class="bg-white/55 px-5 py-6">
+                  <p class="font-mono text-[9px] tracking-[0.22em] uppercase text-gold mb-3">{num}</p>
+                  <p class="font-display text-[22px] font-normal text-ink leading-tight">{label}</p>
+                </div>
+              ))}
+            </div>
+
+            <a href="/shop?filter=teen" class="link-arrow font-mono text-[10px] tracking-[0.18em] uppercase text-ink inline-flex">
+              Shop teen care
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
 

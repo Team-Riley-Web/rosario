@@ -115,6 +115,12 @@ const lastVisibleIndex = firstVisibleIndex + 16;
         page: ${initialPage},
         perPage: 16,
         products: ${JSON.stringify(productState)},
+        init() {
+          const filter = new URLSearchParams(window.location.search).get('filter');
+          if (['adult', 'teen', 'swag', 'all'].includes(filter ?? '')) {
+            this.active = filter;
+          }
+        },
         reset() {
           this.active = ${JSON.stringify(defaultFilter)};
           this.sortBy = 'alpha';

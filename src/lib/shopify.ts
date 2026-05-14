@@ -1,6 +1,6 @@
 const importEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
 const processEnv = typeof process === 'undefined' ? {} : process.env;
-const env = { ...processEnv, ...importEnv };
+const env = { ...importEnv, ...processEnv };
 
 const USE_MOCKS = env.SHOPIFY_USE_MOCKS === 'true' || env.PUBLIC_SHOPIFY_USE_MOCKS === 'true';
 

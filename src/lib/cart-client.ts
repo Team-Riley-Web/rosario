@@ -1,6 +1,6 @@
 const importEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
 const processEnv = typeof process === 'undefined' ? {} : process.env;
-const env = { ...processEnv, ...importEnv };
+const env = { ...importEnv, ...processEnv };
 const SHOPIFY_DOMAIN = env.PUBLIC_SHOPIFY_STORE_DOMAIN ?? env.SHOPIFY_STORE_DOMAIN ?? 'cfcskincare.myshopify.com';
 const STOREFRONT_TOKEN = env.PUBLIC_SHOPIFY_STOREFRONT_TOKEN ?? env.SHOPIFY_STOREFRONT_TOKEN ?? '';
 const API_VERSION = env.PUBLIC_SHOPIFY_API_VERSION ?? env.SHOPIFY_API_VERSION ?? '2024-01';

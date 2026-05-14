@@ -164,9 +164,9 @@ const wizardData = JSON.stringify(data);
             <div class="mb-4">
               <span class="font-mono text-[10px] tracking-[0.18em] uppercase text-gold">Premium Collection Also Includes</span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 max-w-[680px] mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 pt-4">
               <template x-for="retinol in includedRetinols()" :key="retinol.variantId || retinol.handle">
-                <div class="relative border border-rule bg-white min-h-[260px] max-h-[610px] overflow-hidden">
+                <div class="relative border border-rule bg-white min-h-[260px]">
                   <span class="absolute -top-[15px] left-1/2 -translate-x-1/2 z-10 bg-ink text-white font-mono text-[9px] tracking-[0.16em] uppercase px-4 py-1.5 whitespace-nowrap">Included</span>
                   <div class="aspect-[1/1] sm:aspect-[3/4] overflow-hidden bg-parchment">
                     <img
@@ -199,12 +199,12 @@ const wizardData = JSON.stringify(data);
               <h2 class="font-display text-[32px] leading-tight text-ink mt-2">Choose your sunscreen.</h2>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 max-w-[680px] mx-auto">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
             <template x-for="spf in products.spf" :key="spf.variantId || spf.handle">
               <button
                 type="button"
                 @click="selectedSpf = spf.variantId"
-                class="relative flex flex-col text-left border min-h-[320px] max-h-[610px] overflow-hidden transition-all duration-200"
+                class="relative flex flex-col text-left border min-h-[320px] transition-all duration-200"
                 :class="selectedSpf === spf.variantId ? 'bg-ink text-white border-ink shadow-strong' : 'bg-white text-ink border-rule hover:border-gold'"
                 :disabled="!spf.variantId"
               >
@@ -322,9 +322,9 @@ const wizardData = JSON.stringify(data);
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[680px] mx-auto px-6 sm:px-8 pb-6 sm:pb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 sm:px-8 pb-6 sm:pb-8">
         <template x-for="item in products.upsells" :key="item.variantId || item.handle">
-          <div class="h-[367px] max-h-[610px] border border-rule bg-white overflow-hidden flex flex-col">
+          <div class="h-[367px] border border-rule bg-white overflow-hidden flex flex-col">
             <div class="h-[215px] shrink-0 overflow-hidden bg-parchment">
               <img
                 x-show="item.imageUrl"

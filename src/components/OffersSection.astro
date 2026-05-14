@@ -24,7 +24,7 @@ const offers = data.systems.map((system) => ({
       <h2 class="font-display font-light text-ink mb-4 leading-none tracking-[-0.02em]" style="font-size: clamp(38px, 4vw, 58px);">
         Start where you are.
       </h2>
-      <p class="font-sans font-light text-[14px] text-ink-soft">Build a system with current Shopify pricing and the products your skin needs.</p>
+      <p class="font-sans font-light text-[14px] text-ink-soft">Build a system with the products your skin needs.</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-px">
@@ -34,7 +34,7 @@ const offers = data.systems.map((system) => ({
           style={`padding: 52px 48px; transition-delay: ${i * 100}ms;`}
         >
           {featured && (
-            <div class="absolute -top-[18px] left-1/2 -translate-x-1/2">
+            <div class="absolute -top-[15px] left-1/2 -translate-x-1/2">
               <span class="bg-gold text-ink font-mono text-[9px] tracking-[0.15em] uppercase px-4 py-1.5 whitespace-nowrap">
                 Most Popular
               </span>
@@ -45,25 +45,20 @@ const offers = data.systems.map((system) => ({
             {tagline}
           </p>
 
-          <h3 class={`font-display text-[28px] font-normal mb-5 ${featured ? 'text-white' : 'text-ink'}`}>
+          <h3 class={`font-display text-[28px] font-normal ${featured ? 'text-white' : 'text-ink'}`}>
             {name}
           </h3>
-
-          <div
-            class={`mb-6 border-t ${featured ? '' : 'border-rule'}`}
-            style={featured ? 'border-color: rgba(255,255,255,0.08);' : undefined}
-          ></div>
 
           <div class="mb-5">
             <span
               class={`font-display font-light text-[52px] leading-none ${featured ? 'text-white' : 'text-ink'}`}
             >{price}</span>
-            <p
-              class={`font-mono text-[10px] tracking-[0.1em] mt-2 ${!featured ? 'text-ink-soft' : ''}`}
-              style={featured ? 'color: rgba(255,255,255,0.45);' : undefined}
-            >
-              {priceRange}
-            </p>
+            <!--<p-->
+            <!--  class={`font-mono text-[10px] tracking-[0.1em] mt-2 ${!featured ? 'text-ink-soft' : ''}`}-->
+            <!--  style={featured ? 'color: rgba(255,255,255,0.45);' : undefined}-->
+            <!--&gt;-->
+            <!--  {priceRange}-->
+            <!--</p>-->
           </div>
 
           <div

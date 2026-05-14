@@ -8,12 +8,14 @@ export interface Props {
   title?: string;
   description?: string;
   image?: string;
+  showNewsletter?: boolean;
 }
 
 const {
   title = 'CFC Skincare — Confident Skin That Grows With You',
   description = 'Medical-grade, plant-based skincare created by a nurse practitioner. Cleanse. Treat. Protect. Clinical results in under five minutes.',
   image = '/og-image.jpg',
+  showNewsletter = true,
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL('https://cfcskincare.com');
@@ -111,7 +113,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, siteUrl).href;
     <CartDrawer />
     <SearchModal />
     <slot />
-    <NewsletterPreFooter />
+    {showNewsletter && <NewsletterPreFooter />}
     <Footer />
 
     <script>

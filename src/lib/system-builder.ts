@@ -14,6 +14,8 @@ export interface SystemProduct extends SystemProductConfig {
   price: number;
   formattedPrice: string;
   availableForSale: boolean;
+  imageUrl: string;
+  imageAlt: string;
 }
 
 export interface SystemOption {
@@ -146,7 +148,7 @@ export const systems: SystemOption[] = [
     name: 'Premium Collection',
     tagline: 'For women who are serious.',
     eyebrow: 'Advanced routine',
-    description: 'Choose one cleanser, add CFC GLOW, sunscreen, and both retinols. Firming serum and LED mask are suggested after.',
+    description: 'Choose one cleanser, add CFC GLOW, sunscreen, and both retinols.',
     cta: 'Build Your Premium Routine',
     featured: false,
     treatmentIds: ['appleStem', 'colorCorrection', 'hydration'],
@@ -158,6 +160,7 @@ function productFromShopify(config: SystemProductConfig, product: ShopifyProduct
   const variant = product?.variants.edges.find(({ node }) => node.availableForSale)?.node ?? product?.variants.edges[0]?.node;
   const amount = variant?.price.amount ?? product?.priceRange.minVariantPrice.amount ?? '0';
   const currency = product?.priceRange.minVariantPrice.currencyCode ?? 'USD';
+  const image = product?.images.edges[0]?.node;
 
   return {
     ...config,
@@ -165,6 +168,8 @@ function productFromShopify(config: SystemProductConfig, product: ShopifyProduct
     price: parseFloat(amount) || 0,
     formattedPrice: formatPrice(amount, currency),
     availableForSale: product?.availableForSale ?? false,
+    imageUrl: image?.url ?? '',
+    imageAlt: image?.altText ?? product?.title ?? config.title,
   };
 }
 

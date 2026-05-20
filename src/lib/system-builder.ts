@@ -157,7 +157,10 @@ export const systems: SystemOption[] = [
 ];
 
 function productFromShopify(config: SystemProductConfig, product: ShopifyProductDetail | null): SystemProduct {
-  const variant = product?.variants.edges.find(({ node }) => node.availableForSale)?.node ?? product?.variants.edges[0]?.node;
+  const variants = product?.variants.edges ?? [];
+  const fullSize = variants.find(({ node }) => /full size/i.test(node.title))?.node;
+  const firstAvailable = variants.find(({ node }) => node.availableForSale)?.node;
+  const variant = fullSize ?? firstAvailable ?? variants[0]?.node;
   const amount = variant?.price.amount ?? product?.priceRange.minVariantPrice.amount ?? '0';
   const currency = product?.priceRange.minVariantPrice.currencyCode ?? 'USD';
   const image = product?.images.edges[0]?.node;

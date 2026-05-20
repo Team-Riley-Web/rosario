@@ -7,12 +7,7 @@ const USE_MOCKS = env.SHOPIFY_USE_MOCKS === 'true' || env.PUBLIC_SHOPIFY_USE_MOC
 export const SHOPIFY_DOMAIN = env.SHOPIFY_STORE_DOMAIN ?? env.PUBLIC_SHOPIFY_STORE_DOMAIN ?? 'cfcskincare.myshopify.com';
 const STOREFRONT_TOKEN = env.SHOPIFY_STOREFRONT_TOKEN ?? env.PUBLIC_SHOPIFY_STOREFRONT_TOKEN ?? '';
 const API_VERSION = env.SHOPIFY_API_VERSION ?? env.PUBLIC_SHOPIFY_API_VERSION ?? '2024-01';
-export const FEATURED_PRODUCT_HANDLES = [
-  'apple-stem-wrinkle-eraser',
-  'color-correction-c-e-serum',
-  'pure-hydration-ha',
-  'nad-bamboo-firming-cleanser',
-] as const;
+export const FEATURED_COLLECTION_HANDLE = 'featured-collection';
 
 export const STOREFRONT_URL = `https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`;
 
@@ -109,21 +104,24 @@ export interface ShopifyProductDetail extends Omit<ShopifyProduct, 'priceRange' 
 }
 
 function isRetailProduct(product: ShopifyProduct): boolean {
-  const text = [
-    product.title,
-    product.handle,
-    product.description,
-    ...product.tags,
-    ...product.collections.edges.map(({ node }) => node.title),
-  ]
+  const productText = [product.title, product.handle, product.description, ...product.tags]
     .join(' ')
     .toLowerCase();
 
-  return !(
-    text.includes('back bar') ||
-    text.includes('wholesale') ||
-    text.includes('whole sale')
-  );
+  if (
+    productText.includes('back bar') ||
+    productText.includes('wholesale') ||
+    productText.includes('whole sale')
+  ) {
+    return false;
+  }
+
+  const collections = product.collections.edges.map(({ node }) => `${node.title} ${node.handle}`.toLowerCase());
+  if (collections.length > 0 && collections.every((c) => c.includes('wholesale') || c.includes('back bar'))) {
+    return false;
+  }
+
+  return true;
 }
 
 function filterRetailProducts(products: ShopifyProduct[]): ShopifyProduct[] {
@@ -340,7 +338,7 @@ export async function getAllProducts(sortKey = 'BEST_SELLING'): Promise<ShopifyP
 export async function getCollectionProducts(handle: string, first = 24): Promise<ShopifyProduct[]> {
   if (USE_MOCKS) return getMockProducts().filter(product => {
     const text = product.collections.edges.map(({ node }) => node.title.toLowerCase()).join(' ');
-    return handle === 'featured' || text.includes(handle.toLowerCase());
+    return handle === 'featured' || handle === FEATURED_COLLECTION_HANDLE || text.includes(handle.toLowerCase());
   }).slice(0, first);
 
   try {
@@ -380,7 +378,7 @@ export async function getProductsByHandles(handles: readonly string[]): Promise<
 }
 
 export async function getFeaturedProducts(): Promise<ShopifyProduct[]> {
-  return getProductsByHandles(FEATURED_PRODUCT_HANDLES);
+  return getCollectionProducts(FEATURED_COLLECTION_HANDLE, 24);
 }
 
 export function formatPrice(amount: string, currency = 'USD'): string {

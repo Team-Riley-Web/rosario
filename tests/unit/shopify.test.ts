@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
-  FEATURED_PRODUCT_HANDLES,
   getCheckoutUrl,
   getFeaturedProducts,
   getProducts,
@@ -41,34 +40,30 @@ describe('Shopify product utilities', () => {
     expect(products[0].variants.edges[0].node.id).toBe(variantId);
   });
 
-  it('returns the configured homepage featured products in order', async () => {
-    const featuredProducts = FEATURED_PRODUCT_HANDLES.map((handle, index) => ({
+  it('returns products from the featured-collection Shopify collection', async () => {
+    const handles = ['apple-stem-wrinkle-eraser', 'color-correction-c-e-serum', 'nad-bamboo-firming-cleanser'];
+    const featuredProducts = handles.map((handle, index) => ({
       ...productFixture,
       id: `gid://shopify/Product/featured-${index}`,
-      title: [
-        'Apple Stem Wrinkle Eraser',
-        'Color Correction C&E Serum',
-        'Pure Hydration Hyaluronic Acid Serum',
-        'NAD+ Bamboo Firming Cleanser',
-      ][index],
       handle,
     }));
 
     vi.stubGlobal('fetch', vi.fn(async (_url, init) => {
       const body = JSON.parse(String((init as RequestInit).body));
-      const product = featuredProducts.find(({ handle }) => handle === body.variables.handle) ?? null;
+      expect(body.variables.handle).toBe('featured-collection');
 
       return {
         ok: true,
         status: 200,
-        json: async () => ({ data: { product } }),
+        json: async () => ({
+          data: { collection: { products: { edges: featuredProducts.map(node => ({ node })) } } },
+        }),
       };
     }));
 
     const products = await getFeaturedProducts();
 
-    expect(products).toHaveLength(4);
-    expect(products.map(product => product.handle)).toEqual(FEATURED_PRODUCT_HANDLES);
+    expect(products.map(product => product.handle)).toEqual(handles);
   });
 
   it('returns checkoutUrl-compatible Shopify cart permalink for a variant', () => {

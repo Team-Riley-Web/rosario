@@ -2,6 +2,7 @@ const importEnv = (import.meta as unknown as { env?: Record<string, string | und
 const processEnv = typeof process === 'undefined' ? {} : process.env;
 const env = { ...importEnv, ...processEnv };
 const SHOPIFY_DOMAIN = env.PUBLIC_SHOPIFY_STORE_DOMAIN ?? env.SHOPIFY_STORE_DOMAIN ?? 'cfcskincare.myshopify.com';
+const CHECKOUT_DOMAIN = env.PUBLIC_SHOPIFY_CHECKOUT_DOMAIN ?? env.SHOPIFY_CHECKOUT_DOMAIN ?? SHOPIFY_DOMAIN;
 const STOREFRONT_TOKEN = env.PUBLIC_SHOPIFY_STOREFRONT_TOKEN ?? env.SHOPIFY_STOREFRONT_TOKEN ?? '';
 const API_VERSION = env.PUBLIC_SHOPIFY_API_VERSION ?? env.SHOPIFY_API_VERSION ?? '2024-01';
 const STOREFRONT_URL = `https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`;
@@ -88,25 +89,68 @@ export interface SearchProduct {
   variantId: string;
 }
 
+function numericShopifyId(id: string, prefix: string): string {
+  return id.replace(prefix, '');
+}
+
+export function getCartPermalink(items: CartLineItem[]): string {
+  const cartLines = items
+    .map((item) => {
+      const variantId = numericShopifyId(item.variantId, 'gid://shopify/ProductVariant/');
+      if (!variantId) return null;
+      return `${variantId}:${Math.max(item.quantity, 1)}`;
+    })
+    .filter((line): line is string => Boolean(line));
+
+  if (cartLines.length === 0) return '';
+
+  const url = new URL(`https://${CHECKOUT_DOMAIN}/cart/${cartLines.join(',')}`);
+  const sellingPlanIds = items
+    .map((item) => numericShopifyId(item.sellingPlanId, 'gid://shopify/SellingPlan/'))
+    .filter(Boolean);
+
+  if (sellingPlanIds.length > 0 && items.length !== 1) return '';
+
+  if (sellingPlanIds.length === 1 && items.length === 1) {
+    url.searchParams.set('selling_plan', sellingPlanIds[0]);
+  }
+
+  return url.href;
+}
+
+export function normalizeCheckoutUrl(checkoutUrl: string): string {
+  if (!checkoutUrl) return '';
+
+  try {
+    const url = new URL(checkoutUrl);
+    if (url.hostname.endsWith('.myshopify.com')) return url.href;
+    return `https://${CHECKOUT_DOMAIN}${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return checkoutUrl;
+  }
+}
+
 export function parseCart(raw: any): Cart {
+  const items = raw.lines.edges.map(({ node }: any) => ({
+    id: node.id,
+    quantity: node.quantity,
+    variantId: node.merchandise.id,
+    variantTitle: node.merchandise.title,
+    price: node.merchandise.price.amount,
+    productTitle: node.merchandise.product.title,
+    productHandle: node.merchandise.product.handle,
+    imageUrl: node.merchandise.product.images.edges[0]?.node.url ?? '',
+    imageAlt: node.merchandise.product.images.edges[0]?.node.altText ?? '',
+    sellingPlanId: node.sellingPlanAllocation?.sellingPlan?.id ?? '',
+    sellingPlanName: node.sellingPlanAllocation?.sellingPlan?.name ?? '',
+  }));
+
   return {
     id: raw.id,
-    checkoutUrl: raw.checkoutUrl,
+    checkoutUrl: getCartPermalink(items) || normalizeCheckoutUrl(raw.checkoutUrl),
     totalQuantity: raw.totalQuantity,
     totalAmount: raw.cost.totalAmount.amount,
-    items: raw.lines.edges.map(({ node }: any) => ({
-      id: node.id,
-      quantity: node.quantity,
-      variantId: node.merchandise.id,
-      variantTitle: node.merchandise.title,
-      price: node.merchandise.price.amount,
-      productTitle: node.merchandise.product.title,
-      productHandle: node.merchandise.product.handle,
-      imageUrl: node.merchandise.product.images.edges[0]?.node.url ?? '',
-      imageAlt: node.merchandise.product.images.edges[0]?.node.altText ?? '',
-      sellingPlanId: node.sellingPlanAllocation?.sellingPlan?.id ?? '',
-      sellingPlanName: node.sellingPlanAllocation?.sellingPlan?.name ?? '',
-    })),
+    items,
   };
 }
 

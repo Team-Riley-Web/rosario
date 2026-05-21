@@ -156,7 +156,11 @@ const lastVisibleIndex = firstVisibleIndex + 16;
           return this.filteredProducts().length;
         },
         setPage(nextPage) {
-          this.page = Math.min(Math.max(nextPage, 1), this.totalPages());
+          const targetPage = Math.min(Math.max(nextPage, 1), this.totalPages());
+          if (targetPage === this.page) return;
+
+          this.page = targetPage;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       }`}
     >

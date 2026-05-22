@@ -217,6 +217,16 @@ export async function updateCartItem(cartId: string, lineId: string, quantity: n
   return parseCart(data.cartLinesUpdate.cart);
 }
 
+export async function updateCartDiscountCodes(cartId: string, discountCodes: string[]): Promise<Cart> {
+  const data = await gql<any>(
+    `mutation cartDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]!) {
+      cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) { cart { ${CART_FRAGMENT} } }
+    }`,
+    { cartId, discountCodes }
+  );
+  return parseCart(data.cartDiscountCodesUpdate.cart);
+}
+
 export async function searchProducts(query: string): Promise<SearchProduct[]> {
   const data = await gql<any>(
     `query predictiveSearch($query: String!) {

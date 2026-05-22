@@ -58,6 +58,10 @@ test.beforeEach(async ({ page }) => {
       await route.fulfill({ json: { data: { cartLinesUpdate: { cart: cart(variables.lines?.[0]?.quantity ?? 1) } } } });
       return;
     }
+    if (query.includes('cartDiscountCodesUpdate')) {
+      await route.fulfill({ json: { data: { cartDiscountCodesUpdate: { cart: cart(1) } } } });
+      return;
+    }
     if (query.includes('cartLinesRemove')) {
       await route.fulfill({ json: { data: { cartLinesRemove: { cart: cart(0) } } } });
       return;
@@ -109,4 +113,40 @@ test('product buy now goes to Shopify checkout in the same tab', async ({ page }
 
   await expect(page).toHaveURL(/cfcskincare\.myshopify\.com\/checkouts/);
   expect(await popupPromise).toBeNull();
+});
+
+test('Collabs discount links store discount and preserve tracking params', async ({ page }) => {
+  let appliedDiscountCodes: string[] = [];
+
+  await page.goto('/discount?code=COLLAB10&redirect=/shop&dt_id=0&utm_source=collabs');
+
+  await expect(page).toHaveURL(/\/shop\?dt_id=0&utm_source=collabs$/);
+  await expect.poll(async () => page.evaluate(() => localStorage.getItem('shopify_discount_code'))).toBe('COLLAB10');
+
+  page.on('request', request => {
+    if (!request.url().includes('/api/2024-01/graphql.json')) return;
+    const body = request.postDataJSON();
+    if (String(body.query).includes('cartDiscountCodesUpdate')) {
+      appliedDiscountCodes = body.variables.discountCodes;
+    }
+  });
+
+  await page.getByRole('button', { name: /Add to Cart/i }).first().click();
+
+  await expect(page.getByRole('dialog', { name: /Shopping cart/i })).toBeVisible();
+  expect(appliedDiscountCodes).toEqual(['COLLAB10']);
+});
+
+test('production Collabs QR slug RENEWEDAPPROACH redirects and stores discount', async ({ page }) => {
+  await page.goto('/RENEWEDAPPROACH?dt_id=0');
+
+  await expect(page).toHaveURL(/\/\?dt_id=0$/);
+  await expect.poll(async () => page.evaluate(() => localStorage.getItem('shopify_discount_code'))).toBe('RENEWEDAPPROACH');
+});
+
+test('production Collabs QR slug LISA redirects and stores discount', async ({ page }) => {
+  await page.goto('/LISA?utm_source=collabs');
+
+  await expect(page).toHaveURL(/\/\?utm_source=collabs$/);
+  await expect.poll(async () => page.evaluate(() => localStorage.getItem('shopify_discount_code'))).toBe('LISA');
 });

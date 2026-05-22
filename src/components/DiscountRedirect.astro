@@ -1,0 +1,69 @@
+---
+export interface Props {
+  code?: string;
+}
+
+const { code = '' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Applying discount</title>
+  </head>
+  <body>
+    <p>Applying discount...</p>
+
+    <script define:vars={{ fallbackCode: code }}>
+      const DISCOUNT_STORAGE_KEY = 'shopify_discount_code';
+
+      function sanitizeDiscountCode(value) {
+        return value.trim().replace(/[^A-Za-z0-9_-]/g, '').slice(0, 128);
+      }
+
+      function getDiscountCode() {
+        const params = new URLSearchParams(window.location.search);
+        const queryCode = params.get('code') || params.get('discount');
+        if (queryCode) return sanitizeDiscountCode(queryCode);
+
+        const pathMatch = window.location.pathname.match(/^\/discount\/([^/?#]+)/);
+        if (pathMatch?.[1]) return sanitizeDiscountCode(decodeURIComponent(pathMatch[1]));
+
+        return sanitizeDiscountCode(fallbackCode);
+      }
+
+      function getRedirectUrl() {
+        const current = new URL(window.location.href);
+        const requestedRedirect = current.searchParams.get('redirect') || '/';
+        let target;
+
+        try {
+          target = new URL(requestedRedirect, window.location.origin);
+        } catch {
+          target = new URL('/', window.location.origin);
+        }
+
+        if (target.origin !== window.location.origin) {
+          target = new URL('/', window.location.origin);
+        }
+
+        current.searchParams.forEach((value, key) => {
+          if (['code', 'discount', 'redirect'].includes(key)) return;
+          if (!target.searchParams.has(key)) target.searchParams.set(key, value);
+        });
+
+        return target.href;
+      }
+
+      const discountCode = getDiscountCode();
+      if (discountCode) {
+        localStorage.setItem(DISCOUNT_STORAGE_KEY, discountCode);
+      }
+
+      window.location.replace(getRedirectUrl());
+    </script>
+  </body>
+</html>

@@ -6,6 +6,7 @@ import {
   normalizeCheckoutUrl,
   parseCart,
   removeFromCart,
+  updateCartDiscountCodes,
   updateCartItem,
 } from '../../src/lib/cart-client';
 import { rawCart, sellingPlanId, variantId } from '../fixtures/shopify';
@@ -83,6 +84,18 @@ describe('Shopify cart API utilities', () => {
     mockFetch({ data: { cartLinesUpdate: { cart: rawCart(1) } } });
     const cart = await updateCartItem('gid://shopify/Cart/cart-1', 'gid://shopify/CartLine/line-1', 1);
     expect(cart.totalQuantity).toBe(1);
+  });
+
+  it('updates Shopify cart discount codes', async () => {
+    const fetchMock = mockFetch({ data: { cartDiscountCodesUpdate: { cart: rawCart(1) } } });
+
+    await updateCartDiscountCodes('gid://shopify/Cart/cart-1', ['COLLAB10']);
+    const request = JSON.parse(String(fetchMock.mock.calls[0][1]?.body));
+
+    expect(request.variables).toEqual({
+      cartId: 'gid://shopify/Cart/cart-1',
+      discountCodes: ['COLLAB10'],
+    });
   });
 
   it('removes a line item on success and surfaces failure', async () => {

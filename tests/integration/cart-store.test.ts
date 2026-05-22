@@ -12,6 +12,7 @@ function mockApi() {
     )),
     removeFromCart: vi.fn(async () => cartFixture(0)),
     updateCartItem: vi.fn(async (_cartId: string, _lineId: string, quantity: number) => cartFixture(quantity)),
+    updateCartDiscountCodes: vi.fn(async () => cartFixture(1)),
   };
 }
 
@@ -74,6 +75,27 @@ describe('cart store integration behavior', () => {
 
     expect(api.getCart).toHaveBeenCalledWith('gid://shopify/Cart/cart-1');
     expect(store.totalQuantity).toBe(1);
+  });
+
+  it('applies pending Collabs discount codes to restored carts', async () => {
+    localStorage.setItem('shopify_cart_id', 'gid://shopify/Cart/cart-1');
+    localStorage.setItem('shopify_discount_code', 'COLLAB10');
+    const api = mockApi();
+    const store = createCartStore(api);
+
+    await store.init();
+
+    expect(api.updateCartDiscountCodes).toHaveBeenCalledWith('gid://shopify/Cart/cart-1', ['COLLAB10']);
+  });
+
+  it('applies pending Collabs discount codes after adding an item', async () => {
+    localStorage.setItem('shopify_discount_code', 'COLLAB10');
+    const api = mockApi();
+    const store = createCartStore(api);
+
+    await store.addItem(variantId, 1);
+
+    expect(api.updateCartDiscountCodes).toHaveBeenCalledWith('gid://shopify/Cart/cart-1', ['COLLAB10']);
   });
 
   it('updates cart quantity correctly', async () => {

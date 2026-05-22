@@ -5,10 +5,12 @@ import {
   createCart,
   getCart,
   removeFromCart,
+  updateCartDiscountCodes,
   updateCartItem,
 } from './cart-client';
 
 const CART_STORAGE_KEY = 'shopify_cart_id';
+const DISCOUNT_STORAGE_KEY = 'shopify_discount_code';
 
 const fmt = (amount: string) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(parseFloat(amount) || 0);
@@ -20,6 +22,7 @@ export interface CartApi {
   addLinesToCart: typeof addLinesToCart;
   removeFromCart: typeof removeFromCart;
   updateCartItem: typeof updateCartItem;
+  updateCartDiscountCodes: typeof updateCartDiscountCodes;
 }
 
 export function createCartStore(api: CartApi = {
@@ -29,6 +32,7 @@ export function createCartStore(api: CartApi = {
   addLinesToCart,
   removeFromCart,
   updateCartItem,
+  updateCartDiscountCodes,
 }) {
   return {
     isOpen: false,
@@ -39,6 +43,22 @@ export function createCartStore(api: CartApi = {
     totalAmount: '0.00',
     checkoutUrl: '',
     errorMessage: '',
+
+    getPendingDiscountCode() {
+      return localStorage.getItem(DISCOUNT_STORAGE_KEY)?.trim() || '';
+    },
+
+    async applyPendingDiscountCode() {
+      const discountCode = this.getPendingDiscountCode();
+      if (!this.id || !discountCode) return;
+
+      try {
+        const cart = await api.updateCartDiscountCodes(this.id, [discountCode]);
+        this.applyCart(cart);
+      } catch {
+        localStorage.removeItem(DISCOUNT_STORAGE_KEY);
+      }
+    },
 
     applyCart(cart: Cart) {
       this.id = cart.id;
@@ -56,6 +76,7 @@ export function createCartStore(api: CartApi = {
           const cart = await api.getCart(saved);
           if (cart) {
             this.applyCart(cart);
+            await this.applyPendingDiscountCode();
             return;
           }
         } catch {
@@ -66,6 +87,7 @@ export function createCartStore(api: CartApi = {
         const cart = await api.createCart();
         this.applyCart(cart);
         localStorage.setItem(CART_STORAGE_KEY, cart.id);
+        await this.applyPendingDiscountCode();
       } catch {
         this.errorMessage = 'Cart is temporarily unavailable. Please try again.';
       }
@@ -85,6 +107,7 @@ export function createCartStore(api: CartApi = {
           ? await api.addToCart(this.id, variantId, quantity, sellingPlanId)
           : await api.addToCart(this.id, variantId, quantity);
         this.applyCart(cart);
+        await this.applyPendingDiscountCode();
         this.isOpen = true;
       } catch {
         this.errorMessage = 'We could not add that item to your cart. Please try again.';
@@ -109,6 +132,7 @@ export function createCartStore(api: CartApi = {
       try {
         const cart = await api.addLinesToCart(this.id, validLines);
         this.applyCart(cart);
+        await this.applyPendingDiscountCode();
         this.isOpen = options.openCart ?? true;
       } catch {
         this.errorMessage = 'We could not add those items to your cart. Please try again.';

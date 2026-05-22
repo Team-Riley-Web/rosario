@@ -6,6 +6,11 @@
   NODE_VERSION = "22"
 
 [[redirects]]
+  from = "/discount/*"
+  to = "/discount/index.html"
+  status = "200"
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = "200"

@@ -63,6 +63,7 @@ export function createCartStore(api: CartApi = {
     async applyPendingDiscountCode() {
       const discountCode = this.getPendingDiscountCode();
       if (!this.id || !discountCode) return;
+      if (this.totalQuantity < 1) return;
 
       try {
         const cart = await api.updateCartDiscountCodes(this.id, [discountCode]);
@@ -73,7 +74,7 @@ export function createCartStore(api: CartApi = {
         cart.checkoutUrl = appendDiscountToCheckoutUrl(cart.checkoutUrl, discountCode);
         this.applyCart(cart);
       } catch {
-        localStorage.removeItem(DISCOUNT_STORAGE_KEY);
+        this.checkoutUrl = appendDiscountToCheckoutUrl(this.checkoutUrl, discountCode);
       }
     },
 

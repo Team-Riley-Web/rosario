@@ -4,7 +4,7 @@ import alpinejs from '@astrojs/alpinejs';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://cfcskincare.netlify.app',
+  site: 'https://cfcskincare.shop',
   integrations: [
     tailwind(),
     alpinejs({ entrypoint: '/src/entrypoint' }),

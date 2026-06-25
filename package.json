@@ -1,5 +1,5 @@
 {
-  "name": "cfc-skincare",
+  "name": "astro-shopify-starter",
   "type": "module",
   "version": "0.1.0",
   "scripts": {
@@ -10,7 +10,7 @@
     "astro": "astro",
     "test": "vitest",
     "test:unit": "vitest run",
-    "test:e2e": "SHOPIFY_USE_MOCKS=true PUBLIC_SHOPIFY_USE_MOCKS=true npm run build && playwright test",
+    "test:e2e": "SHOPIFY_USE_MOCKS=true PUBLIC_SHOPIFY_USE_MOCKS=true SHOPIFY_STORE_DOMAIN=demo-store.myshopify.com PUBLIC_SHOPIFY_STORE_DOMAIN=demo-store.myshopify.com SHOPIFY_CHECKOUT_DOMAIN=demo-store.myshopify.com PUBLIC_SHOPIFY_CHECKOUT_DOMAIN=demo-store.myshopify.com HEADLESS_DOMAINS=demo-headless.example PUBLIC_HEADLESS_DOMAINS=demo-headless.example npm run build && playwright test",
     "test:ci": "npm run test:unit && npm run test:e2e"
   },
   "dependencies": {

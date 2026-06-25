@@ -12,7 +12,7 @@ const image = product.images.edges[0]?.node;
 const variant = product.variants.edges[0]?.node;
 const price = formatPrice(product.priceRange.minVariantPrice.amount);
 const productPageUrl = `/products/${product.handle}`;
-const step = product.tags.find(t => ['cleanse','treat','protect'].includes(t.toLowerCase()));
+const primaryTag = product.tags[0];
 ---
 
 <article
@@ -33,13 +33,13 @@ const step = product.tags.find(t => ['cleanse','treat','protect'].includes(t.toL
       />
     ) : (
       <div class="w-full h-full flex items-center justify-center">
-        <span class="font-display text-4xl text-rule">CFC</span>
+        <span class="font-display text-4xl text-rule">Product</span>
       </div>
     )}
 
-    {step && (
+    {primaryTag && (
       <span class="absolute top-4 left-4 bg-white text-gold-deep font-mono text-[9px] tracking-[0.12em] uppercase px-2 py-1">
-        {step}
+        {primaryTag}
       </span>
     )}
     {!product.availableForSale && (
@@ -64,7 +64,7 @@ const step = product.tags.find(t => ['cleanse','treat','protect'].includes(t.toL
     <div class="flex items-center justify-between mt-auto">
       <span class="font-display text-[20px] font-normal text-ink">{price}</span>
 
-      {product.availableForSale && variant ? (
+      {variant ? (
         <button
           @click={`if (!adding && !added) {
             adding = true;
@@ -75,15 +75,15 @@ const step = product.tags.find(t => ['cleanse','treat','protect'].includes(t.toL
           }`}
           :class="added ? 'bg-ink text-white border-ink' : 'bg-white text-ink border-ink hover:bg-ink hover:text-white'"
           class="font-mono text-[9px] tracking-[0.12em] uppercase border px-3 py-2 transition-all duration-200"
-          :disabled="adding"
+          disabled={!product.availableForSale || undefined}
         >
-          <span x-show="!adding && !added">Add to Cart</span>
+          <span x-show="!adding && !added">{product.availableForSale ? 'Add to Cart' : 'Sold Out'}</span>
           <span x-show="adding">Adding…</span>
           <span x-show="added">Added ✓</span>
         </button>
       ) : (
         <a
-          href={`https://www.cfcskincare.shop/products/${product.handle}`}
+          href={productPageUrl}
           class="font-mono text-[9px] tracking-[0.12em] uppercase border border-rule text-ink-soft px-3 py-2 hover:border-ink hover:text-ink transition-colors duration-200"
         >
           View Product

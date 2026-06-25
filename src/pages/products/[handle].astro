@@ -31,11 +31,8 @@ const firstAvailablePrice = firstAvailableVariant?.price.amount ? formatPrice(fi
 const hasSellingPlans = variants.some((variant) => (variant.sellingPlanAllocations?.edges.length ?? 0) > 0);
 
 function getStep(p: ShopifyProductDetail): { label: string; num: string } | null {
-  const text = [p.title, ...p.tags, ...p.collections.edges.map(e => e.node.title)].join(' ').toLowerCase();
-  if (text.includes('cleanser') || text.includes('cleanse')) return { label: 'Cleanse', num: '01' };
-  if (text.includes('spf') || text.includes('sunscreen') || text.includes('sun protection')) return { label: 'Protect', num: '03' };
-  if (text.includes('serum') || text.includes('moistur') || text.includes('treat') || text.includes('retinol') || text.includes('eye') || text.includes('firm') || text.includes('scrub') || text.includes('serum')) return { label: 'Treat', num: '02' };
-  return null;
+  const label = p.tags[0] || p.collections.edges[0]?.node.title;
+  return label ? { label, num: '01' } : null;
 }
 const step = getStep(product);
 const productSellingPlans = product.sellingPlanGroups?.edges.flatMap(({ node: group }) => (
@@ -72,21 +69,19 @@ const sellingPlans = Array.from(
 ).sort((a, b) => {
   const score = (plan: { groupName: string; originalName: string }) => {
     const text = `${plan.groupName} ${plan.originalName}`.toLowerCase();
-    return text.includes('new sign') || text.includes('black friday') || text.includes('subscription for skincare') ? 0 : 1;
+    return text.includes('subscribe') || text.includes('subscription') ? 0 : 1;
   };
   return score(a) - score(b);
 });
 const displayPlanName = (plan: { groupName: string; originalName: string }, discount: number) => {
   const text = `${plan.groupName} ${plan.originalName}`.toLowerCase();
-  if (text.includes('new sign') || text.includes('black friday') || discount >= 25) {
-    return 'New sign up Subscription for skincare';
-  }
-  return 'Subscriptions for skin care';
+  if (plan.originalName) return plan.originalName;
+  if (text.includes('subscribe') || text.includes('subscription') || discount > 0) return 'Subscribe and save';
+  return 'Subscription';
 };
 const displayDiscount = (plan: { groupName: string; originalName: string }, discount: number) => {
-  const text = `${plan.groupName} ${plan.originalName}`.toLowerCase();
-  if (text.includes('new sign') || text.includes('black friday') || discount >= 25) return 'Save 30%';
-  return 'Save 15%';
+  if (discount > 0) return `Save ${discount}%`;
+  return 'Subscribe';
 };
 const variantsJson = JSON.stringify(variants.map(v => ({
   id: v.id,
@@ -117,8 +112,8 @@ const variantsJson = JSON.stringify(variants.map(v => ({
 ---
 
 <Layout
-  title={`${product.title} — CFC Skincare`}
-  description={product.description?.slice(0, 155) || 'Medical-grade, plant-based skincare by CFC.'}
+  title={`${product.title} — Astro Shopify Starter`}
+  description={product.description?.slice(0, 155) || 'Product details from the connected Shopify catalog.'}
   image={images[0]?.url}
 >
   <Nav position="sticky" />
@@ -163,7 +158,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
                 />
               )) : (
                 <div class="w-full h-full flex items-center justify-center">
-                  <span class="font-display text-5xl text-rule">CFC</span>
+                  <span class="font-display text-5xl text-rule">Product</span>
                 </div>
               )}
 
@@ -389,9 +384,9 @@ const variantsJson = JSON.stringify(variants.map(v => ({
             <!-- Trust indicators -->
             <div class="border-t border-rule mt-8 pt-7 space-y-3.5">
               {[
-                ['NP-C Formulated', 'Clinical knowledge, not a marketing department'],
-                ['Purity-Tested', 'Every batch, every time'],
-                ['Louisiana-Made', 'Local production, full quality control'],
+                ['Shopify Checkout', 'Secure checkout handled by Shopify'],
+                ['Cart Sync', 'Cart state is powered by Storefront API mutations'],
+                ['Reusable Template', 'Customize these trust badges for each store'],
               ].map(([label, desc]) => (
                 <div class="flex items-start gap-3">
                   <div class="shrink-0 flex items-center justify-center mt-[3px] w-[14px] h-[14px] border border-gold rounded-full">

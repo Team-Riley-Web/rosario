@@ -7,21 +7,21 @@ export const sellingPlanId = 'gid://shopify/SellingPlan/3001';
 
 export const productFixture: ShopifyProduct = {
   id: 'gid://shopify/Product/1001',
-  title: 'CFC Gentle Cleanser',
-  handle: 'gentle-cleanser',
-  description: 'Gentle cleanser fixture',
+  title: 'Starter Ceramic Mug',
+  handle: 'ceramic-mug',
+  description: 'Starter product fixture',
   availableForSale: true,
-  tags: ['Cleanse'],
+  tags: ['Featured'],
   priceRange: { minVariantPrice: { amount: '28.00', currencyCode: 'USD' } },
-  images: { edges: [{ node: { url: 'https://cdn.example.com/cleanser.jpg', altText: 'Cleanser bottle' } }] },
+  images: { edges: [{ node: { url: 'https://cdn.example.com/product.jpg', altText: 'Product image' } }] },
   variants: { edges: [{ node: { id: variantId, title: 'Default Title', price: { amount: '28.00' } } }] },
-  collections: { edges: [{ node: { title: 'Cleanse' } }] },
+  collections: { edges: [{ node: { title: 'Featured' } }] },
 };
 
 export function rawCart(quantity = 1, id = 'gid://shopify/Cart/cart-1') {
   return {
     id,
-    checkoutUrl: 'https://cfcskincare.myshopify.com/checkouts/cn/test',
+    checkoutUrl: 'https://demo-store.myshopify.com/checkouts/cn/test',
     discountCodes: [],
     totalQuantity: quantity,
     lines: {
@@ -35,9 +35,9 @@ export function rawCart(quantity = 1, id = 'gid://shopify/Cart/cart-1') {
             title: 'Default Title',
             price: { amount: '28.00', currencyCode: 'USD' },
             product: {
-              title: 'CFC Gentle Cleanser',
-              handle: 'gentle-cleanser',
-              images: { edges: [{ node: { url: 'https://cdn.example.com/cleanser.jpg', altText: 'Cleanser bottle' } }] },
+              title: 'Starter Ceramic Mug',
+              handle: 'ceramic-mug',
+              images: { edges: [{ node: { url: 'https://cdn.example.com/product.jpg', altText: 'Product image' } }] },
             },
           },
         },
@@ -50,7 +50,7 @@ export function rawCart(quantity = 1, id = 'gid://shopify/Cart/cart-1') {
 export function cartFixture(quantity = 1): Cart {
   return {
     id: 'gid://shopify/Cart/cart-1',
-    checkoutUrl: 'https://cfcskincare.myshopify.com/checkouts/cn/test',
+    checkoutUrl: 'https://demo-store.myshopify.com/checkouts/cn/test',
     discountCodes: [],
     totalQuantity: quantity,
     totalAmount: (28 * quantity).toFixed(2),
@@ -60,10 +60,10 @@ export function cartFixture(quantity = 1): Cart {
       variantId,
       variantTitle: 'Default Title',
       price: '28.00',
-      productTitle: 'CFC Gentle Cleanser',
-      productHandle: 'gentle-cleanser',
-      imageUrl: 'https://cdn.example.com/cleanser.jpg',
-      imageAlt: 'Cleanser bottle',
+      productTitle: 'Starter Ceramic Mug',
+      productHandle: 'ceramic-mug',
+      imageUrl: 'https://cdn.example.com/product.jpg',
+      imageAlt: 'Product image',
       sellingPlanId: '',
       sellingPlanName: '',
     }] : [],

@@ -22,12 +22,12 @@ describe('Shopify product utilities', () => {
 
     expect(products[0]).toMatchObject({
       id: productFixture.id,
-      title: 'CFC Gentle Cleanser',
-      handle: 'gentle-cleanser',
+      title: 'Starter Ceramic Mug',
+      handle: 'ceramic-mug',
       availableForSale: true,
     });
     expect(products[0].priceRange.minVariantPrice).toEqual({ amount: '28.00', currencyCode: 'USD' });
-    expect(products[0].images.edges[0].node.url).toContain('cleanser.jpg');
+    expect(products[0].images.edges[0].node.url).toContain('product.jpg');
   });
 
   it('handles variant IDs without stripping Storefront gid values', async () => {
@@ -39,7 +39,7 @@ describe('Shopify product utilities', () => {
   });
 
   it('returns products from the featured-collection Shopify collection', async () => {
-    const handles = ['apple-stem-wrinkle-eraser', 'color-correction-c-e-serum', 'nad-bamboo-firming-cleanser'];
+    const handles = ['desk-notebook', 'gift-card', 'canvas-pouch'];
     const featuredProducts = handles.map((handle, index) => ({
       ...productFixture,
       id: `gid://shopify/Product/featured-${index}`,

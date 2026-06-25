@@ -80,54 +80,54 @@ describe('cart store integration behavior', () => {
     expect(store.totalQuantity).toBe(1);
   });
 
-  it('applies pending Collabs discount codes to restored carts', async () => {
+  it('applies pending Discount codes to restored carts', async () => {
     localStorage.setItem('shopify_cart_id', 'gid://shopify/Cart/cart-1');
-    localStorage.setItem('shopify_discount_code', 'COLLAB10');
+    localStorage.setItem('shopify_discount_code', 'WELCOME10');
     const api = mockApi();
     const store = createCartStore(api);
 
     await store.init();
 
-    expect(api.updateCartDiscountCodes).toHaveBeenCalledWith('gid://shopify/Cart/cart-1', ['COLLAB10']);
-    expect(store.checkoutUrl).toContain('discount=COLLAB10');
+    expect(api.updateCartDiscountCodes).toHaveBeenCalledWith('gid://shopify/Cart/cart-1', ['WELCOME10']);
+    expect(store.checkoutUrl).toContain('discount=WELCOME10');
   });
 
-  it('applies pending Collabs discount codes after adding an item', async () => {
-    localStorage.setItem('shopify_discount_code', 'COLLAB10');
+  it('applies pending Discount codes after adding an item', async () => {
+    localStorage.setItem('shopify_discount_code', 'WELCOME10');
     const api = mockApi();
     const store = createCartStore(api);
 
     await store.addItem(variantId, 1);
 
-    expect(api.updateCartDiscountCodes).toHaveBeenCalledWith('gid://shopify/Cart/cart-1', ['COLLAB10']);
-    expect(store.checkoutUrl).toContain('discount=COLLAB10');
+    expect(api.updateCartDiscountCodes).toHaveBeenCalledWith('gid://shopify/Cart/cart-1', ['WELCOME10']);
+    expect(store.checkoutUrl).toContain('discount=WELCOME10');
   });
 
-  it('keeps pending Collabs discount codes when initializing an empty cart', async () => {
-    localStorage.setItem('shopify_discount_code', 'ALAINA');
+  it('keeps pending Discount codes when initializing an empty cart', async () => {
+    localStorage.setItem('shopify_discount_code', 'FALL');
     const api = mockApi();
     const store = createCartStore(api);
 
     await store.init();
 
     expect(api.updateCartDiscountCodes).not.toHaveBeenCalled();
-    expect(localStorage.getItem('shopify_discount_code')).toBe('ALAINA');
+    expect(localStorage.getItem('shopify_discount_code')).toBe('FALL');
   });
 
-  it('keeps pending Collabs discount codes available if Shopify rejects them before checkout', async () => {
-    localStorage.setItem('shopify_discount_code', 'ALAINA');
+  it('keeps pending Discount codes available if Shopify rejects them before checkout', async () => {
+    localStorage.setItem('shopify_discount_code', 'FALL');
     const api = mockApi();
     api.updateCartDiscountCodes.mockResolvedValueOnce({
       ...cartFixture(1),
-      discountCodes: [{ code: 'ALAINA', applicable: false }],
+      discountCodes: [{ code: 'FALL', applicable: false }],
     });
     const store = createCartStore(api);
 
     await store.addItem(variantId, 1);
 
-    expect(api.updateCartDiscountCodes).toHaveBeenCalledWith('gid://shopify/Cart/cart-1', ['ALAINA']);
-    expect(localStorage.getItem('shopify_discount_code')).toBe('ALAINA');
-    expect(store.checkoutUrl).toContain('discount=ALAINA');
+    expect(api.updateCartDiscountCodes).toHaveBeenCalledWith('gid://shopify/Cart/cart-1', ['FALL']);
+    expect(localStorage.getItem('shopify_discount_code')).toBe('FALL');
+    expect(store.checkoutUrl).toContain('discount=FALL');
   });
 
   it('updates cart quantity correctly', async () => {

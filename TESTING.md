@@ -23,10 +23,10 @@ npm run test:ci
 Use these environment variables in CI:
 
 ```bash
-SHOPIFY_STORE_DOMAIN=cfcskincare.myshopify.com
+SHOPIFY_STORE_DOMAIN=demo-store.myshopify.com
 SHOPIFY_API_VERSION=2024-01
 SHOPIFY_STOREFRONT_TOKEN=<test token>
-PUBLIC_SHOPIFY_STORE_DOMAIN=cfcskincare.myshopify.com
+PUBLIC_SHOPIFY_STORE_DOMAIN=demo-store.myshopify.com
 PUBLIC_SHOPIFY_API_VERSION=2024-01
 PUBLIC_SHOPIFY_STOREFRONT_TOKEN=<test token>
 ```

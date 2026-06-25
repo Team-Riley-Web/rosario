@@ -1,360 +1,65 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
-import { Image } from 'astro:assets';
-import founderImg from '../assets/images/brittani.jpg';
-import groupImg from '../assets/images/group2.jpg';
-import group2Img from '../assets/images/protect2.jpg';
-import bottleImg from '../assets/images/bottle.jpg';
 ---
 
 <Layout
-  title="Contact CFC Skincare — Skin Consultations & Support"
-  description="Contact CFC Skincare for product guidance, skin consultations, order support, and local pickup questions."
+  title="Contact — Astro Shopify Starter"
+  description="A starter contact page with a Netlify-ready form."
 >
   <Nav />
-
   <main>
-    <section class="bg-ink pt-[160px] pb-[100px] relative overflow-hidden">
-      <div class="absolute inset-0 hidden lg:block">
-        <Image
-          src={bottleImg}
-          alt="CFC Skincare cleanser bottle"
-          class="absolute inset-y-0 right-0 w-[58%] h-full object-cover object-center"
-          widths={[900, 1300, 1800, 2200]}
-          sizes="58vw"
-          loading="eager"
-        />
-        <div class="absolute inset-0" style="background: linear-gradient(90deg, oklch(13% 0.010 255) 0%, oklch(13% 0.010 255) 42%, rgba(18,21,25,0.72) 66%, rgba(18,21,25,0.28) 100%);"></div>
+    <section class="bg-ink px-10 pb-24 pt-40 text-white">
+      <div class="mx-auto max-w-[960px]">
+        <div class="mb-8 flex items-center gap-4">
+          <div class="h-px w-6 bg-gold"></div>
+          <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">Contact</span>
+        </div>
+        <h1 class="mb-7 font-display text-[48px] font-light leading-none tracking-normal md:text-[76px]">
+          Starter contact form.
+        </h1>
+        <p class="max-w-[620px] font-sans text-[16px] font-light leading-[1.8] text-white/65">
+          Replace this page with the target store's support, wholesale, press, or service workflow.
+        </p>
       </div>
-      <div class="max-w-[1440px] mx-auto px-6 sm:px-10 relative z-10">
-        <div class="reveal max-w-[760px]">
-          <div class="flex items-center gap-4 mb-8">
-            <div class="h-px bg-gold w-6"></div>
-            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Contact CFC</span>
-          </div>
-          <h1
-            class="font-display font-light text-white leading-[1.0] tracking-[-0.02em] mb-8"
-            style="font-size: clamp(52px, 6vw, 92px);"
-          >
-            Start with a real conversation.
-          </h1>
-          <p class="font-sans font-light text-[16px] leading-[1.75] max-w-[560px]" style="color: rgba(255,255,255,0.58);">
-            Tell us what your skin is doing, what you have already tried, and where you want help. Product guidance, routine support, order questions, and local pickup details all start here.
+    </section>
+
+    <section class="bg-parchment px-10 py-24">
+      <div class="mx-auto grid max-w-[1120px] gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+        <aside>
+          <h2 class="mb-5 font-display text-[34px] font-light leading-tight text-ink">Keep the form or wire in your helpdesk.</h2>
+          <p class="font-sans text-[14px] font-light leading-[1.8] text-ink-soft">
+            The default form is Netlify-compatible. Update fields, routing, and copy before using this in a production storefront.
           </p>
-        </div>
+        </aside>
 
-        <div class="reveal mt-14 overflow-hidden aspect-[16/10] border border-[rgba(255,255,255,0.08)] lg:hidden">
-          <Image
-            src={bottleImg}
-            alt="CFC Skincare cleanser bottle"
-            class="w-full h-full object-cover object-center"
-            widths={[640, 960, 1280]}
-            sizes="100vw"
-          />
-        </div>
-      </div>
-      <div class="absolute bottom-0 inset-x-0 h-px" style="background: rgba(255,255,255,0.06);"></div>
-    </section>
+        <form
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="grid gap-5 border border-rule bg-white p-6 sm:p-10"
+        >
+          <input type="hidden" name="form-name" value="contact" />
+          <p class="hidden"><label>Do not fill this out: <input name="bot-field" /></label></p>
 
-    <section class="bg-white py-[70px]">
-      <div class="max-w-[1440px] mx-auto px-6 sm:px-10">
-        <div class="grid grid-cols-1 md:grid-cols-[7fr_5fr] gap-px bg-rule border border-rule">
-          <div class="reveal-left bg-white overflow-hidden aspect-[16/9] md:aspect-[21/10]">
-            <Image
-              src={groupImg}
-              alt="CFC Skincare products and consultation space"
-              class="w-full h-full object-cover object-center"
-              widths={[720, 1080, 1440, 2000]}
-              sizes="(max-width: 768px) 100vw, 58vw"
-            />
-          </div>
-          <div class="reveal-right bg-parchment p-8 sm:p-10 lg:p-12 flex flex-col justify-center">
-            <div class="flex items-center gap-4 mb-8">
-              <div class="h-px bg-gold w-6"></div>
-              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Product Guidance</span>
-            </div>
-            <h2 class="font-display font-light text-ink leading-[1.08] tracking-[-0.01em] mb-5" style="font-size: clamp(30px, 3vw, 44px);">
-              Share the details. We will help you choose the right next step.
-            </h2>
-            <p class="font-sans font-light text-[14px] leading-[1.8] text-ink-soft">
-              Product matching works best when we know your current routine, main concern, sensitivities, and whether you need order or pickup support.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-parchment py-[110px]">
-      <div class="max-w-[1440px] mx-auto px-6 sm:px-10">
-        <div class="grid grid-cols-1 lg:grid-cols-[4fr_8fr] gap-14 lg:gap-24 items-start">
-          <aside class="reveal-left lg:sticky lg:top-28">
-            <div class="flex items-center gap-4 mb-7">
-              <div class="h-px bg-gold w-6"></div>
-              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">How We Can Help</span>
-            </div>
-
-            <h2 class="font-display font-light text-ink leading-[1.08] tracking-[-0.01em] mb-7" style="font-size: clamp(34px, 3.4vw, 54px);">
-              Product advice without the guessing.
-            </h2>
-
-            <p class="font-sans font-light text-[14px] text-ink-soft leading-[1.8] mb-9 max-w-[420px]">
-              Use the form for skin consultations, product matching, order support, local pickup questions, wholesale inquiries, or press requests.
-            </p>
-
-            <div class="border border-rule bg-white">
-              <div class="grid gap-5 items-start p-6 border-b border-rule" style="grid-template-columns: 64px 1fr;">
-                <Image
-                  src={founderImg}
-                  alt="Brittani, NP-C — Founder of CFC Skincare"
-                  class="object-cover object-top w-16 h-16"
-                  widths={[128]}
-                  sizes="64px"
-                />
-                <div>
-                  <p class="font-display text-[22px] font-normal text-ink leading-tight mb-1.5">Founder-led guidance</p>
-                  <p class="font-sans font-light text-[13px] leading-relaxed text-ink-soft">
-                    Messages are reviewed by the CFC team for practical, product-specific next steps.
-                  </p>
-                </div>
-              </div>
-
-              {[
-                ['Consultation cost', 'Free product guidance'],
-                ['Privacy', 'Skin details stay confidential'],
-                ['Order help', 'Include your order number'],
-              ].map(([label, value], i) => (
-                <div class={`p-5 ${i < 2 ? 'border-b border-rule' : ''}`}>
-                  <p class="font-mono text-[9px] tracking-[0.18em] uppercase text-gold mb-1.5">{label}</p>
-                  <p class="font-sans text-[14px] text-ink">{value}</p>
-                </div>
-              ))}
-            </div>
-          </aside>
-
-          <div class="reveal-right">
-            <form
-              name="contact"
-              method="POST"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              x-data="{ submitted: false, topic: '' }"
-              @submit.prevent="
-                fetch('/', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                  body: new URLSearchParams(new FormData($el)).toString()
-                }).then(() => { submitted = true; });
-              "
-              class="bg-white border border-rule p-6 sm:p-10 lg:p-14"
-            >
-              <input type="hidden" name="form-name" value="contact" />
-              <p class="hidden">
-                <label>Do not fill this out: <input name="bot-field" /></label>
-              </p>
-
-              <div x-show="submitted" class="text-center py-10">
-                <div class="w-16 h-16 bg-parchment flex items-center justify-center mx-auto mb-5">
-                  <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h3 class="font-display text-[28px] font-normal text-ink mb-2">Message received.</h3>
-                <p class="font-sans font-light text-[14px] text-ink-soft">We will respond within 1 business day.</p>
-              </div>
-
-              <div x-show="!submitted" class="space-y-6">
-                <div>
-                  <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold mb-3">Contact Form</p>
-                  <h2 class="font-display font-light text-ink leading-tight tracking-[-0.01em]" style="font-size: clamp(30px, 3vw, 44px);">
-                    Tell us what you need.
-                  </h2>
-                </div>
-
-                <div class="grid sm:grid-cols-2 gap-5">
-                  <div>
-                    <label for="first_name" class="block font-mono text-[9px] tracking-[0.2em] uppercase text-ink-soft mb-2">First Name</label>
-                    <input
-                      id="first_name"
-                      type="text"
-                      name="first_name"
-                      required
-                      autocomplete="given-name"
-                      class="w-full font-sans text-[14px] text-ink bg-parchment border border-rule transition-colors duration-200 focus:outline-none focus:border-gold"
-                      style="padding: 14px 16px;"
-                    />
-                  </div>
-                  <div>
-                    <label for="last_name" class="block font-mono text-[9px] tracking-[0.2em] uppercase text-ink-soft mb-2">Last Name</label>
-                    <input
-                      id="last_name"
-                      type="text"
-                      name="last_name"
-                      required
-                      autocomplete="family-name"
-                      class="w-full font-sans text-[14px] text-ink bg-parchment border border-rule transition-colors duration-200 focus:outline-none focus:border-gold"
-                      style="padding: 14px 16px;"
-                    />
-                  </div>
-                </div>
-
-                <div class="grid sm:grid-cols-2 gap-5">
-                  <div>
-                    <label for="email" class="block font-mono text-[9px] tracking-[0.2em] uppercase text-ink-soft mb-2">Email</label>
-                    <input
-                      id="email"
-                      type="email"
-                      name="email"
-                      required
-                      autocomplete="email"
-                      class="w-full font-sans text-[14px] text-ink bg-parchment border border-rule transition-colors duration-200 focus:outline-none focus:border-gold"
-                      style="padding: 14px 16px;"
-                    />
-                  </div>
-                  <div>
-                    <label for="phone" class="block font-mono text-[9px] tracking-[0.2em] uppercase text-ink-soft mb-2">Phone <span class="normal-case tracking-normal text-ink-soft">(optional)</span></label>
-                    <input
-                      id="phone"
-                      type="tel"
-                      name="phone"
-                      autocomplete="tel"
-                      class="w-full font-sans text-[14px] text-ink bg-parchment border border-rule transition-colors duration-200 focus:outline-none focus:border-gold"
-                      style="padding: 14px 16px;"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label for="topic" class="block font-mono text-[9px] tracking-[0.2em] uppercase text-ink-soft mb-2">Reason For Contact</label>
-                  <select
-                    id="topic"
-                    name="topic"
-                    required
-                    x-model="topic"
-                    class="w-full font-sans text-[14px] text-ink bg-parchment border border-rule transition-colors duration-200 focus:outline-none focus:border-gold appearance-none"
-                    style="padding: 14px 16px;"
-                  >
-                    <option value="">Select a topic...</option>
-                    <option>Skin Consultation</option>
-                    <option>Product Recommendation</option>
-                    <option>Order Support</option>
-                    <option>Local Pickup</option>
-                    <option>Wholesale Inquiry</option>
-                    <option>Press / Partnership</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-
-                <div x-show="topic === 'Skin Consultation' || topic === 'Product Recommendation'" class="grid sm:grid-cols-2 gap-5">
-                  <div>
-                    <label for="skin_concern" class="block font-mono text-[9px] tracking-[0.2em] uppercase text-ink-soft mb-2">Primary Skin Concern</label>
-                    <select
-                      id="skin_concern"
-                      name="skin_concern"
-                      class="w-full font-sans text-[14px] text-ink bg-parchment border border-rule transition-colors duration-200 focus:outline-none focus:border-gold appearance-none"
-                      style="padding: 14px 16px;"
-                    >
-                      <option value="">Select a concern...</option>
-                      <option>Pigmentation / Dark Spots</option>
-                      <option>Fine Lines & Wrinkles</option>
-                      <option>Dryness & Dehydration</option>
-                      <option>Rosacea / Redness</option>
-                      <option>Uneven Skin Tone</option>
-                      <option>Sagging / Loss of Firmness</option>
-                      <option>General Anti-Aging</option>
-                      <option>Not Sure</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label for="current_routine" class="block font-mono text-[9px] tracking-[0.2em] uppercase text-ink-soft mb-2">Current Routine</label>
-                    <input
-                      id="current_routine"
-                      type="text"
-                      name="current_routine"
-                      class="w-full font-sans text-[14px] text-ink bg-parchment border border-rule transition-colors duration-200 focus:outline-none focus:border-gold"
-                      style="padding: 14px 16px;"
-                      placeholder="Cleanser, serum, SPF..."
-                    />
-                  </div>
-                </div>
-
-                <div x-show="topic === 'Order Support'">
-                  <label for="order_number" class="block font-mono text-[9px] tracking-[0.2em] uppercase text-ink-soft mb-2">Order Number</label>
-                  <input
-                    id="order_number"
-                    type="text"
-                    name="order_number"
-                    class="w-full font-sans text-[14px] text-ink bg-parchment border border-rule transition-colors duration-200 focus:outline-none focus:border-gold"
-                    style="padding: 14px 16px;"
-                    placeholder="#1001"
-                  />
-                </div>
-
-                <div>
-                  <label for="message" class="block font-mono text-[9px] tracking-[0.2em] uppercase text-ink-soft mb-2">Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="6"
-                    required
-                    class="w-full font-sans text-[14px] text-ink bg-parchment border border-rule transition-colors duration-200 focus:outline-none focus:border-gold resize-none"
-                    style="padding: 14px 16px;"
-                    placeholder="Share the details that will help us respond well."
-                  ></textarea>
-                </div>
-
-                <button
-                  type="submit"
-                  class="w-full bg-ink text-white font-mono text-[11px] tracking-[0.2em] uppercase transition-colors duration-200 hover:bg-gold-deep"
-                  style="padding: 18px;"
-                >
-                  Send Message
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-white py-[110px]">
-      <div class="max-w-[1440px] mx-auto px-6 sm:px-10">
-        <div class="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-14 lg:gap-24 items-center">
-          <div class="reveal-left overflow-hidden aspect-[4/3]">
-            <Image
-              src={group2Img}
-              alt="CFC Skincare products and community"
-              class="w-full h-full object-cover"
-              widths={[640, 960, 1280]}
-              sizes="(max-width: 1024px) 100vw, 42vw"
-            />
-          </div>
-
-          <div class="reveal-right">
-            <div class="flex items-center gap-4 mb-7">
-              <div class="h-px bg-gold w-6"></div>
-              <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Before You Send</span>
-            </div>
-            <h2 class="font-display font-light text-ink leading-[1.08] tracking-[-0.01em] mb-8" style="font-size: clamp(34px, 3.4vw, 52px);">
-              A few details help us guide you faster.
-            </h2>
-
-            <div class="border-t border-rule">
-              {[
-                ['Skin guidance', 'Tell us your skin type, main concern, current routine, and anything your skin reacts to.'],
-                ['Order support', 'Include your order number and the email used at checkout.'],
-                ['Partnerships', 'Share your business, location, and what kind of collaboration you have in mind.'],
-              ].map(([title, copy]) => (
-                <div class="grid sm:grid-cols-[150px_1fr] gap-3 sm:gap-8 py-6 border-b border-rule">
-                  <p class="font-display text-[20px] font-normal text-ink">{title}</p>
-                  <p class="font-sans font-light text-[14px] leading-[1.75] text-ink-soft">{copy}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+          <label class="grid gap-2">
+            <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-soft">Name</span>
+            <input name="name" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold" />
+          </label>
+          <label class="grid gap-2">
+            <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-soft">Email</span>
+            <input type="email" name="email" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold" />
+          </label>
+          <label class="grid gap-2">
+            <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-soft">Message</span>
+            <textarea name="message" rows="6" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold"></textarea>
+          </label>
+          <button class="justify-self-start bg-ink px-7 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:bg-gold-deep">
+            Send Message
+          </button>
+        </form>
       </div>
     </section>
   </main>
-
 </Layout>

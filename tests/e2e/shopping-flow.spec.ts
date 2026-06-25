@@ -5,7 +5,7 @@ const storefrontPattern = '**/api/2024-01/graphql.json';
 function cart(quantity: number, discountCodes: Array<{ code: string; applicable: boolean }> = []) {
   return {
     id: 'gid://shopify/Cart/cart-1',
-    checkoutUrl: 'https://cfcskincare.shop/cart/c/test-checkout?_s=session-id&_y=visitor-id&key=checkout-key',
+    checkoutUrl: 'https://demo-headless.example/cart/c/test-checkout?_s=session-id&_y=visitor-id&key=checkout-key',
     discountCodes,
     totalQuantity: quantity,
     lines: {
@@ -18,9 +18,9 @@ function cart(quantity: number, discountCodes: Array<{ code: string; applicable:
             title: 'Default Title',
             price: { amount: '28.00', currencyCode: 'USD' },
             product: {
-              title: 'CFC Gentle Cleanser',
-              handle: 'gentle-cleanser',
-              images: { edges: [{ node: { url: '/favicon.png', altText: 'CFC Gentle Cleanser' } }] },
+              title: 'Starter Ceramic Mug',
+              handle: 'ceramic-mug',
+              images: { edges: [{ node: { url: '/favicon.svg', altText: 'Starter Ceramic Mug' } }] },
             },
           },
         },
@@ -32,10 +32,10 @@ function cart(quantity: number, discountCodes: Array<{ code: string; applicable:
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
-    document.cookie = 'cfc_mask_modal_dismissed=1; path=/; SameSite=Lax';
+    document.cookie = 'shopify_starter_modal_dismissed=1; path=/; SameSite=Lax';
   });
 
-  await page.route('https://cfcskincare.myshopify.com/checkouts/**', async route => {
+  await page.route('https://demo-store.myshopify.com/checkouts/**', async route => {
     await route.fulfill({
       contentType: 'text/html',
       body: '<!doctype html><title>Mock Shopify Checkout</title><h1>Mock Shopify Checkout</h1>',
@@ -87,18 +87,18 @@ test.beforeEach(async ({ page }) => {
 
 test('customer can shop through checkout handoff without payment', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle(/CFC Skincare/);
+  await expect(page).toHaveTitle(/Astro Shopify Starter/);
 
-  await page.getByRole('link', { name: /Shop Complete System/i }).click();
+  await page.getByRole('link', { name: /Shop All Products/i }).click();
   await expect(page).toHaveURL(/\/shop/);
 
-  const productLink = page.getByRole('link', { name: /CFC Gentle Cleanser/i }).first();
-  await expect(productLink).toHaveAttribute('href', /gentle-cleanser/);
+  const productLink = page.getByRole('link', { name: /Starter Ceramic Mug/i }).first();
+  await expect(productLink).toHaveAttribute('href', /ceramic-mug/);
 
   await page.getByRole('button', { name: /Add to Cart/i }).first().click();
   const dialog = page.getByRole('dialog', { name: /Shopping cart/i });
   await expect(dialog).toBeVisible();
-  await expect(page.getByText('CFC Gentle Cleanser').last()).toBeVisible();
+  await expect(page.getByText('Starter Ceramic Mug').last()).toBeVisible();
 
   await dialog.getByRole('button', { name: /Increase quantity/i }).click();
   await expect(dialog.locator('span.w-8')).toHaveText('2');
@@ -110,28 +110,28 @@ test('customer can shop through checkout handoff without payment', async ({ page
   await page.getByRole('button', { name: /Add to Cart/i }).first().click();
 
   const checkout = page.getByRole('link', { name: /^Checkout$/i });
-  await expect(checkout).toHaveAttribute('href', /cfcskincare\.myshopify\.com\/checkouts/);
+  await expect(checkout).toHaveAttribute('href', /demo-store.myshopify.com\/checkouts/);
   await page.getByRole('link', { name: /^Checkout$/i }).click();
-  await expect(page).toHaveURL(/cfcskincare\.myshopify\.com\/checkouts/);
+  await expect(page).toHaveURL(/demo-store.myshopify.com\/checkouts/);
 });
 
 test('product buy now goes to Shopify checkout in the same tab', async ({ page }) => {
-  await page.goto('/products/gentle-cleanser');
+  await page.goto('/products/ceramic-mug');
 
   const popupPromise = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null);
   await page.getByRole('button', { name: /^Buy Now$/i }).click();
 
-  await expect(page).toHaveURL(/cfcskincare\.myshopify\.com\/checkouts/);
+  await expect(page).toHaveURL(/demo-store.myshopify.com\/checkouts/);
   expect(await popupPromise).toBeNull();
 });
 
-test('Collabs discount links store discount and preserve tracking params', async ({ page }) => {
+test('Discount links store discount and preserve tracking params', async ({ page }) => {
   let appliedDiscountCodes: string[] = [];
 
-  await page.goto('/discount?code=COLLAB10&redirect=/shop&dt_id=0&utm_source=collabs');
+  await page.goto('/discount?code=WELCOME10&redirect=/shop&dt_id=0&utm_source=partner');
 
-  await expect(page).toHaveURL(/\/shop\?dt_id=0&utm_source=collabs$/);
-  await expect.poll(async () => page.evaluate(() => localStorage.getItem('shopify_discount_code'))).toBe('COLLAB10');
+  await expect(page).toHaveURL(/\/shop\?dt_id=0&utm_source=partner$/);
+  await expect.poll(async () => page.evaluate(() => localStorage.getItem('shopify_discount_code'))).toBe('WELCOME10');
 
   page.on('request', request => {
     if (!request.url().includes('/api/2024-01/graphql.json')) return;
@@ -144,30 +144,30 @@ test('Collabs discount links store discount and preserve tracking params', async
   await page.getByRole('button', { name: /Add to Cart/i }).first().click();
 
   await expect(page.getByRole('dialog', { name: /Shopping cart/i })).toBeVisible();
-  expect(appliedDiscountCodes).toEqual(['COLLAB10']);
-  await expect(page.getByRole('link', { name: /^Checkout$/i })).toHaveAttribute('href', /discount=COLLAB10/);
+  expect(appliedDiscountCodes).toEqual(['WELCOME10']);
+  await expect(page.getByRole('link', { name: /^Checkout$/i })).toHaveAttribute('href', /discount=WELCOME10/);
 });
 
-test('production Collabs QR slug RENEWEDAPPROACH redirects and stores discount', async ({ page }) => {
-  await page.goto('/discount?code=RENEWEDAPPROACH&dt_id=0');
+test('production discount slug WELCOME redirects and stores discount', async ({ page }) => {
+  await page.goto('/discount?code=WELCOME&dt_id=0');
 
   await expect(page).toHaveURL(/\/\?dt_id=0$/);
-  await expect.poll(async () => page.evaluate(() => localStorage.getItem('shopify_discount_code'))).toBe('RENEWEDAPPROACH');
+  await expect.poll(async () => page.evaluate(() => localStorage.getItem('shopify_discount_code'))).toBe('WELCOME');
 });
 
-test('production Collabs QR slug LISA redirects and stores discount', async ({ page }) => {
-  await page.goto('/discount?code=LISA&utm_source=collabs');
+test('production discount slug SPRING redirects and stores discount', async ({ page }) => {
+  await page.goto('/discount?code=SPRING&utm_source=partner');
 
   await expect(page.getByText('Applying discount')).toHaveCount(0);
-  await expect(page).toHaveURL(/\/\?utm_source=collabs$/);
-  await expect.poll(async () => page.evaluate(() => localStorage.getItem('shopify_discount_code'))).toBe('LISA');
+  await expect(page).toHaveURL(/\/\?utm_source=partner$/);
+  await expect.poll(async () => page.evaluate(() => localStorage.getItem('shopify_discount_code'))).toBe('SPRING');
 });
 
-test('additional production Collabs QR slugs redirect and store discounts', async ({ page }) => {
-  for (const code of ['TIMELESS', 'ALAINA', 'SAINTLYSKIN']) {
-    await page.goto(`/discount?code=${code}&utm_source=collabs`);
+test('additional production discount slugs redirect and store discounts', async ({ page }) => {
+  for (const code of ['SUMMER', 'FALL', 'WINTER']) {
+    await page.goto(`/discount?code=${code}&utm_source=partner`);
 
-    await expect(page).toHaveURL(/\/\?utm_source=collabs$/);
+    await expect(page).toHaveURL(/\/\?utm_source=partner$/);
     await expect.poll(async () => page.evaluate(() => localStorage.getItem('shopify_discount_code'))).toBe(code);
   }
 });

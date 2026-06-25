@@ -1,11 +1,15 @@
 ---
-import { Image } from 'astro:assets';
-import cfcLogo from '../assets/images/cfc-logo.png';
-
 export interface Props {
   position?: 'fixed' | 'sticky';
 }
 const { position = 'fixed' } = Astro.props;
+
+const accountHref = `https://${import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.myshopify.com'}/account`;
+const navLinks = [
+  ['Shop', '/shop'],
+  ['About', '/about'],
+  ['Contact', '/contact'],
+];
 ---
 
 <div
@@ -40,7 +44,7 @@ const { position = 'fixed' } = Astro.props;
         href="/shop"
         class="font-mono text-[10px] tracking-[0.18em] uppercase text-gold-light hover:underline underline-offset-2 transition-all duration-200"
       >
-        Subscribe &amp; Save 30% Off &mdash; Shop Now
+        Headless Shopify starter &mdash; connect your catalog in .env
       </a>
     </div>
   </div>
@@ -53,18 +57,11 @@ const { position = 'fixed' } = Astro.props;
 
     <!-- Logo — always visible -->
     <a href="/" class="flex items-center gap-3 shrink-0 z-10">
-      <Image
-        src={cfcLogo}
-        alt="CFC Skincare"
-        width={40}
-        height={40}
-        densities={[1, 2, 3]}
-        class="w-10 h-10 rounded-full object-cover shrink-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-      />
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink font-mono text-[11px] tracking-[0.18em] text-white">SS</span>
       <span
         class="hidden lg:block font-mono text-[11px] tracking-[0.22em] uppercase transition-colors duration-300"
         :class="scrolled ? 'text-ink' : 'text-white'"
-      >CFC Skincare</span>
+      >Shopify Starter</span>
     </a>
 
     <!-- Desktop nav links — only shown once scrolled -->
@@ -78,12 +75,7 @@ const { position = 'fixed' } = Astro.props;
       x-transition:leave-end="opacity-0"
       class="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-10 list-none"
     >
-      {[
-        ['Shop', '/shop'],
-        ['The System', '/systems'],
-        ['About', '/about'],
-        ['Contact', '/contact'],
-      ].map(([label, href]) => (
+      {navLinks.map(([label, href]) => (
         <li>
           <a
             href={href}
@@ -119,7 +111,7 @@ const { position = 'fixed' } = Astro.props;
             <path stroke-linecap="round" d="m21 21-4.35-4.35"/>
           </svg>
         </button>
-        <a href="https://www.cfcskincare.shop/account" class="text-ink-soft hover:text-ink transition-colors" aria-label="Account">
+        <a href={accountHref} class="text-ink-soft hover:text-ink transition-colors" aria-label="Account">
           <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
@@ -209,12 +201,7 @@ const { position = 'fixed' } = Astro.props;
     x-transition:leave-end="opacity-0"
     class="lg:hidden bg-white border-t border-rule px-6 pb-8 pt-4"
   >
-    {[
-      ['Shop', '/shop'],
-      ['The System', '/systems'],
-      ['About', '/about'],
-      ['Contact', '/contact'],
-    ].map(([label, href]) => (
+    {navLinks.map(([label, href]) => (
       <a
         href={href}
         @click="open=false"
@@ -225,7 +212,7 @@ const { position = 'fixed' } = Astro.props;
     ))}
     <div class="mt-5 flex gap-3">
       <a
-        href="https://www.cfcskincare.shop/account"
+        href={accountHref}
         class="flex-1 text-center py-3 border border-rule text-ink font-mono text-[10px] tracking-[0.18em] uppercase hover:border-ink transition-colors"
       >
         Account
@@ -297,7 +284,7 @@ const { position = 'fixed' } = Astro.props;
         >
           <template x-for="product in $store.search.results" :key="product.id">
             <a
-              :href="`https://www.cfcskincare.shop/products/${product.handle}`"
+              :href="`/products/${product.handle}`"
               @click="$store.search.close()"
               class="group block"
             >

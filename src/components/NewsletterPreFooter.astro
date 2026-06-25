@@ -1,4 +1,5 @@
 ---
+const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.myshopify.com';
 ---
 
 <section class="bg-parchment pb-24">
@@ -11,7 +12,7 @@
           Let's Stay in Touch
         </h2>
         <p class="font-sans font-light text-[14px] leading-[1.75] text-ink-soft max-w-[560px] mx-auto">
-          Be the first to know about new collections, exclusive offers, and skincare insights.
+          Be the first to know about new products, launches, and offers from the connected store.
         </p>
       </div>
 
@@ -42,7 +43,7 @@
   </div>
 </section>
 
-<script>
+<script define:vars={{ shopDomain }}>
   const form = document.getElementById('global-newsletter-form') as HTMLFormElement | null;
   const msg = document.getElementById('global-newsletter-msg');
 
@@ -58,7 +59,7 @@
     // mode: 'no-cors' sends the request as an opaque form post — same as a
     // native HTML form submission. Shopify processes it and adds the email to
     // the marketing list. We can't read the response, so we always show success.
-    await fetch('https://cfcskincare.myshopify.com/contact', {
+    await fetch(`https://${shopDomain}/contact`, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -71,7 +72,7 @@
     });
 
     if (msg) {
-      msg.textContent = 'You\'re in. Welcome to the CFC community.';
+      msg.textContent = 'You\'re in. Thanks for subscribing.';
       msg.classList.remove('hidden');
     }
     form.reset();

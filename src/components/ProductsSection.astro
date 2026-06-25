@@ -20,27 +20,15 @@ const products = providedProducts ?? (isFeatured ? await getFeaturedProducts() :
 const hasProducts = products.length > 0;
 
 const displayProducts = products;
-const defaultFilter = 'adult';
+const defaultFilter = 'all';
 const filters = [
-  { label: 'Adults', value: 'adult' },
-  { label: 'Teen', value: 'teen' },
-  { label: 'Swag', value: 'swag' },
   { label: 'Shop All', value: 'all' },
+  { label: 'Available', value: 'available' },
+  { label: 'Unavailable', value: 'unavailable' },
 ];
-const heading = isFeatured ? 'Featured collection.' : 'The complete system.';
-const ctaHref = isFeatured ? '/shop' : 'https://www.cfcskincare.shop/collections/all';
-const ctaLabel = isFeatured ? 'Shop Complete System' : 'View All Products';
-const ctaTarget = isFeatured ? undefined : '_blank';
-
-function getProductFilter(product: ShopifyProduct): 'adult' | 'teen' | 'swag' {
-  const handles = product.collections.edges.map(({ node }) => node.handle);
-  const titles = product.collections.edges.map(({ node }) => node.title.toLowerCase());
-  const collectionText = [...handles, ...titles].join(' ');
-
-  if (collectionText.includes('swag') || collectionText.includes('merch') || collectionText.includes('apparel')) return 'swag';
-  if (handles.includes('tween-and-teen-skin-care')) return 'teen';
-  return 'adult';
-}
+const heading = isFeatured ? 'Featured products.' : 'All products.';
+const ctaHref = '/shop';
+const ctaLabel = isFeatured ? 'Shop All Products' : 'Reset View';
 
 function getShopPageHref(page: number): string {
   return page === 1 ? '/shop' : `/shop/page/${page}`;
@@ -55,7 +43,7 @@ const productState = displayProducts.map((product, index) => {
   return {
     id: product.id,
     title: product.title,
-    category: getProductFilter(product),
+    category: product.availableForSale ? 'available' : 'unavailable',
     available: product.availableForSale,
     price: Number(product.priceRange.minVariantPrice.amount),
     bestSellingRank,
@@ -82,7 +70,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
       <div>
         <div class="flex items-center gap-4 mb-5">
           <div class="h-px bg-gold w-6"></div>
-          <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Shop CFC</span>
+          <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Shopify Catalog</span>
         </div>
         <h2
           class="font-display font-light text-ink leading-none tracking-[-0.02em]"
@@ -93,8 +81,6 @@ const lastVisibleIndex = firstVisibleIndex + 16;
       </div>
       <a
         href={ctaHref}
-        target={ctaTarget}
-        rel={isFeatured ? undefined : 'noopener'}
         class="link-arrow font-mono text-[10px] tracking-[0.18em] uppercase text-gold shrink-0"
       >
         {ctaLabel}
@@ -114,7 +100,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
         products: ${JSON.stringify(productState)},
         init() {
           const filter = new URLSearchParams(window.location.search).get('filter');
-          if (['adult', 'teen', 'swag', 'all'].includes(filter ?? '')) {
+          if (['all', 'available', 'unavailable'].includes(filter ?? '')) {
             this.active = filter;
           }
         },

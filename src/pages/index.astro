@@ -1,30 +1,53 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
-import TrustBar from '../components/TrustBar.astro';
-import ProblemSection from '../components/ProblemSection.astro';
-import SystemSection from '../components/SystemSection.astro';
 import ProductsSection from '../components/ProductsSection.astro';
-import VideoSection from '../components/VideoSection.astro';
-import OffersSection from '../components/OffersSection.astro';
-import AboutSection from '../components/AboutSection.astro';
-import TestimonialsSection from '../components/TestimonialsSection.astro';
-import ContactSection from '../components/ContactSection.astro';
 ---
 
 <Layout>
   <Nav />
   <main>
-    <Hero />
-    <TrustBar />
+    <section id="hero" class="relative flex min-h-[78vh] items-end bg-ink px-10 pb-16 pt-36 text-white lg:pb-24">
+      <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(135deg, rgba(255,255,255,0.18) 0, transparent 32%), radial-gradient(circle at 70% 20%, rgba(196,137,54,0.32), transparent 34%);"></div>
+      <div class="relative z-10 mx-auto grid w-full max-w-[1440px] gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+        <div>
+          <div class="mb-6 flex items-center gap-4">
+            <div class="h-px w-8 bg-gold"></div>
+            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-gold-light">Astro + Shopify</span>
+          </div>
+          <h1 class="font-display text-[52px] font-light leading-none tracking-normal md:text-[76px] lg:text-[96px]">
+            Headless storefront starter.
+          </h1>
+        </div>
+        <div class="max-w-[520px] lg:ml-auto">
+          <p class="mb-8 font-sans text-[16px] font-light leading-[1.8] text-white/75">
+            A clean starting point for new Astro Shopify builds: product listing, product detail pages, cart drawer, checkout handoff, search, discount routes, mocks, and tests.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="/shop" class="bg-white px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold-light">
+              Browse Products
+            </a>
+            <a href="/about" class="border border-white/25 px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:border-gold hover:text-gold-light">
+              View Setup Notes
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="bg-white px-10 py-14">
+      <div class="mx-auto grid max-w-[1440px] gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-3">
+        {[
+          ['Storefront API', 'Fetch products, variants, collections, and selling plans from Shopify.'],
+          ['Cart + Checkout', 'Use Shopify cart mutations and hand customers off to checkout.'],
+          ['Starter Tests', 'Run mocked unit, integration, and Playwright shopping-flow coverage.'],
+        ].map(([title, body]) => (
+          <div class="bg-white p-8">
+            <h2 class="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-gold">{title}</h2>
+            <p class="font-sans text-[14px] font-light leading-[1.7] text-ink-soft">{body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
     <ProductsSection />
-    <ProblemSection />
-    <SystemSection />
-    <OffersSection />
-    <VideoSection />
-    <AboutSection />
-    <TestimonialsSection />
-    <ContactSection />
   </main>
 </Layout>

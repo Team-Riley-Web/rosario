@@ -92,23 +92,23 @@ describe('Shopify cart API utilities', () => {
         cartDiscountCodesUpdate: {
           cart: {
             ...rawCart(1),
-            discountCodes: [{ code: 'COLLAB10', applicable: true }],
+            discountCodes: [{ code: 'WELCOME10', applicable: true }],
           },
           userErrors: [],
         },
       },
     });
 
-    const cart = await updateCartDiscountCodes('gid://shopify/Cart/cart-1', ['COLLAB10']);
+    const cart = await updateCartDiscountCodes('gid://shopify/Cart/cart-1', ['WELCOME10']);
     const request = JSON.parse(String(fetchMock.mock.calls[0][1]?.body));
 
     expect(request.variables).toEqual({
       cartId: 'gid://shopify/Cart/cart-1',
-      discountCodes: ['COLLAB10'],
+      discountCodes: ['WELCOME10'],
     });
     expect(request.query).toContain('discountCodes { code applicable }');
     expect(request.query).toContain('userErrors { field message }');
-    expect(cart.discountCodes).toEqual([{ code: 'COLLAB10', applicable: true }]);
+    expect(cart.discountCodes).toEqual([{ code: 'WELCOME10', applicable: true }]);
   });
 
   it('surfaces Shopify discount application errors', async () => {
@@ -121,7 +121,7 @@ describe('Shopify cart API utilities', () => {
       },
     });
 
-    await expect(updateCartDiscountCodes('gid://shopify/Cart/cart-1', ['COLLAB10'])).rejects.toThrow(
+    await expect(updateCartDiscountCodes('gid://shopify/Cart/cart-1', ['WELCOME10'])).rejects.toThrow(
       'Discount code is not valid'
     );
   });
@@ -143,43 +143,45 @@ describe('Shopify cart API utilities', () => {
     const cart = parseCart(rawCart(2));
 
     expect(cart).toMatchObject({
-      checkoutUrl: 'https://cfcskincare.myshopify.com/checkouts/cn/test',
+      checkoutUrl: 'https://demo-store.myshopify.com/checkouts/cn/test',
       totalQuantity: 2,
       totalAmount: '56.00',
     });
     expect(cart.items[0]).toMatchObject({
       variantId,
       quantity: 2,
-      productTitle: 'CFC Gentle Cleanser',
-      imageAlt: 'Cleanser bottle',
+      productTitle: 'Starter Ceramic Mug',
+      imageAlt: 'Product image',
     });
   });
 
   it('normalizes checkout URLs away from the static site host', () => {
-    expect(normalizeCheckoutUrl('https://cfcskincare.shop/checkouts/cn/test?key=abc')).toBe(
-      'https://cfcskincare.myshopify.com/checkouts/cn/test?key=abc'
+    expect(normalizeCheckoutUrl('https://demo-headless.example/checkouts/cn/test?key=abc')).toBe(
+      'https://demo-store.myshopify.com/checkouts/cn/test?key=abc'
     );
   });
 
   it('rewrites Shopify generated cart checkout URLs to checkout paths', () => {
-    expect(normalizeCheckoutUrl('https://cfcskincare.shop/cart/c/cart-token?_s=session&key=abc')).toBe(
-      'https://cfcskincare.myshopify.com/checkouts/cn/cart-token?_s=session&key=abc'
+    expect(normalizeCheckoutUrl('https://demo-headless.example/cart/c/cart-token?_s=session&key=abc')).toBe(
+      'https://demo-store.myshopify.com/checkouts/cn/cart-token?_s=session&key=abc'
     );
   });
 
   it('rewrites myshopify cart checkout URLs before they redirect to the primary domain', () => {
-    expect(normalizeCheckoutUrl('https://cfcskincare.myshopify.com/cart/c/cart-token?key=abc')).toBe(
-      'https://cfcskincare.myshopify.com/checkouts/cn/cart-token?key=abc'
+    expect(normalizeCheckoutUrl('https://demo-store.myshopify.com/cart/c/cart-token?key=abc')).toBe(
+      'https://demo-store.myshopify.com/checkouts/cn/cart-token?key=abc'
     );
   });
 
   it('treats configured headless checkout domains with protocols as unsafe', async () => {
     vi.resetModules();
-    vi.stubEnv('PUBLIC_SHOPIFY_CHECKOUT_DOMAIN', 'https://cfcskincare.shop/');
+    vi.stubEnv('PUBLIC_SHOPIFY_STORE_DOMAIN', 'demo-store.myshopify.com');
+    vi.stubEnv('PUBLIC_SHOPIFY_CHECKOUT_DOMAIN', 'https://demo-headless.example/');
+    vi.stubEnv('PUBLIC_HEADLESS_DOMAINS', 'demo-headless.example');
     const { normalizeCheckoutUrl } = await import('../../src/lib/cart-client');
 
-    expect(normalizeCheckoutUrl('https://cfcskincare.shop/cart/c/cart-token?key=abc')).toBe(
-      'https://cfcskincare.myshopify.com/checkouts/cn/cart-token?key=abc'
+    expect(normalizeCheckoutUrl('https://demo-headless.example/cart/c/cart-token?key=abc')).toBe(
+      'https://your-store.myshopify.com/checkouts/cn/cart-token?key=abc'
     );
 
     vi.unstubAllEnvs();

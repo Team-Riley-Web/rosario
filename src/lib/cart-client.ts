@@ -1,7 +1,7 @@
 const importEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
 const processEnv = typeof process === 'undefined' ? {} : process.env;
 const env = { ...importEnv, ...processEnv };
-const SHOPIFY_CHECKOUT_FALLBACK_DOMAIN = 'cfcskincare.myshopify.com';
+const SHOPIFY_CHECKOUT_FALLBACK_DOMAIN = 'your-store.myshopify.com';
 
 function cleanDomain(value: string | undefined): string {
   return (value ?? '')
@@ -12,7 +12,12 @@ function cleanDomain(value: string | undefined): string {
 
 const SHOPIFY_DOMAIN = cleanDomain(env.PUBLIC_SHOPIFY_STORE_DOMAIN ?? env.SHOPIFY_STORE_DOMAIN) || SHOPIFY_CHECKOUT_FALLBACK_DOMAIN;
 const CONFIGURED_CHECKOUT_DOMAIN = cleanDomain(env.PUBLIC_SHOPIFY_CHECKOUT_DOMAIN ?? env.SHOPIFY_CHECKOUT_DOMAIN) || SHOPIFY_DOMAIN;
-const HEADLESS_DOMAINS = new Set(['cfcskincare.com', 'www.cfcskincare.com', 'cfcskincare.shop', 'www.cfcskincare.shop', 'cfcskincare.netlify.app']);
+const HEADLESS_DOMAINS = new Set(
+  (env.PUBLIC_HEADLESS_DOMAINS ?? env.HEADLESS_DOMAINS ?? '')
+    .split(',')
+    .map(cleanDomain)
+    .filter(Boolean)
+);
 const CHECKOUT_DOMAIN = HEADLESS_DOMAINS.has(CONFIGURED_CHECKOUT_DOMAIN)
   ? SHOPIFY_CHECKOUT_FALLBACK_DOMAIN
   : CONFIGURED_CHECKOUT_DOMAIN;

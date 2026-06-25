@@ -1,31 +1,19 @@
 ---
-import { Image } from 'astro:assets';
-import cfcLogo from '../assets/images/cfc-logo.png';
-
 const shopLinks = [
   { label: 'All Products', href: '/shop' },
-  { label: 'Cleansers', href: '/shop' },
-  { label: 'Treatments', href: '/shop' },
-  { label: 'Sun Protection', href: '/shop' },
+  { label: 'Featured', href: '/#products' },
+  { label: 'Cart', href: '#cart' },
 ];
 
 const learnLinks = [
-  { label: 'The System', href: '/#system' },
-  { label: 'About CFC', href: '/about' },
-  { label: 'Consultation', href: '/contact' },
-  { label: 'Subscribe & Save', href: 'https://www.cfcskincare.shop' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Privacy', href: '/privacy' },
+  { label: 'Terms', href: '/terms' },
 ];
 
-const wholesaleHref = 'https://www.cfcskincare.shop/account/login';
-
-const hours = [
-  ['Monday', '8:30 AM - 5:00 PM'],
-  ['Tuesday', '8:30 AM - 3:30 PM'],
-  ['Wednesday', '8:30 AM - 5:00 PM'],
-  ['Thursday', '8:30 AM - 5:00 PM'],
-  ['Friday', '8:30 AM - 3:30 PM'],
-  ['Online', '24 / 7'],
-];
+const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.myshopify.com';
+const accountHref = `https://${shopDomain}/account/login`;
 ---
 
 <footer class="bg-ink">
@@ -36,20 +24,16 @@ const hours = [
   <div class="max-w-[1440px] mx-auto px-10 pt-20 pb-11">
 
     <!-- Main grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.4fr_1.5fr] gap-12 lg:gap-14 mb-16 text-center sm:text-left">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.4fr] gap-12 lg:gap-14 mb-16 text-center sm:text-left">
 
       <!-- Brand: large standalone logo -->
       <div class="flex flex-col items-center sm:items-start">
         <a href="/" class="block mb-7 shrink-0">
-          <Image
-            src={cfcLogo}
-            alt="CFC Skincare"
-            width={200}
-            height={200}
-            densities={[1, 2, 3]}
-            class="w-24 h-24 lg:w-[200px] lg:h-[200px] rounded-full object-cover"
-          />
+          <span class="flex h-24 w-24 items-center justify-center rounded-full border border-white/15 bg-white/5 font-mono text-xl tracking-[0.18em] text-white lg:h-[160px] lg:w-[160px]">SS</span>
         </a>
+        <p class="max-w-[260px] font-sans text-[13px] font-light leading-[1.8] text-white/65">
+          A reusable Astro storefront wired for Shopify Storefront API products, cart, checkout, search, and discount links.
+        </p>
       </div>
 
       <!-- Shop -->
@@ -60,6 +44,7 @@ const hours = [
             <li>
               <a
                 href={href}
+                @click={href === '#cart' ? '$store.cart.open()' : undefined}
                 class="font-sans font-light text-[13px] text-white/75 transition-colors duration-200"
                 onmouseover="this.style.color='oklch(80% 0.08 78)'"
                 onmouseout="this.style.color='rgba(255,255,255,0.75)'"
@@ -86,74 +71,12 @@ const hours = [
         </ul>
       </div>
 
-      <!-- Hours -->
-      <div>
-        <h4 class="font-mono text-[9px] tracking-[0.22em] uppercase mb-6 text-white/70">Hours</h4>
-        <div class="space-y-3.5 flex flex-col items-center sm:items-start">
-          {hours.map(([day, time]) => (
-            <div class="grid grid-cols-[82px_1fr] gap-3 items-baseline">
-              <span class="font-mono text-[9px] tracking-[0.14em] uppercase text-left text-white/60">{day}</span>
-              <span class="font-sans font-light text-[12px] text-left text-white/75">{time}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       <!-- Connect -->
       <div>
-        <h4 class="font-mono text-[9px] tracking-[0.22em] uppercase mb-6 text-white/70">Connect</h4>
-
-        <!-- Address -->
-        <address class="not-italic mb-5 leading-[1.8] text-white/65">
-          <p class="font-sans font-light text-[13px]">Louisiana, United States</p>
-        </address>
-
-        <!-- Phone -->
-        <a
-          href="tel:+19852348528"
-          class="font-mono text-[12px] tracking-[0.08em] block mb-8 text-white/65 transition-colors duration-200"
-          onmouseover="this.style.color='oklch(80% 0.08 78)'"
-          onmouseout="this.style.color='rgba(255,255,255,0.65)'"
-        >+1 (985) 234-8528</a>
-
-        <!-- Social icons -->
-        <div class="flex gap-3 justify-center sm:justify-start">
-
-          <!-- Instagram -->
-          <a
-            href="https://www.instagram.com/cfcskincare"
-            target="_blank"
-            rel="noopener"
-            aria-label="CFC Skincare on Instagram"
-            class="flex items-center justify-center transition-all duration-200 w-10 h-10 text-white/65"
-            style="border: 1px solid rgba(255,255,255,0.14);"
-            onmouseover="this.style.borderColor='oklch(64% 0.115 72)'; this.style.color='oklch(64% 0.115 72)'"
-            onmouseout="this.style.borderColor='rgba(255,255,255,0.14)'; this.style.color='rgba(255,255,255,0.65)'"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="2" y="2" width="20" height="20" rx="5"/>
-              <circle cx="12" cy="12" r="4"/>
-              <circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none"/>
-            </svg>
-          </a>
-
-          <!-- Facebook -->
-          <a
-            href="https://www.facebook.com/cfcskincare"
-            target="_blank"
-            rel="noopener"
-            aria-label="CFC Skincare on Facebook"
-            class="flex items-center justify-center transition-all duration-200 w-10 h-10 text-white/65"
-            style="border: 1px solid rgba(255,255,255,0.14);"
-            onmouseover="this.style.borderColor='oklch(64% 0.115 72)'; this.style.color='oklch(64% 0.115 72)'"
-            onmouseout="this.style.borderColor='rgba(255,255,255,0.14)'; this.style.color='rgba(255,255,255,0.65)'"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-            </svg>
-          </a>
-
-        </div>
+        <h4 class="font-mono text-[9px] tracking-[0.22em] uppercase mb-6 text-white/70">Configure</h4>
+        <p class="font-sans font-light text-[13px] leading-[1.8] text-white/65">
+          Set Shopify domains and Storefront API tokens in <code class="font-mono text-white/80">.env</code>, then customize the starter content and styles for each new store.
+        </p>
       </div>
     </div>
 
@@ -163,7 +86,7 @@ const hours = [
       style="border-top: 1px solid rgba(255,255,255,0.06);"
     >
       <p class="font-mono text-[9px] tracking-[0.15em] uppercase text-white/60">
-        © {new Date().getFullYear()} CFC Skincare ·
+        © {new Date().getFullYear()} Shopify Starter ·
         {[
           ['Privacy  · ', '/privacy'],
           ['Terms  · ', '/terms'],
@@ -179,7 +102,7 @@ const hours = [
       </p>
       <div class="flex flex-wrap items-center justify-center sm:justify-end gap-x-6 gap-y-3">
         <a
-          href={wholesaleHref}
+          href={accountHref}
           target="_blank"
           rel="noopener"
           class="inline-flex items-center gap-1.5 font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 transition-colors duration-200 hover:text-white/70"
@@ -188,20 +111,7 @@ const hours = [
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
-          Wholesale Login
-        </a>
-        <a
-          href="https://teamrileyweb.com"
-          target="_blank"
-          rel="noopener"
-          class="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.18em] uppercase text-white/60 transition-colors duration-200 hover:text-white"
-          aria-label="Made with love in Louisiana by Team Riley"
-        >
-          <span>Made with</span>
-          <svg class="w-3 h-3 text-white hover:text-gold" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.53L12 21.35z"/>
-          </svg>
-          <span>by Team Riley</span>
+          Shopify Account
         </a>
       </div>
     </div>

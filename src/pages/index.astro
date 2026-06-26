@@ -2,6 +2,13 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import ProductsSection from '../components/ProductsSection.astro';
+import heroImage from '../assets/images/model6.png';
+import signatureImage from '../assets/images/model.avif';
+import vintageImage from '../assets/images/model1.avif';
+import makerImage from '../assets/images/model2.avif';
+import authenticityImage from '../assets/images/model3.png';
+import personalImage from '../assets/images/model4.png';
+import giftImage from '../assets/images/model5.png';
 
 const trustItems = [
   'Direct Partnership with Ercole Moretti',
@@ -16,18 +23,24 @@ const collections = [
     body: 'One-of-a-kind pieces made with exclusive glass beads through my direct partnership with Ercole Moretti.',
     href: '/shop?filter=signature-moretti',
     cta: 'Shop Signature Pieces',
+    image: signatureImage,
+    alt: 'Model wearing a bold Murano glass jewelry piece',
   },
   {
     title: 'Restored Vintage Millefiori',
     body: 'Decades-old Murano glass, personally sourced and brought back to life - history you can wear.',
     href: '/shop?filter=vintage-millefiori',
     cta: 'Shop Vintage Collection',
+    image: vintageImage,
+    alt: 'Vintage-inspired Murano glass jewelry styling',
   },
   {
     title: 'Beads for Makers',
     body: 'Authentic Murano Millefiori and lampwork beads for jewelry-makers who need materials they can trust.',
     href: '/shop?filter=beads-for-makers',
     cta: 'Shop Maker Supplies',
+    image: makerImage,
+    alt: 'Murano glass jewelry detail for makers and collectors',
   },
 ];
 ---
@@ -39,7 +52,15 @@ const collections = [
   <Nav />
   <main>
     <section id="hero" class="relative flex min-h-[78vh] items-end overflow-hidden bg-ink px-6 pb-14 pt-32 text-white sm:px-10 lg:pb-24">
-      <div class="absolute inset-0 opacity-25" style="background-image: linear-gradient(135deg, rgba(255,255,255,0.16) 0, transparent 34%), radial-gradient(circle at 74% 22%, rgba(196,137,54,0.34), transparent 36%);"></div>
+      <img
+        src={heroImage.src}
+        alt=""
+        class="absolute inset-0 h-full w-full object-cover"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/62 to-ink/20"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-ink/82 via-ink/45 to-transparent"></div>
       <div class="relative z-10 mx-auto grid w-full max-w-[1440px] gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
         <div>
           <div class="mb-6 flex items-center gap-4">
@@ -47,7 +68,7 @@ const collections = [
             <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-gold-light">Rosario Leonardi Murano Glass</span>
           </div>
           <h1 class="max-w-[880px] font-display text-[48px] font-light leading-none tracking-normal md:text-[76px] lg:text-[94px]">
-            Real Moretti Murano. No Guessing.
+            Be Bold
           </h1>
         </div>
         <div class="max-w-[540px] lg:ml-auto">
@@ -73,7 +94,7 @@ const collections = [
     </section>
 
     <section class="bg-parchment px-6 py-24 sm:px-10">
-      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
         <div>
           <div class="mb-6 flex items-center gap-4">
             <div class="h-px w-6 bg-gold"></div>
@@ -83,17 +104,27 @@ const collections = [
             Most "Murano Glass" Online Isn't Actually Murano Glass.
           </h2>
         </div>
-        <div class="max-w-[680px]">
-          <p class="mb-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-            The internet is flooded with mass-produced glass dressed up as Venetian heritage. Vague sourcing. Sellers who can't tell you who actually made the piece in your hands.
-          </p>
-          <p class="mb-8 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-            I built this shop to be different. Every piece traces back to a verifiable source - not a guess.
-          </p>
-          <a href="/about" class="link-arrow font-mono text-[10px] uppercase tracking-[0.18em] text-gold">
-            See What Makes It Real
-            <span aria-hidden="true">→</span>
-          </a>
+        <div class="grid gap-8 md:grid-cols-[0.82fr_1fr] md:items-center">
+          <div class="overflow-hidden bg-white">
+            <img
+              src={authenticityImage.src}
+              alt="Rosario Leonardi Murano glass jewelry worn in warm natural light"
+              class="aspect-[4/5] h-full w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          <div class="max-w-[520px]">
+            <p class="mb-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+              The internet is flooded with mass-produced glass dressed up as Venetian heritage. Vague sourcing. Sellers who can't tell you who actually made the piece in your hands.
+            </p>
+            <p class="mb-8 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+              I built this shop to be different. Every piece traces back to a verifiable source - not a guess.
+            </p>
+            <a href="/about" class="link-arrow font-mono text-[10px] uppercase tracking-[0.18em] text-gold">
+              See What Makes It Real
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -111,13 +142,23 @@ const collections = [
         </div>
         <div class="grid gap-px border border-rule bg-rule lg:grid-cols-3">
           {collections.map((collection) => (
-            <article class="flex min-h-[340px] flex-col bg-white p-8">
-              <h3 class="mb-5 font-display text-[32px] font-normal leading-tight text-ink">{collection.title}</h3>
-              <p class="mb-8 font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{collection.body}</p>
-              <a href={collection.href} class="link-arrow mt-auto font-mono text-[10px] uppercase tracking-[0.18em] text-gold">
-                {collection.cta}
-                <span aria-hidden="true">→</span>
+            <article class="group flex min-h-[500px] flex-col bg-white">
+              <a href={collection.href} class="block overflow-hidden bg-parchment">
+                <img
+                  src={collection.image.src}
+                  alt={collection.alt}
+                  class="aspect-[4/3] w-full object-cover transition-transform duration-[800ms] group-hover:scale-[1.04]"
+                  loading="lazy"
+                />
               </a>
+              <div class="flex flex-1 flex-col p-8">
+                <h3 class="mb-5 font-display text-[32px] font-normal leading-tight text-ink">{collection.title}</h3>
+                <p class="mb-8 font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{collection.body}</p>
+                <a href={collection.href} class="link-arrow mt-auto font-mono text-[10px] uppercase tracking-[0.18em] text-gold">
+                  {collection.cta}
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
             </article>
           ))}
         </div>
@@ -135,10 +176,18 @@ const collections = [
 
     <section class="bg-parchment px-6 py-24 sm:px-10">
       <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
-        <h2 class="font-display text-[42px] font-light leading-none text-ink md:text-[66px]">
-          You're Not Buying From a Faceless Storefront.
-        </h2>
+        <div class="overflow-hidden bg-white">
+          <img
+            src={personalImage.src}
+            alt="Model wearing Rosario Leonardi Murano glass jewelry"
+            class="aspect-[4/5] w-full object-cover"
+            loading="lazy"
+          />
+        </div>
         <div>
+          <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[66px]">
+            You're Not Buying From a Faceless Storefront.
+          </h2>
           <p class="mb-8 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
             Have a question before you buy? Call me. I'm not a chatbot script - I'm a person who actually answers, whether you're choosing a gift, building a collection, or sourcing materials for your own work.
           </p>
@@ -151,14 +200,24 @@ const collections = [
     </section>
 
     <section class="bg-white px-6 py-24 sm:px-10">
-      <div class="mx-auto max-w-[980px] text-center">
-        <h2 class="mb-6 font-display text-[42px] font-light leading-none text-ink md:text-[66px]">
-          Need a Gift That Actually Feels Personal?
-        </h2>
-        <p class="mx-auto mb-8 max-w-[720px] font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-          I'll get on the phone with you, learn who she is, and help you find the piece she'll genuinely love. Arrives beautifully boxed with a gold label - add a gift bow if you'd like.
-        </p>
-        <a href="/contact" class="inline-flex bg-ink px-7 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:bg-gold-deep">Get Gift Help</a>
+      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <div>
+          <h2 class="mb-6 font-display text-[42px] font-light leading-none text-ink md:text-[66px]">
+            Need a Gift That Actually Feels Personal?
+          </h2>
+          <p class="mb-8 max-w-[720px] font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+            I'll get on the phone with you, learn who she is, and help you find the piece she'll genuinely love. Arrives beautifully boxed with a gold label - add a gift bow if you'd like.
+          </p>
+          <a href="/contact" class="inline-flex bg-ink px-7 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:bg-gold-deep">Get Gift Help</a>
+        </div>
+        <div class="overflow-hidden bg-parchment">
+          <img
+            src={giftImage.src}
+            alt="Statement Murano glass jewelry styled for a personal gift"
+            class="aspect-[4/3] w-full object-cover"
+            loading="lazy"
+          />
+        </div>
       </div>
     </section>
 

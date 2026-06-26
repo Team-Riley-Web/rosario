@@ -1,7 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
-import FoilStamp from '../../components/motifs/FoilStamp.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { CalendarSync, ShoppingBag } from '@lucide/astro';
 import { getAllProducts, getProductByHandle, getFeaturedProducts, formatPrice } from '../../lib/shopify';
@@ -112,8 +111,8 @@ const variantsJson = JSON.stringify(variants.map(v => ({
 ---
 
 <Layout
-  title={`${product.title} — Astro Shopify Starter`}
-  description={product.description?.slice(0, 155) || 'Product details from the connected Shopify catalog.'}
+  title={`${product.title} — Rosario Leonardi Murano Glass`}
+  description={product.description?.slice(0, 155) || 'One-of-a-kind Murano glass product details with verified sourcing.'}
   image={images[0]?.url}
 >
   <Nav position="sticky" />
@@ -129,7 +128,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
           <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
           </svg>
-          All Products
+          All Pieces
         </a>
         <span class="font-mono text-[9px] text-white/20">/</span>
         <span class="font-mono text-[9px] tracking-[0.12em] uppercase text-white truncate max-w-[240px]">{product.title}</span>
@@ -246,7 +245,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
               <div class="flex items-center gap-3 mb-5">
                 <div class="h-px bg-gold w-6"></div>
                 <span class="font-mono text-[9px] tracking-[0.2em] uppercase text-gold">
-                  Step {step.num} · {step.label}
+                  {step.label}
                 </span>
               </div>
             )}
@@ -384,9 +383,9 @@ const variantsJson = JSON.stringify(variants.map(v => ({
             <!-- Trust indicators -->
             <div class="border-t border-rule mt-8 pt-7 space-y-3.5">
               {[
-                ['Shopify Checkout', 'Secure checkout handled by Shopify'],
-                ['Cart Sync', 'Cart state is powered by Storefront API mutations'],
-                ['Reusable Template', 'Customize these trust badges for each store'],
+                ['Lifetime Warranty', 'Backed against product defects'],
+                ['One of a Kind', "Won't be restocked once it sells"],
+                ['Gift-Boxed', 'Arrives beautifully boxed with a gold label'],
               ].map(([label, desc]) => (
                 <div class="flex items-start gap-3">
                   <div class="shrink-0 flex items-center justify-center mt-[3px] w-[14px] h-[14px] border border-gold rounded-full">
@@ -412,30 +411,16 @@ const variantsJson = JSON.stringify(variants.map(v => ({
         <div class="max-w-5xl mx-auto px-10">
           <div class="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-10 xl:gap-20">
 
-            <!-- Left: label + stamps -->
+            <!-- Left: label -->
             <div class="lg:pt-6 flex flex-wrap items-center gap-4 lg:flex-col lg:items-start lg:gap-5">
               <div class="flex items-center gap-4">
                 <div class="h-px bg-gold w-6 shrink-0"></div>
                 <span class="font-mono text-[10px] font-semibold tracking-[0.2em] uppercase text-ink whitespace-nowrap">Product Details</span>
               </div>
 
-              <div class="hidden lg:flex flex-col gap-2.5 w-full">
-                <FoilStamp
-                  title={['Formulated', 'By NP']}
-                  sub="Medical Grade"
-                  class="w-full"
-                />
-                <FoilStamp
-                  title={['100% Plant', 'Verified']}
-                  sub="Ingredients"
-                  class="w-full"
-                />
-                <FoilStamp
-                  title={['Purity', 'Tested']}
-                  sub="Every Batch"
-                  class="w-full"
-                />
-              </div>
+              <a href="/contact" class="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-gold lg:inline-flex">
+                Have a question? Ask me →
+              </a>
             </div>
 
             <!-- Right: content -->
@@ -451,7 +436,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
         <div class="max-w-5xl mx-auto px-10">
           <div class="flex items-center gap-4 mb-10">
             <div class="h-px bg-gold w-6 shrink-0"></div>
-            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Recommended Products</span>
+            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">More One-of-a-Kind Pieces</span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px">

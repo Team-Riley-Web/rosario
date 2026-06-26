@@ -18,9 +18,9 @@ function cart(quantity: number, discountCodes: Array<{ code: string; applicable:
             title: 'Default Title',
             price: { amount: '28.00', currencyCode: 'USD' },
             product: {
-              title: 'Starter Ceramic Mug',
-              handle: 'ceramic-mug',
-              images: { edges: [{ node: { url: '/favicon.svg', altText: 'Starter Ceramic Mug' } }] },
+              title: 'Cobalt Millefiori Statement Necklace',
+              handle: 'cobalt-millefiori-statement-necklace',
+              images: { edges: [{ node: { url: '/favicon.svg', altText: 'Cobalt Millefiori Statement Necklace' } }] },
             },
           },
         },
@@ -32,7 +32,7 @@ function cart(quantity: number, discountCodes: Array<{ code: string; applicable:
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
-    document.cookie = 'shopify_starter_modal_dismissed=1; path=/; SameSite=Lax';
+    document.cookie = 'rosario_modal_dismissed=1; path=/; SameSite=Lax';
   });
 
   await page.route('https://demo-store.myshopify.com/checkouts/**', async route => {
@@ -87,18 +87,18 @@ test.beforeEach(async ({ page }) => {
 
 test('customer can shop through checkout handoff without payment', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle(/Astro Shopify Starter/);
+  await expect(page).toHaveTitle(/Rosario Leonardi/);
 
-  await page.getByRole('link', { name: /Shop All Products/i }).click();
+  await page.getByRole('link', { name: /Shop the Collection/i }).first().click();
   await expect(page).toHaveURL(/\/shop/);
 
-  const productLink = page.getByRole('link', { name: /Starter Ceramic Mug/i }).first();
-  await expect(productLink).toHaveAttribute('href', /ceramic-mug/);
+  const productLink = page.getByRole('link', { name: /Cobalt Millefiori Statement Necklace/i }).first();
+  await expect(productLink).toHaveAttribute('href', /cobalt-millefiori-statement-necklace/);
 
   await page.getByRole('button', { name: /Add to Cart/i }).first().click();
   const dialog = page.getByRole('dialog', { name: /Shopping cart/i });
   await expect(dialog).toBeVisible();
-  await expect(page.getByText('Starter Ceramic Mug').last()).toBeVisible();
+  await expect(page.getByText('Cobalt Millefiori Statement Necklace').last()).toBeVisible();
 
   await dialog.getByRole('button', { name: /Increase quantity/i }).click();
   await expect(dialog.locator('span.w-8')).toHaveText('2');
@@ -116,7 +116,7 @@ test('customer can shop through checkout handoff without payment', async ({ page
 });
 
 test('product buy now goes to Shopify checkout in the same tab', async ({ page }) => {
-  await page.goto('/products/ceramic-mug');
+  await page.goto('/products/cobalt-millefiori-statement-necklace');
 
   const popupPromise = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null);
   await page.getByRole('button', { name: /^Buy Now$/i }).click();

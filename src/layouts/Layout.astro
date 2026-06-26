@@ -12,8 +12,8 @@ export interface Props {
 }
 
 const {
-  title = 'Astro Shopify Starter',
-  description = 'A reusable headless Shopify starter built with Astro, Tailwind, Alpine, and the Shopify Storefront API.',
+  title = 'Rosario Leonardi Murano Glass',
+  description = 'One-of-a-kind Murano glass jewelry and beads with verified Venetian and European sourcing.',
   image = '/og-image.svg',
   showNewsletter = true,
 } = Astro.props;
@@ -35,7 +35,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, siteUrl).href;
     <meta name="description" content={description} />
 
     <!-- Open Graph -->
-    <meta property="og:site_name" content="Astro Shopify Starter" />
+    <meta property="og:site_name" content="Rosario Leonardi Murano Glass" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />

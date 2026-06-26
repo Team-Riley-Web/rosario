@@ -7,15 +7,15 @@ export const sellingPlanId = 'gid://shopify/SellingPlan/3001';
 
 export const productFixture: ShopifyProduct = {
   id: 'gid://shopify/Product/1001',
-  title: 'Starter Ceramic Mug',
-  handle: 'ceramic-mug',
-  description: 'Starter product fixture',
+  title: 'Cobalt Millefiori Statement Necklace',
+  handle: 'cobalt-millefiori-statement-necklace',
+  description: 'Restored vintage Murano Millefiori necklace fixture',
   availableForSale: true,
-  tags: ['Featured'],
+  tags: ['Vintage', 'Millefiori'],
   priceRange: { minVariantPrice: { amount: '28.00', currencyCode: 'USD' } },
   images: { edges: [{ node: { url: 'https://cdn.example.com/product.jpg', altText: 'Product image' } }] },
   variants: { edges: [{ node: { id: variantId, title: 'Default Title', price: { amount: '28.00' } } }] },
-  collections: { edges: [{ node: { title: 'Featured' } }] },
+  collections: { edges: [{ node: { title: 'Vintage Millefiori', handle: 'vintage-millefiori' } }] },
 };
 
 export function rawCart(quantity = 1, id = 'gid://shopify/Cart/cart-1') {
@@ -35,8 +35,8 @@ export function rawCart(quantity = 1, id = 'gid://shopify/Cart/cart-1') {
             title: 'Default Title',
             price: { amount: '28.00', currencyCode: 'USD' },
             product: {
-              title: 'Starter Ceramic Mug',
-              handle: 'ceramic-mug',
+              title: 'Cobalt Millefiori Statement Necklace',
+              handle: 'cobalt-millefiori-statement-necklace',
               images: { edges: [{ node: { url: 'https://cdn.example.com/product.jpg', altText: 'Product image' } }] },
             },
           },
@@ -60,8 +60,8 @@ export function cartFixture(quantity = 1): Cart {
       variantId,
       variantTitle: 'Default Title',
       price: '28.00',
-      productTitle: 'Starter Ceramic Mug',
-      productHandle: 'ceramic-mug',
+      productTitle: 'Cobalt Millefiori Statement Necklace',
+      productHandle: 'cobalt-millefiori-statement-necklace',
       imageUrl: 'https://cdn.example.com/product.jpg',
       imageAlt: 'Product image',
       sellingPlanId: '',

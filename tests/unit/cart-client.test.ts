@@ -150,7 +150,7 @@ describe('Shopify cart API utilities', () => {
     expect(cart.items[0]).toMatchObject({
       variantId,
       quantity: 2,
-      productTitle: 'Starter Ceramic Mug',
+      productTitle: 'Cobalt Millefiori Statement Necklace',
       imageAlt: 'Product image',
     });
   });

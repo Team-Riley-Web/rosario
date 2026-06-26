@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+
+const groups = [
+  {
+    title: 'Authenticity and Sourcing',
+    questions: [
+      ['How do I know this is actually Murano glass, not a "Murano-style" import?', "Every piece I create traces back to a direct, named partnership with Ercole Moretti - one of the most exclusive glass bead makers in Venice. I'm happy to talk through the sourcing on any specific piece before you buy."],
+      ['What is the difference between your new and vintage pieces?', 'New pieces are made with special-order beads through my Moretti partnership. Vintage pieces are uncirculated or restored Millefiori glass I personally source from my European supplier relationships - decades-old glass, brought back to life without erasing its history.'],
+      ['Will the piece look exactly like the photos?', "Yes. I photograph the actual piece you're buying - not stock images of similar glass. What you see is what ships."],
+    ],
+  },
+  {
+    title: 'Pricing and Product',
+    questions: [
+      ['Why is there not a standard price list?', 'Every piece is one-of-a-kind, so pricing reflects the specific glass, design, and rarity of that individual item - not a catalog SKU.'],
+      ['Do you restock pieces I love?', "Generally, no. Once a piece sells, it's gone - that's the nature of authentic, one-of-a-kind Murano glass. I do offer an ongoing, consistent selection of new Millefiori and lampwork beads for makers who need a reorderable material."],
+      ['I make my own jewelry. Can I order beads in bulk?', 'Yes. Message me directly with quantity and sizing questions - I answer those personally rather than through a generic storefront listing.'],
+    ],
+  },
+  {
+    title: 'Shipping and Packaging',
+    questions: [
+      ['How are pieces packaged?', 'Every piece arrives in a branded box with a gold label sticker. Gift bow wrapping is available for an additional fee.'],
+      ['Do you ship internationally?', 'Shipping options can vary by piece and destination. Message me before buying if you need delivery outside the listed checkout options and I will confirm what is possible.'],
+      ['How fragile are these pieces in shipping?', "Each piece is carefully packed to protect the glass in transit. If anything ever arrives damaged, reach out right away and I'll make it right."],
+    ],
+  },
+  {
+    title: 'Guarantees and Trust',
+    questions: [
+      ['What if something is defective?', "Every piece carries a lifetime warranty against product defects. Contact me directly and I'll take care of it."],
+      ['What if I am not sure a piece is right for me or as a gift?', "Reach out before you buy. I'll get on a call or message with you, ask a few questions, and help you choose with confidence - no pressure, no script."],
+      ['Do you accept returns?', 'Because each piece is one-of-a-kind, return options can depend on the item and situation. Message me before buying if you have concerns, and contact me right away if there is a problem with an order.'],
+    ],
+  },
+];
+---
+
+<Layout
+  title="FAQ — Rosario Leonardi Murano Glass"
+  description="Answers about Murano glass authenticity, sourcing, packaging, shipping, gifts, returns, and warranties."
+>
+  <Nav />
+  <main>
+    <section id="hero" class="bg-ink px-6 pb-24 pt-40 text-white sm:px-10">
+      <div class="mx-auto max-w-[1040px]">
+        <div class="mb-8 flex items-center gap-4">
+          <div class="h-px w-6 bg-gold"></div>
+          <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">FAQ</span>
+        </div>
+        <h1 class="mb-7 font-display text-[48px] font-light leading-none tracking-normal md:text-[76px]">
+          Questions? Let's Clear Them Up.
+        </h1>
+        <p class="max-w-[680px] font-sans text-[16px] font-light leading-[1.85] text-white/68">
+          The honest answers to what people ask most before buying.
+        </p>
+      </div>
+    </section>
+
+    <section class="bg-parchment px-6 py-24 sm:px-10">
+      <div class="mx-auto grid max-w-[1180px] gap-10">
+        {groups.map((group) => (
+          <section class="grid gap-6 lg:grid-cols-[300px_1fr]">
+            <h2 class="font-display text-[34px] font-light leading-tight text-ink">{group.title}</h2>
+            <div class="grid gap-px border border-rule bg-rule">
+              {group.questions.map(([question, answer]) => (
+                <article class="bg-white p-7">
+                  <h3 class="mb-3 font-display text-[24px] font-normal leading-tight text-ink">{question}</h3>
+                  <p class="font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{answer}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </section>
+
+    <section class="bg-ink px-6 py-20 text-white sm:px-10">
+      <div class="mx-auto flex max-w-[980px] flex-col gap-6 text-center md:items-center">
+        <h2 class="font-display text-[42px] font-light leading-none md:text-[62px]">Still Have a Question?</h2>
+        <p class="max-w-[620px] font-sans text-[15px] font-light leading-[1.8] text-white/68">I'd rather answer it directly than have you guess.</p>
+        <a href="/contact" class="inline-flex self-center bg-white px-7 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold-light">Contact Me</a>
+      </div>
+    </section>
+  </main>
+</Layout>

@@ -1,12 +1,14 @@
 ---
 const shopLinks = [
-  { label: 'All Products', href: '/shop' },
-  { label: 'Featured', href: '/#products' },
+  { label: 'All Pieces', href: '/shop' },
+  { label: 'Signature Moretti', href: '/shop?filter=signature-moretti' },
+  { label: 'Beads for Makers', href: '/shop?filter=beads-for-makers' },
   { label: 'Cart', href: '#cart' },
 ];
 
 const learnLinks = [
   { label: 'About', href: '/about' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
   { label: 'Privacy', href: '/privacy' },
   { label: 'Terms', href: '/terms' },
@@ -29,10 +31,10 @@ const accountHref = `https://${shopDomain}/account/login`;
       <!-- Brand: large standalone logo -->
       <div class="flex flex-col items-center sm:items-start">
         <a href="/" class="block mb-7 shrink-0">
-          <span class="flex h-24 w-24 items-center justify-center rounded-full border border-white/15 bg-white/5 font-mono text-xl tracking-[0.18em] text-white lg:h-[160px] lg:w-[160px]">SS</span>
+          <span class="flex h-24 w-24 items-center justify-center rounded-full border border-white/15 bg-white/5 font-mono text-xl tracking-[0.18em] text-white lg:h-[160px] lg:w-[160px]">RL</span>
         </a>
         <p class="max-w-[260px] font-sans text-[13px] font-light leading-[1.8] text-white/65">
-          A reusable Astro storefront wired for Shopify Storefront API products, cart, checkout, search, and discount links.
+          One-of-a-kind Murano glass jewelry, restored vintage Millefiori, freshwater pearls, and maker beads with sourcing you can ask about directly.
         </p>
       </div>
 
@@ -73,9 +75,9 @@ const accountHref = `https://${shopDomain}/account/login`;
 
       <!-- Connect -->
       <div>
-        <h4 class="font-mono text-[9px] tracking-[0.22em] uppercase mb-6 text-white/70">Configure</h4>
+        <h4 class="font-mono text-[9px] tracking-[0.22em] uppercase mb-6 text-white/70">Questions</h4>
         <p class="font-sans font-light text-[13px] leading-[1.8] text-white/65">
-          Set Shopify domains and Storefront API tokens in <code class="font-mono text-white/80">.env</code>, then customize the starter content and styles for each new store.
+          Choosing a gift, checking provenance, or sourcing beads for your own work? Send a message and I will answer personally.
         </p>
       </div>
     </div>
@@ -86,7 +88,7 @@ const accountHref = `https://${shopDomain}/account/login`;
       style="border-top: 1px solid rgba(255,255,255,0.06);"
     >
       <p class="font-mono text-[9px] tracking-[0.15em] uppercase text-white/60">
-        © {new Date().getFullYear()} Shopify Starter ·
+        © {new Date().getFullYear()} Rosario Leonardi Murano Glass ·
         {[
           ['Privacy  · ', '/privacy'],
           ['Terms  · ', '/terms'],

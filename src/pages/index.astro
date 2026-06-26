@@ -2,52 +2,176 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import ProductsSection from '../components/ProductsSection.astro';
+
+const trustItems = [
+  'Direct Partnership with Ercole Moretti',
+  'Lifetime Warranty Against Defects',
+  'One-of-a-Kind - Never Restocked',
+  'Personally Sourced From Venice and Europe',
+];
+
+const collections = [
+  {
+    title: 'Signature Moretti Designs',
+    body: 'One-of-a-kind pieces made with exclusive glass beads through my direct partnership with Ercole Moretti.',
+    href: '/shop?filter=signature-moretti',
+    cta: 'Shop Signature Pieces',
+  },
+  {
+    title: 'Restored Vintage Millefiori',
+    body: 'Decades-old Murano glass, personally sourced and brought back to life - history you can wear.',
+    href: '/shop?filter=vintage-millefiori',
+    cta: 'Shop Vintage Collection',
+  },
+  {
+    title: 'Beads for Makers',
+    body: 'Authentic Murano Millefiori and lampwork beads for jewelry-makers who need materials they can trust.',
+    href: '/shop?filter=beads-for-makers',
+    cta: 'Shop Maker Supplies',
+  },
+];
 ---
 
-<Layout>
+<Layout
+  title="Rosario Leonardi Murano Glass"
+  description="One-of-a-kind Murano glass jewelry and beads sourced through direct Venetian and European relationships."
+>
   <Nav />
   <main>
-    <section id="hero" class="relative flex min-h-[78vh] items-end bg-ink px-10 pb-16 pt-36 text-white lg:pb-24">
-      <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(135deg, rgba(255,255,255,0.18) 0, transparent 32%), radial-gradient(circle at 70% 20%, rgba(196,137,54,0.32), transparent 34%);"></div>
-      <div class="relative z-10 mx-auto grid w-full max-w-[1440px] gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+    <section id="hero" class="relative flex min-h-[78vh] items-end overflow-hidden bg-ink px-6 pb-14 pt-32 text-white sm:px-10 lg:pb-24">
+      <div class="absolute inset-0 opacity-25" style="background-image: linear-gradient(135deg, rgba(255,255,255,0.16) 0, transparent 34%), radial-gradient(circle at 74% 22%, rgba(196,137,54,0.34), transparent 36%);"></div>
+      <div class="relative z-10 mx-auto grid w-full max-w-[1440px] gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
         <div>
           <div class="mb-6 flex items-center gap-4">
             <div class="h-px w-8 bg-gold"></div>
-            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-gold-light">Astro + Shopify</span>
+            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-gold-light">Rosario Leonardi Murano Glass</span>
           </div>
-          <h1 class="font-display text-[52px] font-light leading-none tracking-normal md:text-[76px] lg:text-[96px]">
-            Headless storefront starter.
+          <h1 class="max-w-[880px] font-display text-[48px] font-light leading-none tracking-normal md:text-[76px] lg:text-[94px]">
+            Real Moretti Murano. No Guessing.
           </h1>
         </div>
-        <div class="max-w-[520px] lg:ml-auto">
-          <p class="mb-8 font-sans text-[16px] font-light leading-[1.8] text-white/75">
-            A clean starting point for new Astro Shopify builds: product listing, product detail pages, cart drawer, checkout handoff, search, discount routes, mocks, and tests.
+        <div class="max-w-[540px] lg:ml-auto">
+          <p class="mb-8 font-sans text-[16px] font-light leading-[1.85] text-white/76">
+            One-of-a-kind jewelry sourced through a direct partnership with Ercole Moretti - Venice's most exclusive glass bead maker. Not "Murano-style." The real thing.
           </p>
-          <div class="flex flex-wrap gap-3">
-            <a href="/shop" class="bg-white px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold-light">
-              Browse Products
-            </a>
-            <a href="/about" class="border border-white/25 px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:border-gold hover:text-gold-light">
-              View Setup Notes
-            </a>
-          </div>
+          <a href="/shop" class="inline-flex bg-white px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold-light">
+            Be Bold. Shop Now
+          </a>
         </div>
       </div>
     </section>
-    <section class="bg-white px-10 py-14">
-      <div class="mx-auto grid max-w-[1440px] gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-3">
-        {[
-          ['Storefront API', 'Fetch products, variants, collections, and selling plans from Shopify.'],
-          ['Cart + Checkout', 'Use Shopify cart mutations and hand customers off to checkout.'],
-          ['Starter Tests', 'Run mocked unit, integration, and Playwright shopping-flow coverage.'],
-        ].map(([title, body]) => (
-          <div class="bg-white p-8">
-            <h2 class="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-gold">{title}</h2>
-            <p class="font-sans text-[14px] font-light leading-[1.7] text-ink-soft">{body}</p>
+
+    <section class="bg-white px-6 py-12 sm:px-10">
+      <div class="mx-auto grid max-w-[1440px] gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
+        {trustItems.map((item) => (
+          <div class="flex min-h-[104px] items-center gap-3 bg-white p-6">
+            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gold text-gold">✓</span>
+            <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-ink">{item}</p>
           </div>
         ))}
       </div>
     </section>
+
+    <section class="bg-parchment px-6 py-24 sm:px-10">
+      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+        <div>
+          <div class="mb-6 flex items-center gap-4">
+            <div class="h-px w-6 bg-gold"></div>
+            <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">Authenticity</span>
+          </div>
+          <h2 class="font-display text-[42px] font-light leading-none text-ink md:text-[64px]">
+            Most "Murano Glass" Online Isn't Actually Murano Glass.
+          </h2>
+        </div>
+        <div class="max-w-[680px]">
+          <p class="mb-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+            The internet is flooded with mass-produced glass dressed up as Venetian heritage. Vague sourcing. Sellers who can't tell you who actually made the piece in your hands.
+          </p>
+          <p class="mb-8 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+            I built this shop to be different. Every piece traces back to a verifiable source - not a guess.
+          </p>
+          <a href="/about" class="link-arrow font-mono text-[10px] uppercase tracking-[0.18em] text-gold">
+            See What Makes It Real
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white px-6 py-24 sm:px-10">
+      <div class="mx-auto max-w-[1440px]">
+        <div class="mb-14 max-w-[760px]">
+          <div class="mb-6 flex items-center gap-4">
+            <div class="h-px w-6 bg-gold"></div>
+            <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">Collections</span>
+          </div>
+          <h2 class="font-display text-[42px] font-light leading-none text-ink md:text-[66px]">
+            Three Ways to Own Something Real
+          </h2>
+        </div>
+        <div class="grid gap-px border border-rule bg-rule lg:grid-cols-3">
+          {collections.map((collection) => (
+            <article class="flex min-h-[340px] flex-col bg-white p-8">
+              <h3 class="mb-5 font-display text-[32px] font-normal leading-tight text-ink">{collection.title}</h3>
+              <p class="mb-8 font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{collection.body}</p>
+              <a href={collection.href} class="link-arrow mt-auto font-mono text-[10px] uppercase tracking-[0.18em] text-gold">
+                {collection.cta}
+                <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-ink px-6 py-24 text-white sm:px-10">
+      <div class="mx-auto max-w-[980px] text-center">
+        <p class="mb-8 font-display text-[34px] font-light italic leading-tight md:text-[54px]">
+          "I almost didn't buy it because I thought it had to be fake at that price for real vintage Murano. I was wrong, and I'm so glad."
+        </p>
+        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-gold-light">Real customers. Real glass. Real stories.</p>
+      </div>
+    </section>
+
+    <section class="bg-parchment px-6 py-24 sm:px-10">
+      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
+        <h2 class="font-display text-[42px] font-light leading-none text-ink md:text-[66px]">
+          You're Not Buying From a Faceless Storefront.
+        </h2>
+        <div>
+          <p class="mb-8 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+            Have a question before you buy? Call me. I'm not a chatbot script - I'm a person who actually answers, whether you're choosing a gift, building a collection, or sourcing materials for your own work.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="/contact" class="bg-ink px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:bg-gold-deep">Get Gift Guidance</a>
+            <a href="/contact" class="border border-rule bg-white px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:border-gold hover:text-gold-deep">Ask a Question</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white px-6 py-24 sm:px-10">
+      <div class="mx-auto max-w-[980px] text-center">
+        <h2 class="mb-6 font-display text-[42px] font-light leading-none text-ink md:text-[66px]">
+          Need a Gift That Actually Feels Personal?
+        </h2>
+        <p class="mx-auto mb-8 max-w-[720px] font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+          I'll get on the phone with you, learn who she is, and help you find the piece she'll genuinely love. Arrives beautifully boxed with a gold label - add a gift bow if you'd like.
+        </p>
+        <a href="/contact" class="inline-flex bg-ink px-7 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:bg-gold-deep">Get Gift Help</a>
+      </div>
+    </section>
+
     <ProductsSection />
+
+    <section class="bg-ink px-6 py-20 text-white sm:px-10">
+      <div class="mx-auto flex max-w-[1180px] flex-col gap-8 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 class="mb-3 font-display text-[42px] font-light leading-none md:text-[64px]">Be Bold. Buy Now.</h2>
+          <p class="font-sans text-[15px] font-light leading-[1.8] text-white/68">Every piece is one-of-a-kind. Once it's gone, it's gone.</p>
+        </div>
+        <a href="/shop" class="inline-flex shrink-0 bg-white px-7 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold-light">Shop the Collection</a>
+      </div>
+    </section>
   </main>
 </Layout>

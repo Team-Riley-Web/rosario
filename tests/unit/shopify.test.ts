@@ -22,8 +22,8 @@ describe('Shopify product utilities', () => {
 
     expect(products[0]).toMatchObject({
       id: productFixture.id,
-      title: 'Starter Ceramic Mug',
-      handle: 'ceramic-mug',
+      title: 'Cobalt Millefiori Statement Necklace',
+      handle: 'cobalt-millefiori-statement-necklace',
       availableForSale: true,
     });
     expect(products[0].priceRange.minVariantPrice).toEqual({ amount: '28.00', currencyCode: 'USD' });

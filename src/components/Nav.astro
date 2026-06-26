@@ -8,6 +8,7 @@ const accountHref = `https://${import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'y
 const navLinks = [
   ['Shop', '/shop'],
   ['About', '/about'],
+  ['FAQ', '/faq'],
   ['Contact', '/contact'],
 ];
 ---
@@ -44,7 +45,7 @@ const navLinks = [
         href="/shop"
         class="font-mono text-[10px] tracking-[0.18em] uppercase text-gold-light hover:underline underline-offset-2 transition-all duration-200"
       >
-        Headless Shopify starter &mdash; connect your catalog in .env
+        Real Moretti Murano. One-of-a-kind pieces, never restocked.
       </a>
     </div>
   </div>
@@ -57,11 +58,11 @@ const navLinks = [
 
     <!-- Logo — always visible -->
     <a href="/" class="flex items-center gap-3 shrink-0 z-10">
-      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink font-mono text-[11px] tracking-[0.18em] text-white">SS</span>
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink font-mono text-[11px] tracking-[0.18em] text-white">RL</span>
       <span
         class="hidden lg:block font-mono text-[11px] tracking-[0.22em] uppercase transition-colors duration-300"
         :class="scrolled ? 'text-ink' : 'text-white'"
-      >Shopify Starter</span>
+      >Rosario Leonardi</span>
     </a>
 
     <!-- Desktop nav links — only shown once scrolled -->

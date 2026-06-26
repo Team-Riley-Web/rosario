@@ -38,7 +38,7 @@ describe('Shopify product utilities', () => {
     expect(products[0].variants.edges[0].node.id).toBe(variantId);
   });
 
-  it('returns products from the featured-collection Shopify collection', async () => {
+  it('returns products from the frontpage Shopify collection', async () => {
     const handles = ['desk-notebook', 'gift-card', 'canvas-pouch'];
     const featuredProducts = handles.map((handle, index) => ({
       ...productFixture,
@@ -48,7 +48,7 @@ describe('Shopify product utilities', () => {
 
     vi.stubGlobal('fetch', vi.fn(async (_url, init) => {
       const body = JSON.parse(String((init as RequestInit).body));
-      expect(body.variables.handle).toBe('featured-collection');
+      expect(body.variables.handle).toBe('frontpage');
 
       return {
         ok: true,
@@ -62,6 +62,34 @@ describe('Shopify product utilities', () => {
     const products = await getFeaturedProducts();
 
     expect(products.map(product => product.handle)).toEqual(handles);
+  });
+
+  it('falls back to best-selling products when the frontpage collection is empty', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (_url, init) => {
+      const body = JSON.parse(String((init as RequestInit).body));
+
+      if (body.query.includes('GetCollectionProducts')) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            data: { collection: null },
+          }),
+        };
+      }
+
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({
+          data: { products: { edges: [{ node: productFixture }] } },
+        }),
+      };
+    }));
+
+    const products = await getFeaturedProducts();
+
+    expect(products.map(product => product.handle)).toEqual(['cobalt-millefiori-statement-necklace']);
   });
 
   it('throws friendly API errors from shopifyFetch', async () => {

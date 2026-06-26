@@ -2,12 +2,21 @@ const importEnv = (import.meta as unknown as { env?: Record<string, string | und
 const processEnv = typeof process === 'undefined' ? {} : process.env;
 const env = { ...importEnv, ...processEnv };
 
+function getEnvValue(keys: string[], fallback = ''): string {
+  for (const key of keys) {
+    const value = env[key]?.trim();
+    if (value && value !== 'your-store.myshopify.com') return value;
+  }
+
+  return fallback;
+}
+
 const USE_MOCKS = env.SHOPIFY_USE_MOCKS === 'true' || env.PUBLIC_SHOPIFY_USE_MOCKS === 'true';
 
-export const SHOPIFY_DOMAIN = env.SHOPIFY_STORE_DOMAIN ?? env.PUBLIC_SHOPIFY_STORE_DOMAIN ?? 'your-store.myshopify.com';
-const STOREFRONT_TOKEN = env.SHOPIFY_STOREFRONT_TOKEN ?? env.PUBLIC_SHOPIFY_STOREFRONT_TOKEN ?? '';
-const API_VERSION = env.SHOPIFY_API_VERSION ?? env.PUBLIC_SHOPIFY_API_VERSION ?? '2024-01';
-export const FEATURED_COLLECTION_HANDLE = 'featured-collection';
+export const SHOPIFY_DOMAIN = getEnvValue(['SHOPIFY_STORE_DOMAIN', 'PUBLIC_SHOPIFY_STORE_DOMAIN'], 'your-store.myshopify.com');
+const STOREFRONT_TOKEN = getEnvValue(['SHOPIFY_STOREFRONT_TOKEN', 'PUBLIC_SHOPIFY_STOREFRONT_TOKEN']);
+const API_VERSION = getEnvValue(['SHOPIFY_API_VERSION', 'PUBLIC_SHOPIFY_API_VERSION'], '2024-01');
+export const FEATURED_COLLECTION_HANDLE = 'frontpage';
 
 export const STOREFRONT_URL = `https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`;
 
@@ -300,7 +309,8 @@ export async function getProducts(first = 24, sortKey = 'BEST_SELLING'): Promise
       { first, after: null, sortKey }
     );
     return filterRetailProducts(data.products.edges.map(e => e.node));
-  } catch {
+  } catch (error) {
+    console.warn('Shopify products fetch failed:', error instanceof Error ? error.message : error);
     return [];
   }
 }
@@ -327,7 +337,8 @@ export async function getAllProducts(sortKey = 'BEST_SELLING'): Promise<ShopifyP
       products.push(...data.products.edges.map(e => e.node));
       hasNextPage = data.products.pageInfo.hasNextPage;
       after = data.products.pageInfo.endCursor;
-    } catch {
+    } catch (error) {
+      console.warn('Shopify all-products fetch failed:', error instanceof Error ? error.message : error);
       return filterRetailProducts(products);
     }
   }
@@ -349,7 +360,8 @@ export async function getCollectionProducts(handle: string, first = 24): Promise
       { handle, first }
     );
     return filterRetailProducts(data.collection?.products.edges.map(e => e.node) ?? []);
-  } catch {
+  } catch (error) {
+    console.warn('Shopify collection fetch failed:', error instanceof Error ? error.message : error);
     return [];
   }
 }
@@ -378,7 +390,8 @@ export async function getProductsByHandles(handles: readonly string[]): Promise<
 }
 
 export async function getFeaturedProducts(): Promise<ShopifyProduct[]> {
-  return getCollectionProducts(FEATURED_COLLECTION_HANDLE, 24);
+  const collectionProducts = await getCollectionProducts(FEATURED_COLLECTION_HANDLE, 24);
+  return collectionProducts.length > 0 ? collectionProducts : getProducts(24);
 }
 
 export function formatPrice(amount: string, currency = 'USD'): string {

@@ -1,21 +1,21 @@
 ---
 import CartDrawer from '../components/CartDrawer.astro';
 import SearchModal from '../components/SearchModal.astro';
-import NewsletterPreFooter from '../components/NewsletterPreFooter.astro';
 import Footer from '../components/Footer.astro';
+import desirePro from '../assets/fonts/desirepro.otf';
+import foundersGrotesk from '../assets/fonts/Founders Grotesk Light.otf';
+import favicon from '../assets/images/favicon.png';
 
 export interface Props {
   title?: string;
   description?: string;
   image?: string;
-  showNewsletter?: boolean;
 }
 
 const {
   title = 'Rosario Leonardi Murano Glass',
   description = 'One-of-a-kind Murano glass jewelry and beads with verified Venetian and European sourcing.',
   image = '/og-image.svg',
-  showNewsletter = true,
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL('https://example.com');
@@ -28,7 +28,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, siteUrl).href;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href={favicon.src} />
     <link rel="canonical" href={canonicalURL} />
 
     <title>{title}</title>
@@ -52,16 +52,146 @@ const ogImage = image.startsWith('http') ? image : new URL(image, siteUrl).href;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-
-    <style is:global>
+    <style is:global define:vars={{ desireProUrl: `url(${desirePro.src})`, foundersGroteskUrl: `url(${foundersGrotesk.src})` }}>
+      @font-face {
+        font-family: 'DesirePro';
+        src: var(--desireProUrl) format('opentype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'FoundersGrotesk';
+        src: var(--foundersGroteskUrl) format('opentype');
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+      }
+      :root {
+        --bg: oklch(7% 0.010 255);
+        --surface: oklch(12% 0.010 255);
+        --surface-lift: oklch(17% 0.010 255);
+        --fg: oklch(97% 0.008 75);
+        --fg-sub: oklch(72% 0.008 75);
+        --muted: oklch(42% 0.008 255);
+        --border: oklch(20% 0.010 255);
+        --border-lift: oklch(28% 0.010 255);
+        --accent: oklch(64% 0.115 72);
+        --accent-light: oklch(80% 0.08 78);
+        --accent-deep: oklch(52% 0.10 68);
+        --cobalt: oklch(50% 0.20 240);
+        --cobalt-dark: oklch(42% 0.22 240);
+        --light-bg: oklch(99% 0.003 240);
+        --light-surface: oklch(96% 0.004 240);
+        --light-fg: oklch(13% 0.010 255);
+        --light-sub: oklch(48% 0.008 255);
+        --light-border: oklch(88% 0.006 240);
+        --font-display: 'DesirePro', Georgia, serif;
+        --font-wordmark: 'DesirePro', Georgia, serif;
+        --font-body: 'FoundersGrotesk', -apple-system, system-ui, sans-serif;
+        --font-mono: 'FoundersGrotesk', -apple-system, system-ui, sans-serif;
+      }
       [x-cloak] { display: none !important; }
+      *, *::before, *::after { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      img { display: block; max-width: 100%; }
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; cursor: pointer; }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--font-body);
+        font-weight: 300;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.6;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 1px;
+      }
+      :focus:not(:focus-visible) { outline: none; }
+      .font-display { font-family: var(--font-display); }
+      .font-sans { font-family: var(--font-body); }
+      .font-mono { font-family: var(--font-mono); }
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 1.5rem;
+      }
+      .eyebrow-rule {
+        display: block;
+        width: 28px;
+        height: 1px;
+        background: var(--accent);
+        flex-shrink: 0;
+      }
+      .eyebrow-text {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+      .btn-primary,
+      .btn-ghost,
+      .link-arrow {
+        display: inline-flex;
+        align-items: center;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .btn-primary {
+        padding: 12px 28px;
+        background: var(--fg);
+        color: var(--bg);
+        transition: background 0.3s cubic-bezier(0.16,1,0.3,1);
+      }
+      .btn-primary:hover { background: var(--accent-light); }
+      .btn-primary:active { background: var(--accent-deep); }
+      .btn-ghost {
+        padding: 11px 28px;
+        color: var(--fg);
+        border: 1px solid var(--border-lift);
+        transition: border-color 0.3s, color 0.3s, background 0.3s;
+      }
+      .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+      .btn-ghost:active { background: oklch(100% 0 0 / 0.04); }
+      .link-arrow {
+        gap: 8px;
+        color: var(--accent);
+        transition: gap 0.3s cubic-bezier(0.16,1,0.3,1), color 0.3s, opacity 0.3s;
+      }
+      .link-arrow:hover { gap: 14px; }
+      .link-arrow:active { opacity: 0.65; }
+      .section { padding: 6rem 2.5rem; }
+      .section--surface { background: var(--surface); }
+      .section--lift { background: var(--surface-lift); }
+      .section--white { background: var(--light-bg); color: var(--light-fg); }
+      .inner { max-width: 1180px; margin: 0 auto; }
+      .inner--wide { max-width: 1440px; margin: 0 auto; }
+      .product-img {
+        display: block;
+        width: 100%;
+        object-fit: cover;
+      }
+      .section--white .eyebrow-text { color: var(--cobalt); }
+      .section--white .eyebrow-rule { background: var(--cobalt); }
+      .section--white .link-arrow { color: var(--cobalt); }
+      .section--white .link-arrow:hover { color: var(--cobalt-dark); }
+      .section--white .btn-primary {
+        background: var(--light-fg);
+        color: var(--light-bg);
+      }
+      .section--white .btn-primary:hover { background: var(--cobalt); }
+      .section--white .btn-ghost {
+        border-color: oklch(60% 0.008 255);
+        color: var(--light-fg);
+      }
+      .section--white .btn-ghost:hover { border-color: var(--cobalt); color: var(--cobalt); }
 
       /* Scroll reveal */
       .reveal {
@@ -80,11 +210,15 @@ const ogImage = image.startsWith('http') ? image : new URL(image, siteUrl).href;
         transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
       }
       .reveal.visible,
+      .reveal.revealed,
       .reveal-left.visible,
       .reveal-right.visible {
         opacity: 1;
         transform: none;
       }
+      .reveal-delay-1 { transition-delay: 0.1s; }
+      .reveal-delay-2 { transition-delay: 0.22s; }
+      .reveal-delay-3 { transition-delay: 0.34s; }
 
       /* Link arrow gap animation */
       .link-arrow {
@@ -94,6 +228,18 @@ const ogImage = image.startsWith('http') ? image : new URL(image, siteUrl).href;
         transition: gap 0.2s;
       }
       .link-arrow:hover { gap: 14px; }
+      @media (max-width: 767px) {
+        .section { padding: 3.5rem 1.5rem; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        html { scroll-behavior: auto; }
+        .reveal { opacity: 1 !important; transform: none !important; }
+      }
 
       /* Trust bar marquee */
       @keyframes trustScroll {
@@ -109,11 +255,10 @@ const ogImage = image.startsWith('http') ? image : new URL(image, siteUrl).href;
     </style>
   </head>
 
-  <body class="bg-white font-sans text-ink antialiased overflow-x-hidden">
+  <body class="font-sans antialiased overflow-x-hidden">
     <CartDrawer />
     <SearchModal />
     <slot />
-    {showNewsletter && <NewsletterPreFooter />}
     <Footer />
 
     <script>
@@ -123,6 +268,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, siteUrl).href;
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               entry.target.classList.add('visible');
+              entry.target.classList.add('revealed');
               revealObserver.unobserve(entry.target);
             }
           });

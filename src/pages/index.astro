@@ -3,10 +3,12 @@ import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import ProductsSection from '../components/ProductsSection.astro';
 import heroImage from '../assets/images/model6.png';
-import signatureImage from '../assets/images/model.avif';
-import vintageImage from '../assets/images/model1.avif';
-import makerImage from '../assets/images/model2.avif';
-import authenticityImage from '../assets/images/model3.png';
+import heroVideo from '../assets/videos/video2.mp4';
+import necklacesImage from '../assets/images/model.avif';
+import earringsImage from '../assets/images/model3.png';
+import braceletsImage from '../assets/images/model4.png';
+import ringsImage from '../assets/images/model1.avif';
+import beadsImage from '../assets/images/model2.avif';
 import personalImage from '../assets/images/model4.png';
 import giftImage from '../assets/images/model5.png';
 
@@ -19,28 +21,32 @@ const trustItems = [
 
 const collections = [
   {
-    title: 'Signature Moretti Designs',
-    body: 'One-of-a-kind pieces made with exclusive glass beads through my direct partnership with Ercole Moretti.',
-    href: '/shop?filter=signature-moretti',
-    cta: 'Shop Signature Pieces',
-    image: signatureImage,
-    alt: 'Model wearing a bold Murano glass jewelry piece',
+    title: 'Necklaces',
+    body: 'Statement necklaces hand-strung with authentic Murano glass beads. Each piece, an unrepeatable arrangement of color and light.',
+    href: '/shop?filter=necklaces',
+    image: necklacesImage,
+    alt: 'Model wearing a bold Murano glass necklace',
   },
   {
-    title: 'Restored Vintage Millefiori',
-    body: 'Decades-old Murano glass, personally sourced and brought back to life - history you can wear.',
-    href: '/shop?filter=vintage-millefiori',
-    cta: 'Shop Vintage Collection',
-    image: vintageImage,
-    alt: 'Vintage-inspired Murano glass jewelry styling',
+    title: 'Earrings',
+    body: 'Drop earrings and studs set with Millefiori beads and lampwork glass. Weightless, vivid, impossible to ignore.',
+    href: '/shop?filter=earrings',
+    image: earringsImage,
+    alt: 'Murano glass earrings styled in warm natural light',
   },
   {
-    title: 'Beads for Makers',
-    body: 'Authentic Murano Millefiori and lampwork beads for jewelry-makers who need materials they can trust.',
-    href: '/shop?filter=beads-for-makers',
-    cta: 'Shop Maker Supplies',
-    image: makerImage,
-    alt: 'Murano glass jewelry detail for makers and collectors',
+    title: 'Bracelets',
+    body: 'Wrist pieces in vintage Millefiori, signature Moretti beads, and freshwater pearl. Worn alone or layered.',
+    href: '/shop?filter=bracelets',
+    image: braceletsImage,
+    alt: 'Murano glass bracelet and jewelry styling',
+  },
+  {
+    title: 'Rings',
+    body: 'Adjustable rings set with single signature beads: cobalt, amber, teal. Understated or bold, depending on the glass.',
+    href: '/shop?filter=rings',
+    image: ringsImage,
+    alt: 'Murano glass ring styling',
   },
 ];
 ---
@@ -51,111 +57,104 @@ const collections = [
 >
   <Nav />
   <main>
-    <section id="hero" class="relative flex min-h-[78vh] items-end overflow-hidden bg-ink px-6 pb-14 pt-32 text-white sm:px-10 lg:pb-24">
-      <img
-        src={heroImage.src}
-        alt=""
-        class="absolute inset-0 h-full w-full object-cover"
-        loading="eager"
-        fetchpriority="high"
-      />
-      <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/62 to-ink/20"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-ink/82 via-ink/45 to-transparent"></div>
-      <div class="relative z-10 mx-auto grid w-full max-w-[1440px] gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
-        <div>
-          <div class="mb-6 flex items-center gap-4">
-            <div class="h-px w-8 bg-gold"></div>
-            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-gold-light">Rosario Leonardi Murano Glass</span>
+    <section id="hero">
+      <video
+        class="hero-img"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster={heroImage.src}
+        aria-hidden="true"
+      >
+        <source src={heroVideo} type="video/mp4" />
+      </video>
+      <div class="hero-overlay" aria-hidden="true"></div>
+
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="eyebrow">
+            <span class="eyebrow-rule" aria-hidden="true"></span>
+            <span class="eyebrow-text">Rosario Leonardi Murano Glass</span>
           </div>
-          <h1 class="max-w-[880px] font-display text-[48px] font-light leading-none tracking-normal md:text-[76px] lg:text-[94px]">
-            Be Bold
-          </h1>
+          <h1 class="hero-h1">Be Bold</h1>
         </div>
-        <div class="max-w-[540px] lg:ml-auto">
-          <p class="mb-8 font-sans text-[16px] font-light leading-[1.85] text-white/76">
+        <div class="hero-right">
+          <p class="hero-sub-body">
             One-of-a-kind jewelry sourced through a direct partnership with Ercole Moretti - Venice's most exclusive glass bead maker. Not "Murano-style." The real thing.
           </p>
-          <a href="/shop" class="inline-flex bg-white px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold-light">
-            Be Bold. Shop Now
-          </a>
+          <a href="/shop" class="btn-primary">Be Bold. Shop Now <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
 
-    <section class="bg-white px-6 py-12 sm:px-10">
-      <div class="mx-auto grid max-w-[1440px] gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
+    <div class="trust-bar trust-bar--white">
+      <div class="trust-grid">
         {trustItems.map((item) => (
-          <div class="flex min-h-[104px] items-center gap-3 bg-white p-6">
-            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gold text-gold">✓</span>
-            <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-ink">{item}</p>
+          <div class="trust-item">
+            <span class="trust-check" aria-hidden="true">✓</span>
+            <p class="trust-label">{item}</p>
           </div>
         ))}
       </div>
-    </section>
+    </div>
 
-    <section class="bg-parchment px-6 py-24 sm:px-10">
-      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-        <div>
-          <div class="mb-6 flex items-center gap-4">
-            <div class="h-px w-6 bg-gold"></div>
-            <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">Authenticity</span>
+    <section class="section section--white" data-section="authenticity">
+      <div class="inner">
+        <div class="auth-grid">
+          <div class="reveal">
+            <div class="eyebrow">
+              <span class="eyebrow-rule" aria-hidden="true"></span>
+              <span class="eyebrow-text">Authenticity</span>
+            </div>
+            <h2 class="auth-headline">Most "Murano Glass" Online Isn't Actually Murano Glass.</h2>
           </div>
-          <h2 class="font-display text-[42px] font-light leading-none text-ink md:text-[64px]">
-            Most "Murano Glass" Online Isn't Actually Murano Glass.
-          </h2>
-        </div>
-        <div class="grid gap-8 md:grid-cols-[0.82fr_1fr] md:items-center">
-          <div class="overflow-hidden bg-white">
-            <img
-              src={authenticityImage.src}
-              alt="Rosario Leonardi Murano glass jewelry worn in warm natural light"
-              class="aspect-[4/5] h-full w-full object-cover"
-              loading="lazy"
-            />
-          </div>
-          <div class="max-w-[520px]">
-            <p class="mb-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-              The internet is flooded with mass-produced glass dressed up as Venetian heritage. Vague sourcing. Sellers who can't tell you who actually made the piece in your hands.
-            </p>
-            <p class="mb-8 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-              I built this shop to be different. Every piece traces back to a verifiable source - not a guess.
-            </p>
-            <a href="/about" class="link-arrow font-mono text-[10px] uppercase tracking-[0.18em] text-gold">
-              See What Makes It Real
-              <span aria-hidden="true">→</span>
-            </a>
+          <div class="auth-right reveal reveal-delay-1">
+            <div class="auth-img">
+              <img
+                src={earringsImage.src}
+                alt="Rosario Leonardi Murano glass jewelry worn in warm natural light"
+                class="product-img"
+                loading="lazy"
+              />
+            </div>
+            <div class="auth-copy">
+              <p>The internet is flooded with mass-produced glass dressed up as Venetian heritage. Vague sourcing. Sellers who can't tell you who actually made the piece in your hands.</p>
+              <p>I built this shop to be different. Every piece traces back to a verifiable source - not a guess.</p>
+              <a href="/about" class="link-arrow">See What Makes It Real <span aria-hidden="true">→</span></a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="bg-white px-6 py-24 sm:px-10">
-      <div class="mx-auto max-w-[1440px]">
-        <div class="mb-14 max-w-[760px]">
-          <div class="mb-6 flex items-center gap-4">
-            <div class="h-px w-6 bg-gold"></div>
-            <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">Collections</span>
+    <section class="section" data-section="collections">
+      <div class="inner--wide">
+        <div class="collections-header reveal">
+          <div class="eyebrow">
+            <span class="eyebrow-rule" aria-hidden="true"></span>
+            <span class="eyebrow-text">Collections</span>
           </div>
-          <h2 class="font-display text-[42px] font-light leading-none text-ink md:text-[66px]">
-            Three Ways to Own Something Real
-          </h2>
+          <h2 class="collections-h2">One-of-a-Kind, in Every Form</h2>
         </div>
-        <div class="grid gap-px border border-rule bg-rule lg:grid-cols-3">
-          {collections.map((collection) => (
-            <article class="group flex min-h-[500px] flex-col bg-white">
-              <a href={collection.href} class="block overflow-hidden bg-parchment">
+
+        <div class="coll-grid">
+          {collections.map((collection, index) => (
+            <article class={`coll-card reveal reveal-delay-${Math.min(index, 3)}`}>
+              <a href={collection.href} class="coll-img-wrap" aria-label={`Shop ${collection.title}`}>
                 <img
                   src={collection.image.src}
                   alt={collection.alt}
-                  class="aspect-[4/3] w-full object-cover transition-transform duration-[800ms] group-hover:scale-[1.04]"
+                  class="product-img"
                   loading="lazy"
                 />
               </a>
-              <div class="flex flex-1 flex-col p-8">
-                <h3 class="mb-5 font-display text-[32px] font-normal leading-tight text-ink">{collection.title}</h3>
-                <p class="mb-8 font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{collection.body}</p>
-                <a href={collection.href} class="link-arrow mt-auto font-mono text-[10px] uppercase tracking-[0.18em] text-gold">
-                  {collection.cta}
+              <div class="coll-body">
+                <h3 class="coll-title">{collection.title}</h3>
+                <p class="coll-desc">{collection.body}</p>
+                <a href={collection.href} class="link-arrow">
+                  Shop {collection.title}
                   <span aria-hidden="true">→</span>
                 </a>
               </div>
@@ -165,72 +164,438 @@ const collections = [
       </div>
     </section>
 
-    <section class="bg-ink px-6 py-24 text-white sm:px-10">
-      <div class="mx-auto max-w-[980px] text-center">
-        <p class="mb-8 font-display text-[34px] font-light italic leading-tight md:text-[54px]">
-          "I almost didn't buy it because I thought it had to be fake at that price for real vintage Murano. I was wrong, and I'm so glad."
-        </p>
-        <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-gold-light">Real customers. Real glass. Real stories.</p>
+    <ProductsSection />
+
+    <section class="section quote-section section--surface" data-section="quote">
+      <div class="quote-inner reveal">
+        <blockquote>
+          <p class="pull-quote">"I almost didn't buy it because I thought it had to be fake at that price for real vintage Murano. I was wrong, and I'm so glad."</p>
+          <cite class="quote-attr">Real customers. Real glass. Real stories.</cite>
+        </blockquote>
       </div>
     </section>
 
-    <section class="bg-parchment px-6 py-24 sm:px-10">
-      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
-        <div class="overflow-hidden bg-white">
-          <img
-            src={personalImage.src}
-            alt="Model wearing Rosario Leonardi Murano glass jewelry"
-            class="aspect-[4/5] w-full object-cover"
-            loading="lazy"
-          />
-        </div>
-        <div>
-          <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[66px]">
-            You're Not Buying From a Faceless Storefront.
-          </h2>
-          <p class="mb-8 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-            Have a question before you buy? Call me. I'm not a chatbot script - I'm a person who actually answers, whether you're choosing a gift, building a collection, or sourcing materials for your own work.
-          </p>
-          <div class="flex flex-wrap gap-3">
-            <a href="/contact" class="bg-ink px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:bg-gold-deep">Get Gift Guidance</a>
-            <a href="/contact" class="border border-rule bg-white px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:border-gold hover:text-gold-deep">Ask a Question</a>
+    <section class="section section--surface" data-section="meet-the-beads">
+      <div class="inner">
+        <div class="beads-editorial">
+          <div class="beads-editorial-head reveal">
+            <div class="eyebrow centered">
+              <span class="eyebrow-rule" aria-hidden="true"></span>
+              <span class="eyebrow-text">Meet the Beads</span>
+              <span class="eyebrow-rule" aria-hidden="true"></span>
+            </div>
+            <h2>Venetian glass with a name behind it.</h2>
+          </div>
+          <div class="beads-editorial-img reveal reveal-delay-1">
+            <img
+              src={beadsImage.src}
+              alt="Colorful Murano Millefiori glass beads close-up"
+              class="product-img"
+              loading="lazy"
+            />
+          </div>
+          <div class="beads-editorial-copy reveal reveal-delay-2">
+            <p>On the island of Murano, a short boat ride from Venice, a small number of families have been making glass beads for over seven centuries. Ercole Moretti is one of the last.</p>
+            <p>That direct relationship matters. It is how I can tell you where the glass came from, why it is different, and why each piece deserves more than a generic "Murano-style" label.</p>
+            <a href="/about" class="link-arrow">Read the Story <span aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="bg-white px-6 py-24 sm:px-10">
-      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-        <div>
-          <h2 class="mb-6 font-display text-[42px] font-light leading-none text-ink md:text-[66px]">
-            Need a Gift That Actually Feels Personal?
-          </h2>
-          <p class="mb-8 max-w-[720px] font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-            I'll get on the phone with you, learn who she is, and help you find the piece she'll genuinely love. Arrives beautifully boxed with a gold label - add a gift bow if you'd like.
-          </p>
-          <a href="/contact" class="inline-flex bg-ink px-7 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:bg-gold-deep">Get Gift Help</a>
-        </div>
-        <div class="overflow-hidden bg-parchment">
-          <img
-            src={giftImage.src}
-            alt="Statement Murano glass jewelry styled for a personal gift"
-            class="aspect-[4/3] w-full object-cover"
-            loading="lazy"
-          />
+    <section class="section section--white" data-section="personal-story">
+      <div class="inner">
+        <div class="personal-grid">
+          <div class="personal-img reveal">
+            <img
+              src={personalImage.src}
+              alt="Model wearing Rosario Leonardi Murano glass jewelry"
+              class="product-img"
+              loading="lazy"
+            />
+          </div>
+          <div class="personal-copy reveal reveal-delay-1">
+            <h2>You're Not Buying From a Faceless Storefront.</h2>
+            <p>Have a question before you buy? Call me. I'm not a chatbot script. I'm a person who actually answers, whether you're choosing a gift, building a collection, or sourcing materials for your own work.</p>
+            <div class="personal-btns">
+              <a href="/contact" class="btn-primary">Get Gift Guidance</a>
+              <a href="/contact" class="btn-ghost">Ask a Question</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <ProductsSection />
-
-    <section class="bg-ink px-6 py-20 text-white sm:px-10">
-      <div class="mx-auto flex max-w-[1180px] flex-col gap-8 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h2 class="mb-3 font-display text-[42px] font-light leading-none md:text-[64px]">Be Bold. Buy Now.</h2>
-          <p class="font-sans text-[15px] font-light leading-[1.8] text-white/68">Every piece is one-of-a-kind. Once it's gone, it's gone.</p>
+    <section class="section section--surface" data-section="gift">
+      <div class="inner">
+        <div class="gift-grid">
+          <div class="gift-copy reveal">
+            <h2>Need a Gift That Actually Feels Personal?</h2>
+            <p>I'll get on the phone with you, learn who she is, and help you find the piece she'll genuinely love. Arrives beautifully boxed with a gold label. Add a gift bow if you'd like.</p>
+            <a href="/contact" class="btn-primary">Get Gift Help</a>
+          </div>
+          <div class="gift-img reveal reveal-delay-1">
+            <img
+              src={giftImage.src}
+              alt="Statement Murano glass jewelry styled for a personal gift"
+              class="product-img"
+              loading="lazy"
+            />
+          </div>
         </div>
-        <a href="/shop" class="inline-flex shrink-0 bg-white px-7 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold-light">Shop the Collection</a>
+      </div>
+    </section>
+
+    <section class="section cta-strip" data-section="cta">
+      <div class="cta-flex">
+        <div class="cta-text">
+          <h2>Be Bold. Buy Now.</h2>
+          <p>Every piece is one-of-a-kind. Once it's gone, it's gone.</p>
+        </div>
+        <a href="/shop" class="btn-primary">Shop the Collection <span aria-hidden="true">→</span></a>
       </div>
     </section>
   </main>
 </Layout>
+
+<style>
+  #hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 8rem 2.5rem 5rem;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, oklch(7% 0.010 255 / 1) 0%, oklch(7% 0.010 255 / 0.82) 28%, oklch(7% 0.010 255 / 0.45) 55%, oklch(7% 0.010 255 / 0.15) 80%, transparent 100%),
+      linear-gradient(to right, oklch(7% 0.010 255 / 0.85) 0%, oklch(7% 0.010 255 / 0.55) 35%, oklch(7% 0.010 255 / 0.20) 60%, transparent 80%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    gap: 3rem;
+  }
+  .hero-h1 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: 0;
+    font-size: clamp(68px, 10vw, 128px);
+    color: var(--fg);
+  }
+  .hero-sub-body {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: oklch(97% 0.008 75 / 0.76);
+    margin-bottom: 2rem;
+    max-width: 460px;
+    text-wrap: pretty;
+  }
+  .trust-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .trust-grid {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 1.5rem 2rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    min-height: 96px;
+  }
+  .trust-item:nth-child(2n) { border-right: none; }
+  .trust-check {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .trust-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-sub);
+    line-height: 1.5;
+  }
+  .trust-bar--white {
+    background: white;
+    border-bottom-color: var(--light-border);
+  }
+  .trust-bar--white .trust-item { border-color: var(--light-border); }
+  .trust-bar--white .trust-check {
+    border-color: var(--cobalt);
+    color: var(--cobalt);
+  }
+  .trust-bar--white .trust-label { color: oklch(35% 0.010 255); }
+  .auth-grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  .auth-headline,
+  .collections-h2,
+  .beads-editorial-head h2,
+  .personal-copy h2,
+  .gift-copy h2,
+  .cta-text h2 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 0.98;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+  .auth-headline {
+    font-size: clamp(36px, 5.5vw, 66px);
+    color: var(--fg);
+  }
+  .auth-right {
+    display: grid;
+    gap: 2rem;
+  }
+  .auth-img,
+  .coll-img-wrap,
+  .beads-editorial-img,
+  .personal-img,
+  .gift-img {
+    overflow: hidden;
+  }
+  .auth-img .product-img,
+  .personal-img .product-img { aspect-ratio: 4 / 5; }
+  .coll-img-wrap .product-img {
+    aspect-ratio: 4 / 3;
+    transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+  .gift-img .product-img { aspect-ratio: 4 / 3; }
+  .auth-copy p,
+  .beads-editorial-copy p,
+  .personal-copy p,
+  .gift-copy p {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--fg-sub);
+    margin-bottom: 1.5rem;
+    text-wrap: pretty;
+  }
+  .auth-copy p:last-of-type,
+  .beads-editorial-copy p:last-of-type {
+    margin-bottom: 2rem;
+  }
+  .collections-header {
+    max-width: 760px;
+    margin-bottom: 3.5rem;
+  }
+  .collections-h2 {
+    font-size: clamp(38px, 5.5vw, 68px);
+    color: var(--fg);
+  }
+  .coll-grid {
+    display: grid;
+    border: 1px solid var(--border);
+    background: var(--border);
+    gap: 1px;
+  }
+  .coll-card {
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s ease;
+  }
+  .coll-card:hover { background: var(--surface-lift); }
+  .coll-card:hover .product-img { transform: scale(1.04); }
+  .coll-body {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .coll-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.1;
+    font-size: clamp(28px, 3vw, 34px);
+    letter-spacing: 0;
+    color: var(--fg);
+    margin-bottom: 1.25rem;
+  }
+  .coll-desc {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--fg-sub);
+    margin-bottom: 2rem;
+    flex: 1;
+    text-wrap: pretty;
+  }
+  .quote-section {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .quote-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .pull-quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.25;
+    letter-spacing: 0;
+    font-size: clamp(26px, 4vw, 52px);
+    color: var(--fg);
+    margin-bottom: 2rem;
+    text-wrap: balance;
+  }
+  .quote-attr {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-style: normal;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+  }
+  .beads-editorial {
+    display: grid;
+    gap: 3rem;
+    max-width: 840px;
+    margin: 0 auto;
+  }
+  .beads-editorial-head { text-align: center; }
+  .beads-editorial-head h2 {
+    font-size: clamp(48px, 7vw, 80px);
+    color: var(--fg);
+  }
+  .eyebrow.centered {
+    justify-content: center;
+  }
+  .beads-editorial-img .product-img { aspect-ratio: 16 / 9; }
+  .beads-editorial-copy {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .personal-grid,
+  .gift-grid {
+    display: grid;
+    gap: 3.5rem;
+    align-items: center;
+  }
+  .personal-copy h2,
+  .gift-copy h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    margin-bottom: 1.75rem;
+  }
+  .personal-copy p,
+  .gift-copy p {
+    margin-bottom: 2rem;
+  }
+  .personal-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .cta-strip {
+    border-top: 1px solid var(--border);
+  }
+  .cta-flex {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .cta-text h2 {
+    font-size: clamp(36px, 5vw, 66px);
+    color: var(--fg);
+    margin-bottom: 0.75rem;
+  }
+  .cta-text p {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: oklch(97% 0.008 75 / 0.68);
+  }
+  .section--white .auth-headline,
+  .section--white .personal-copy h2,
+  .section--white .gift-copy h2 {
+    color: var(--light-fg);
+  }
+  .section--white .auth-copy p,
+  .section--white .personal-copy p,
+  .section--white .gift-copy p {
+    color: var(--light-sub);
+  }
+  @media (min-width: 640px) {
+    .coll-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 768px) {
+    .auth-right { grid-template-columns: 0.82fr 1fr; align-items: center; }
+    .cta-flex {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  @media (min-width: 1024px) {
+    .hero-content { grid-template-columns: 1.1fr 0.9fr; align-items: flex-end; }
+    .hero-right { margin-left: auto; }
+    .trust-grid { grid-template-columns: repeat(4, 1fr); }
+    .trust-item { border-bottom: none; }
+    .trust-item:nth-child(2n) { border-right: 1px solid var(--light-border); }
+    .trust-item:last-child { border-right: none; }
+    .auth-grid { grid-template-columns: 0.85fr 1.15fr; }
+    .coll-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .personal-grid { grid-template-columns: 1fr 1fr; }
+    .gift-grid { grid-template-columns: 0.95fr 1.05fr; }
+  }
+  @media (max-width: 767px) {
+    #hero {
+      min-height: 85vh;
+      padding: 7rem 1.5rem 4rem;
+    }
+    .hero-sub-body { max-width: 100%; }
+    .trust-item {
+      padding: 1.25rem;
+      gap: 10px;
+    }
+    .coll-body { padding: 1.5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .coll-card:hover .product-img {
+      transform: none !important;
+    }
+  }
+</style>

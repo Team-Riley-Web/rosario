@@ -22,9 +22,9 @@ export default {
         rule: 'oklch(88% 0.006 72 / <alpha-value>)',
       },
       fontFamily: {
-        display: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans: ['DM Sans', 'system-ui', 'sans-serif'],
-        mono: ['DM Mono', 'monospace'],
+        display: ['DesirePro', 'Georgia', 'serif'],
+        sans: ['FoundersGrotesk', 'system-ui', 'sans-serif'],
+        mono: ['FoundersGrotesk', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         'card':   '0 1px 3px rgba(0,0,0,0.06), 0 8px 20px rgba(0,0,0,0.04)',

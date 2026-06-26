@@ -23,13 +23,17 @@ const displayProducts = products;
 const defaultFilter = 'all';
 const filters = [
   { label: 'All Pieces', value: 'all' },
+  { label: 'Necklaces', value: 'necklaces' },
+  { label: 'Earrings', value: 'earrings' },
+  { label: 'Bracelets', value: 'bracelets' },
+  { label: 'Rings', value: 'rings' },
   { label: 'Signature Moretti', value: 'signature-moretti' },
   { label: 'Vintage Millefiori', value: 'vintage-millefiori' },
   { label: 'Uncirculated Finds', value: 'uncirculated-vintage' },
   { label: 'Freshwater Pearls', value: 'freshwater-pearls' },
   { label: 'Beads for Makers', value: 'beads-for-makers' },
 ];
-const heading = isFeatured ? 'Current pieces.' : 'Every Piece Is One of a Kind.';
+const heading = isFeatured ? 'Bestsellers' : 'Every Piece Is One of a Kind.';
 const ctaHref = '/shop';
 const ctaLabel = isFeatured ? 'Shop the Collection' : 'Reset View';
 
@@ -51,6 +55,10 @@ const productState = displayProducts.map((product, index) => {
   ].join(' ').toLowerCase();
   const categories = ['all'];
 
+  if (/(necklace|choker|pendant|lariat)/.test(productText)) categories.push('necklaces');
+  if (/(earring|stud|hoop|dangle|drop)/.test(productText)) categories.push('earrings');
+  if (/(bracelet|bangle|cuff)/.test(productText)) categories.push('bracelets');
+  if (/(ring)/.test(productText)) categories.push('rings');
   if (/(moretti|signature)/.test(productText)) categories.push('signature-moretti');
   if (/(vintage|millefiori|restored)/.test(productText)) categories.push('vintage-millefiori');
   if (/(uncirculated|european find|rare find)/.test(productText)) categories.push('uncirculated-vintage');
@@ -74,36 +82,30 @@ const lastVisibleIndex = firstVisibleIndex + 16;
 ---
 
 <section
-  class="bg-parchment"
+  class={`section section--white products-section ${isFeatured ? 'products-section--featured' : ''}`}
   id="products"
-  style="padding: 120px 0 100px;"
 >
-  <div class="max-w-[1440px] mx-auto px-10">
+  <div class="inner--wide">
 
     <!-- Header -->
-    <div
-      class="reveal flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16"
-    >
+    <div class="products-header reveal">
       <div>
-        <div class="flex items-center gap-4 mb-5">
-          <div class="h-px bg-gold w-6"></div>
-          <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">Current Collection</span>
-        </div>
-        <h2
-          class="font-display font-light text-ink leading-none tracking-normal"
-          style="font-size: clamp(42px, 4.5vw, 68px);"
-        >
-          {heading}
-        </h2>
         {!isFeatured && (
-          <p class="mt-5 max-w-[760px] font-sans text-[15px] font-light leading-[1.85] text-ink-soft">
+          <div class="eyebrow">
+            <span class="eyebrow-rule" aria-hidden="true"></span>
+            <span class="eyebrow-text">Current Collection</span>
+          </div>
+        )}
+        <h2 class="products-heading">{heading}</h2>
+        {!isFeatured && (
+          <p class="products-intro">
             Real Moretti Murano. Real vintage history. Real materials for real makers. Nothing here is mass-produced, and nothing here will be exactly duplicated - browse knowing that if something speaks to you, it is worth not waiting.
           </p>
         )}
       </div>
       <a
         href={ctaHref}
-        class="link-arrow font-mono text-[10px] tracking-[0.18em] uppercase text-gold shrink-0"
+        class="link-arrow products-cta"
       >
         {ctaLabel}
         <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
@@ -174,30 +176,29 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     >
       {/* Filter + sort — only for complete variant */}
       {!isFeatured && (
-        <div class="mb-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div class="flex flex-wrap gap-0.5">
+        <div class="products-controls">
+          <div class="products-filters">
             {filters.map(f => (
               <button
                 @click={`active = '${f.value}'; page = 1`}
-                :class={`active === '${f.value}' ? 'bg-ink text-white' : 'bg-white text-ink-soft hover:text-ink border border-rule'`}
-                class="px-5 py-2.5 font-mono text-[10px] tracking-[0.15em] uppercase transition-all duration-200"
+                :class={`active === '${f.value}' ? 'is-active' : ''`}
+                class="filter-btn"
               >
                 {f.label}
               </button>
             ))}
           </div>
 
-          <div class="flex flex-wrap items-center gap-3">
-            <label for="product-sort" class="flex items-center gap-3">
-              <span class="font-mono text-[10px] tracking-[0.18em] uppercase text-ink-soft">Sort by</span>
-              <span class="relative inline-flex items-center">
+          <div class="products-sort">
+            <label for="product-sort">
+              <span>Sort by</span>
+              <span class="select-wrap">
                 <select
                   id="product-sort"
                   name="sort"
                   x-model="sortBy"
                   @change="page = 1"
-                  class="h-10 appearance-none border border-rule bg-white font-mono text-[10px] tracking-[0.1em] text-ink-soft outline-none transition-colors focus:border-gold"
-                  style="padding: 0 36px 0 14px;"
+                  class="sort-select"
                 >
                   <option value="alpha">Alphabetical</option>
                   <option value="best-selling">Best-selling</option>
@@ -206,7 +207,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                   <option value="price-high-low">Price, high to low</option>
                 </select>
                 <svg
-                  class="pointer-events-none absolute right-3 h-3 w-3 text-ink-soft"
+                  class="select-icon"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                   aria-hidden="true"
@@ -219,8 +220,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
             <button
               type="button"
               @click="reset()"
-              class="h-10 border border-rule bg-white font-mono text-[10px] tracking-[0.15em] uppercase text-ink-soft transition-colors hover:border-ink hover:text-ink"
-              style="padding: 0 18px;"
+              class="filter-btn"
             >
               Reset
             </button>
@@ -232,13 +232,14 @@ const lastVisibleIndex = firstVisibleIndex + 16;
       {hasProducts ? (
         <>
           {!isFeatured && (
-            <div class="flex items-center justify-between gap-4 mb-6 font-mono text-[10px] tracking-[0.1em] uppercase text-ink-soft">
+            <div class="products-count">
               <p>Page <span x-text="page"></span> of <span x-text="totalPages()"></span></p>
               <p><span x-text="totalResults()"></span> of {totalProductsLabel} products</p>
             </div>
           )}
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px">
+          <div class={isFeatured ? 'prod-scroll-outer' : 'products-grid'} id={isFeatured ? 'bestsellers-scroll' : undefined} role={isFeatured ? 'region' : 'list'} aria-label={isFeatured ? 'Bestsellers - scroll to see more' : undefined}>
+            <div class={isFeatured ? 'prod-scroll-grid' : 'products-grid-inner'}>
             {displayProducts.map((product, i) => {
               const isInitiallyVisible = i >= firstVisibleIndex && i < lastVisibleIndex;
               return (
@@ -247,7 +248,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                   x-transition:enter="transition ease-out duration-200"
                   x-transition:enter-start="opacity-0 scale-95"
                   x-transition:enter-end="opacity-100 scale-100"
-                  class="transition-all duration-200 h-full"
+                  class="product-cell"
                   style={isInitiallyVisible ? undefined : 'display: none;'}
                   :style={`{ order: productOrder(${JSON.stringify(product.id)}) }`}
                 >
@@ -255,19 +256,20 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                 </div>
               );
             })}
+            </div>
           </div>
 
-          <p x-show="totalResults() === 0" class="mt-8 text-center font-sans font-light text-[14px] text-ink-soft">
+          <p x-show="totalResults() === 0" class="products-empty">
             No products match the selected filters.
           </p>
 
           {!isFeatured && (
-            <nav x-show="totalPages() > 1" class="mt-12 flex flex-wrap items-center justify-center gap-1" aria-label="Product pagination">
+            <nav x-show="totalPages() > 1" class="products-pagination" aria-label="Product pagination">
               <a
                 href={getShopPageHref(Math.max(initialPage - 1, 1))}
                 @click.prevent="setPage(page - 1)"
                 x-show="page > 1"
-                class="inline-flex h-10 items-center gap-2 border border-rule bg-white px-4 font-mono text-[10px] tracking-[0.1em] uppercase text-ink-soft transition-colors hover:border-ink hover:text-ink"
+                class="page-link"
               >
                 <ArrowLeft class="w-3.5 h-3.5" />
                 Prev
@@ -278,8 +280,8 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                   :href="pageNumber === 1 ? '/shop' : `/shop/page/${pageNumber}`"
                   @click.prevent="setPage(pageNumber)"
                   :aria-current="pageNumber === page ? 'page' : undefined"
-                  class="inline-flex h-10 min-w-[40px] items-center justify-center px-3 font-mono text-[10px] tracking-[0.1em] uppercase transition-colors"
-                  :class="pageNumber === page ? 'bg-ink text-white' : 'border border-rule bg-white text-ink-soft hover:border-ink hover:text-ink'"
+                  class="page-link page-number"
+                  :class="pageNumber === page ? 'is-active' : ''"
                 >
                   <span x-text="pageNumber"></span>
                 </a>
@@ -289,7 +291,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                 href={getShopPageHref(initialPage + 1)}
                 @click.prevent="setPage(page + 1)"
                 x-show="page < totalPages()"
-                class="inline-flex h-10 items-center gap-2 border border-rule bg-white px-4 font-mono text-[10px] tracking-[0.1em] uppercase text-ink-soft transition-colors hover:border-ink hover:text-ink"
+                class="page-link"
               >
                 Next
                 <ArrowRight class="w-3.5 h-3.5" />
@@ -303,7 +305,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                 {pagination.currentPage > 1 && (
                   <a
                     href={getShopPageHref(pagination.currentPage - 1)}
-                    class="inline-flex h-10 items-center gap-2 border border-rule bg-white px-4 font-mono text-[10px] tracking-[0.1em] uppercase text-ink-soft"
+                    class="page-link"
                   >
                     Previous
                   </a>
@@ -313,11 +315,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                   <a
                     href={getShopPageHref(page)}
                     aria-current={page === pagination.currentPage ? 'page' : undefined}
-                    class={`inline-flex h-10 min-w-[40px] items-center justify-center px-3 font-mono text-[10px] tracking-[0.1em] uppercase ${
-                      page === pagination.currentPage
-                        ? 'bg-ink text-white'
-                        : 'border border-rule bg-white text-ink-soft'
-                    }`}
+                  class={`page-link page-number ${page === pagination.currentPage ? 'is-active' : ''}`}
                   >
                     {page}
                   </a>
@@ -326,7 +324,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                 {pagination.currentPage < pagination.totalPages && (
                   <a
                     href={getShopPageHref(pagination.currentPage + 1)}
-                    class="inline-flex h-10 items-center gap-2 border border-rule bg-white px-4 font-mono text-[10px] tracking-[0.1em] uppercase text-ink-soft"
+                    class="page-link"
                   >
                     Next
                   </a>
@@ -336,10 +334,209 @@ const lastVisibleIndex = firstVisibleIndex + 16;
           )}
         </>
       ) : (
-        <p class="font-sans font-light text-[14px] text-ink-soft">
+        <p class="products-empty">
           Products are temporarily unavailable.
         </p>
       )}
     </div>
   </div>
 </section>
+
+<style>
+  .products-section {
+    background: var(--light-bg);
+    color: var(--light-fg);
+  }
+  .products-header {
+    max-width: 760px;
+    margin-bottom: 3.5rem;
+  }
+  .products-section--featured .products-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    max-width: none;
+    gap: 2rem;
+  }
+  .products-heading {
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: 0;
+    font-size: clamp(38px, 5.5vw, 68px);
+    color: var(--light-fg);
+    text-wrap: balance;
+  }
+  .products-intro {
+    margin-top: 1.25rem;
+    max-width: 760px;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--light-sub);
+  }
+  .products-cta {
+    flex-shrink: 0;
+  }
+  .products-controls {
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .products-filters,
+  .products-sort {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    align-items: center;
+  }
+  .products-sort {
+    gap: 0.75rem;
+  }
+  .products-sort label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .products-sort label > span:first-child,
+  .products-count,
+  .filter-btn,
+  .sort-select,
+  .page-link {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .products-sort label > span:first-child,
+  .products-count {
+    color: var(--light-sub);
+  }
+  .filter-btn,
+  .page-link,
+  .sort-select {
+    border: 1px solid var(--light-border);
+    background: white;
+    color: var(--light-sub);
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .filter-btn {
+    padding: 10px 18px;
+  }
+  .filter-btn:hover,
+  .page-link:hover {
+    border-color: var(--light-fg);
+    color: var(--light-fg);
+  }
+  .filter-btn.is-active,
+  .page-link.is-active {
+    background: var(--light-fg);
+    color: var(--light-bg);
+    border-color: var(--light-fg);
+  }
+  .select-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .sort-select {
+    height: 40px;
+    appearance: none;
+    outline: none;
+    padding: 0 36px 0 14px;
+  }
+  .select-icon {
+    pointer-events: none;
+    position: absolute;
+    right: 12px;
+    width: 12px;
+    height: 12px;
+    color: var(--light-sub);
+  }
+  .products-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .products-grid {
+    background: var(--light-border);
+    border: 1px solid var(--light-border);
+  }
+  .products-grid-inner {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1px;
+  }
+  .product-cell {
+    min-width: 0;
+    height: 100%;
+  }
+  .prod-scroll-outer {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+    scrollbar-width: thin;
+    scrollbar-color: var(--light-border) transparent;
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  }
+  .prod-scroll-outer:active { cursor: grabbing; }
+  .prod-scroll-grid {
+    display: flex;
+    gap: 1px;
+    background: var(--light-border);
+    width: max-content;
+    min-width: 100%;
+  }
+  .prod-scroll-grid .product-cell {
+    width: clamp(240px, 28vw, 300px);
+    flex-shrink: 0;
+  }
+  .products-empty {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--light-sub);
+  }
+  .products-pagination {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .page-link {
+    display: inline-flex;
+    min-width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 14px;
+  }
+  @media (min-width: 640px) {
+    .products-grid-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1024px) {
+    .products-controls {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .products-grid-inner { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1280px) {
+    .products-grid-inner { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  @media (max-width: 767px) {
+    .products-section--featured .products-header {
+      display: block;
+    }
+    .products-cta { margin-top: 1rem; }
+  }
+</style>

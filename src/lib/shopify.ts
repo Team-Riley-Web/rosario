@@ -391,7 +391,13 @@ export async function getProductsByHandles(handles: readonly string[]): Promise<
 
 export async function getFeaturedProducts(): Promise<ShopifyProduct[]> {
   const collectionProducts = await getCollectionProducts(FEATURED_COLLECTION_HANDLE, 24);
-  return collectionProducts.length > 0 ? collectionProducts : getProducts(24);
+  if (collectionProducts.length >= 4) return collectionProducts;
+
+  const fallbackProducts = await getProducts(24);
+  const featuredProductIds = new Set(collectionProducts.map(product => product.id));
+  const uniqueFallbackProducts = fallbackProducts.filter(product => !featuredProductIds.has(product.id));
+
+  return [...collectionProducts, ...uniqueFallbackProducts].slice(0, 24);
 }
 
 export function formatPrice(amount: string, currency = 'USD'): string {

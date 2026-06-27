@@ -113,7 +113,6 @@ const productPageUrl = `/products/${product.handle}`;
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: 344px;
   }
   .prod-card-name {
     font-family: var(--font-display);
@@ -150,15 +149,10 @@ const productPageUrl = `/products/${product.handle}`;
   }
   .prod-card-action {
     align-self: flex-start;
-    margin-top: auto;
+    margin-top: 20px;
     border: 0;
     background: transparent;
     padding: 0;
-  }
-  @media (max-width: 767px) {
-    .prod-card-body {
-      min-height: 0;
-    }
   }
   .prod-card-action:disabled {
     color: var(--light-sub);

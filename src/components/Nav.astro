@@ -36,13 +36,15 @@ const navLinks = [
   class:list={['site-nav', { 'home-initial-minimal': homeInitialMinimal }]}
   role="banner"
 >
-  <div
-    class="announcement bg-brand-dark-blue"
-    :class="pastMarquee ? 'hidden' : ''"
-    :style="`max-height: ${44 - announcementProgress}px; opacity: ${1 - (announcementProgress / 44)}; transform: translateY(${-announcementProgress}px);`"
-  >
-    <a href="/shop" class="text-white">Real Moretti Murano. One-of-a-kind pieces, never restocked. →</a>
-  </div>
+  {homeInitialMinimal && (
+    <div
+      class="announcement bg-brand-dark-blue"
+      :class="pastMarquee ? 'hidden' : ''"
+      :style="`max-height: ${44 - announcementProgress}px; opacity: ${1 - (announcementProgress / 44)}; transform: translateY(${-announcementProgress}px);`"
+    >
+      <a href="/shop" class="text-white">Real Moretti Murano. One-of-a-kind pieces, never restocked. →</a>
+    </div>
+  )}
 
   <nav class="nav-bar" aria-label="Main navigation" :style="`height: ${72 - (navProgress * 16)}px;`">
     <a href="/" class="nav-logo" aria-label="Rosario Leonardi, Home">

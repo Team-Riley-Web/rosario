@@ -1,5 +1,6 @@
 ---
 import rosarioIconGold from '../assets/images/rosario-icon-gold.png';
+import { Heart } from '@lucide/astro';
 
 const shopLinks = [
   { label: 'Signature Moretti Designs', href: '/shop?filter=signature-moretti' },
@@ -56,6 +57,11 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
     <div class="footer-legal">
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
+      <a href="https://teamrileyweb.com/" target="_blank" rel="noopener" class="footer-credit">
+        <span>Crafted with</span>
+        <Heart class="footer-credit-heart h-3.5 w-3.5 fill-current" aria-label="love" />
+        <span>by Team Riley</span>
+      </a>
     </div>
   </div>
 </footer>
@@ -212,9 +218,20 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
   }
   .footer-legal {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 1.5rem;
   }
   .footer-legal a:hover { color: var(--fg-sub); }
+  .footer-credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+  }
+  .footer-credit-heart {
+    color: var(--accent);
+  }
   @media (min-width: 768px) {
     .footer-grid { grid-template-columns: 1.2fr 1fr 0.8fr; gap: 4rem; }
   }

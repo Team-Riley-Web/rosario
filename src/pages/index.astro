@@ -11,7 +11,7 @@ import ringsImage from '../assets/images/ring.png';
 import beadsImage from '../assets/images/model2.avif';
 import authenticityImage from '../assets/images/model8.png';
 import personalImage from '../assets/images/model4.png';
-import giftImage from '../assets/images/model5.png';
+import giftImage from '../assets/images/gift.png';
 
 const trustItems = [
   'Direct Partnership with Ercole Moretti',
@@ -95,29 +95,32 @@ const collections = [
       </div>
     </div>
 
-    <section class="section section--white" data-section="authenticity">
+    <section class="section section--white" data-section="letter-from-lisa">
       <div class="inner">
         <div class="auth-editorial">
           <div class="auth-editorial-head reveal">
             <div class="eyebrow centered">
               <span class="eyebrow-rule" aria-hidden="true"></span>
-              <span class="eyebrow-text">Authenticity</span>
+              <span class="eyebrow-text">From the Founder</span>
               <span class="eyebrow-rule" aria-hidden="true"></span>
             </div>
-            <h2 class="auth-headline">Most "Murano Glass" Online Isn't Actually Murano Glass.</h2>
+            <h2 class="auth-headline">A Letter From Lisa</h2>
           </div>
-          <div class="auth-img reveal reveal-delay-1">
-            <img
-              src={authenticityImage.src}
-              alt="Rosario Leonardi Murano glass jewelry worn in warm natural light"
-              class="product-img"
-              loading="lazy"
-            />
-          </div>
+          <!--<div class="auth-img reveal reveal-delay-1">-->
+          <!--  <img-->
+          <!--    src={authenticityImage.src}-->
+          <!--    alt="Rosario Leonardi Murano glass jewelry worn in warm natural light"-->
+          <!--    class="product-img"-->
+          <!--    loading="lazy"-->
+          <!--  />-->
+          <!--</div>-->
           <div class="auth-copy reveal reveal-delay-2">
-            <p>The internet is flooded with mass-produced glass dressed up as Venetian heritage. Vague sourcing. Sellers who can't tell you who actually made the piece in your hands.</p>
-            <p>I built this shop to be different. Every piece traces back to a verifiable source - not a guess.</p>
-            <a href="/about" class="link-arrow">See What Makes It Real <span aria-hidden="true">→</span></a>
+            <p>I didn't set out to sell jewelry.</p>
+            <p>I fell in love with Murano glass on a trip to Venice - the way light moves through it, the way no two pieces are ever quite the same. I started collecting. Then restoring. Then, slowly, sourcing pieces directly from people in Venice who actually make this glass by hand, the way it's been made for centuries.</p>
+            <p>Most of what you'll find online calling itself "Murano glass" isn't. It's imported, mass-produced, and dressed up with the right words. I got tired of watching people get fooled by that - and I got tired of seeing real Murano glass treated like it's interchangeable with the fakes.</p>
+            <p>So everything here is real. Sourced through people I actually know. Restored by my own hands when it's vintage. Backed for life, because I stand behind what I sell.</p>
+            <p>If you're here, I'm guessing you already know the difference matters. Let's find you something real.</p>
+            <p class="auth-signature">- Lisa</p>
           </div>
         </div>
       </div>
@@ -420,6 +423,12 @@ const collections = [
     max-width: 600px;
     margin: 0 auto;
   }
+  .section--white .auth-copy .auth-signature {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.2;
+    color: var(--light-fg);
+  }
   .collections-header {
     max-width: 760px;
     margin-bottom: 3.5rem;
@@ -533,6 +542,7 @@ const collections = [
     gap: 12px;
   }
   .cta-strip {
+    background: #061e3b;
     border-top: 1px solid var(--border);
   }
   .cta-flex {

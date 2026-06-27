@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import ProductsSection from '../components/ProductsSection.astro';
 import heroImage from '../assets/images/model6.png';
-import heroVideo from '../assets/videos/hero.mp4';
+import heroVideo from '../assets/videos/home-hero.mp4';
 import necklacesImage from '../assets/images/model.avif';
 import earringsImage from '../assets/images/model3.png';
 import braceletsImage from '../assets/images/model4.png';
@@ -73,18 +73,12 @@ const collections = [
       <div class="hero-overlay" aria-hidden="true"></div>
 
       <div class="hero-content">
-        <div class="hero-left">
+        <div class="hero-center">
           <div class="eyebrow">
-            <span class="eyebrow-rule" aria-hidden="true"></span>
             <span class="eyebrow-text">Rosario Leonardi Murano Glass</span>
           </div>
           <h1 class="hero-h1">Be Bold</h1>
-        </div>
-        <div class="hero-right">
-          <p class="hero-sub-body">
-            One-of-a-kind jewelry sourced through a direct partnership with Ercole Moretti - Venice's most exclusive glass bead maker. Not "Murano-style." The real thing.
-          </p>
-          <a href="/shop" class="btn-primary">Be Bold. Shop Now <span aria-hidden="true">→</span></a>
+          <a href="/shop" class="btn-primary">Shop Now <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -281,7 +275,7 @@ const collections = [
     inset: 0;
     background:
       linear-gradient(to top, oklch(7% 0.010 255 / 1) 0%, oklch(7% 0.010 255 / 0.82) 28%, oklch(7% 0.010 255 / 0.45) 55%, oklch(7% 0.010 255 / 0.15) 80%, transparent 100%),
-      linear-gradient(to right, oklch(7% 0.010 255 / 0.85) 0%, oklch(7% 0.010 255 / 0.55) 35%, oklch(7% 0.010 255 / 0.20) 60%, transparent 80%);
+      radial-gradient(circle at 50% 72%, oklch(7% 0.010 255 / 0.36) 0%, oklch(7% 0.010 255 / 0.18) 34%, transparent 64%);
   }
   .hero-content {
     position: relative;
@@ -290,8 +284,18 @@ const collections = [
     width: 100%;
     margin: 0 auto;
     padding: 0 2.5rem;
-    display: grid;
-    gap: 3rem;
+  }
+  .hero-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .hero-center .eyebrow {
+    justify-content: center;
+    margin-bottom: 1.25rem;
   }
   .hero-h1 {
     font-family: var(--font-display);
@@ -300,15 +304,7 @@ const collections = [
     letter-spacing: 0;
     font-size: clamp(68px, 10vw, 128px);
     color: var(--fg);
-  }
-  .hero-sub-body {
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 1.85;
-    color: oklch(97% 0.008 75 / 0.76);
     margin-bottom: 2rem;
-    max-width: 460px;
-    text-wrap: pretty;
   }
   .trust-bar {
     background: var(--surface);
@@ -572,8 +568,6 @@ const collections = [
     }
   }
   @media (min-width: 1024px) {
-    .hero-content { grid-template-columns: 1.1fr 0.9fr; align-items: flex-end; }
-    .hero-right { margin-left: auto; }
     .trust-grid { grid-template-columns: repeat(4, 1fr); }
     .trust-item { border-bottom: none; }
     .trust-item:nth-child(2n) { border-right: 1px solid var(--light-border); }
@@ -590,7 +584,6 @@ const collections = [
     }
     .hero-content,
     .trust-grid { padding-inline: 1.5rem; }
-    .hero-sub-body { max-width: 100%; }
     .trust-item {
       padding: 1.25rem;
       gap: 10px;

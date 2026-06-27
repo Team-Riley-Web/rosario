@@ -19,13 +19,15 @@ const navLinks = [
 
 <header
   id="site-nav"
-  x-data="{ open: false, scrolled: false, pastMarquee: false }"
+  x-data={`{ open: false, scrolled: false, pastMarquee: false, announcementProgress: 0, navProgress: 0, homeInitialMinimal: ${homeInitialMinimal ? 'true' : 'false'} }`}
   x-init={`
     const hero = document.getElementById('hero');
     const update = () => {
       const y = window.scrollY;
       scrolled = y > ${scrollThreshold} || !hero;
-      pastMarquee = hero ? y > 16 : true;
+      announcementProgress = hero ? Math.min(y, 44) : 44;
+      navProgress = hero ? Math.min(y / 44, 1) : (scrolled ? 1 : 0);
+      pastMarquee = announcementProgress >= 44;
     };
     window.addEventListener('scroll', update, { passive: true });
     update();
@@ -34,24 +36,36 @@ const navLinks = [
   class:list={['site-nav', { 'home-initial-minimal': homeInitialMinimal }]}
   role="banner"
 >
-  <div class="announcement bg-brand-dark-blue" :class="pastMarquee ? 'hidden' : ''">
+  <div
+    class="announcement bg-brand-dark-blue"
+    :class="pastMarquee ? 'hidden' : ''"
+    :style="`max-height: ${44 - announcementProgress}px; opacity: ${1 - (announcementProgress / 44)}; transform: translateY(${-announcementProgress}px);`"
+  >
     <a href="/shop" class="text-white">Real Moretti Murano. One-of-a-kind pieces, never restocked. →</a>
   </div>
 
-  <nav class="nav-bar" aria-label="Main navigation">
+  <nav class="nav-bar" aria-label="Main navigation" :style="`height: ${72 - (navProgress * 16)}px;`">
     <a href="/" class="nav-logo" aria-label="Rosario Leonardi, Home">
       <img src={rosarioIconGold.src} alt="" aria-hidden="true" class="nav-logo-img" />
       <span class="nav-wordmark">Rosario Leonardi</span>
     </a>
 
     <div class="nav-right">
-      <ul class="nav-links-right" role="list">
+      <ul
+        class="nav-links-right"
+        role="list"
+        :style="homeInitialMinimal ? 'max-width: ' + (navProgress * 280) + 'px; opacity: ' + navProgress + '; gap: ' + (navProgress * 1.75) + 'rem;' : ''"
+      >
         {navLinks.map(([label, href]) => (
           <li><a href={href} class="nav-link">{label}</a></li>
         ))}
       </ul>
 
-      <span class="nav-group-sep" aria-hidden="true"></span>
+      <span
+        class="nav-group-sep"
+        aria-hidden="true"
+        :style="homeInitialMinimal ? 'max-width: ' + navProgress + 'px; opacity: ' + navProgress + ';' : ''"
+      ></span>
 
       <div class="nav-icons">
         <button
@@ -124,7 +138,7 @@ const navLinks = [
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 100;
-    transition: background 0.5s ease, backdrop-filter 0.5s ease, border-color 0.5s ease;
+    transition: background 0.45s cubic-bezier(0.16,1,0.3,1), backdrop-filter 0.45s cubic-bezier(0.16,1,0.3,1), border-color 0.45s ease;
   }
   .site-nav.scrolled {
     background: oklch(12% 0.010 255 / 0.95);
@@ -132,31 +146,26 @@ const navLinks = [
     border-bottom: 1px solid var(--border);
   }
   .announcement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 10px 24px;
+    height: 44px;
+    padding: 0 24px;
     border-bottom: 1px solid var(--border);
     overflow: hidden;
     max-height: 44px;
     opacity: 1;
     transform: translateY(0);
-    transition:
-      max-height 0.55s cubic-bezier(0.16,1,0.3,1),
-      padding 0.55s cubic-bezier(0.16,1,0.3,1),
-      border-color 0.55s ease,
-      opacity 0.35s ease,
-      transform 0.55s cubic-bezier(0.16,1,0.3,1);
+    will-change: max-height, opacity, transform;
   }
   .announcement.hidden {
-    max-height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
     border-bottom-color: transparent;
-    opacity: 0;
-    transform: translateY(-100%);
   }
   .announcement a {
     font-family: var(--font-mono);
     font-size: 10px;
+    line-height: 1;
     letter-spacing: 0.18em;
     text-transform: uppercase;
   }
@@ -167,9 +176,9 @@ const navLinks = [
     display: flex;
     align-items: center;
     height: 72px;
-    transition: height 0.3s ease;
+    transition: height 0.45s cubic-bezier(0.16,1,0.3,1);
+    will-change: height;
   }
-  .site-nav.scrolled .nav-bar { height: 56px; }
   .nav-logo {
     display: flex;
     align-items: center;
@@ -198,12 +207,17 @@ const navLinks = [
     align-items: center;
     gap: 1.25rem;
     z-index: 1;
+    transition: gap 0.45s cubic-bezier(0.16,1,0.3,1);
   }
   .nav-links-right {
     display: flex;
     align-items: center;
     gap: 1.75rem;
     list-style: none;
+    max-width: 280px;
+    opacity: 1;
+    overflow: hidden;
+    visibility: visible;
   }
   .nav-link {
     font-family: var(--font-mono);
@@ -237,9 +251,19 @@ const navLinks = [
     pointer-events: none;
     visibility: hidden;
   }
-  .home-initial-minimal .nav-links-right,
+  .home-initial-minimal .nav-links-right {
+    transition:
+      opacity 0.4s cubic-bezier(0.16,1,0.3,1),
+      max-width 0.48s cubic-bezier(0.16,1,0.3,1),
+      gap 0.48s cubic-bezier(0.16,1,0.3,1),
+      visibility 0.4s ease;
+  }
   .home-initial-minimal .nav-group-sep {
-    transition: opacity 0.25s ease, max-width 0.3s ease, visibility 0.25s ease;
+    max-width: 1px;
+    transition:
+      opacity 0.4s cubic-bezier(0.16,1,0.3,1),
+      max-width 0.48s cubic-bezier(0.16,1,0.3,1),
+      visibility 0.4s ease;
   }
   .nav-group-sep,
   .nav-divider {
@@ -257,7 +281,7 @@ const navLinks = [
     display: flex;
     align-items: center;
     color: var(--fg-sub);
-    transition: color 0.2s;
+    transition: color 0.25s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1);
     position: relative;
   }
   .nav-icon:hover { color: var(--fg); }
@@ -278,7 +302,13 @@ const navLinks = [
     justify-content: center;
     line-height: 1;
   }
-  .nav-cta { padding: 10px 22px; }
+  .nav-cta {
+    padding: 10px 22px;
+    transition:
+      background 0.35s cubic-bezier(0.16,1,0.3,1),
+      border-color 0.35s cubic-bezier(0.16,1,0.3,1),
+      color 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
   .site-nav:not(.scrolled) .nav-cta {
     background: oklch(100% 0 0 / 0.08);
     color: var(--fg);

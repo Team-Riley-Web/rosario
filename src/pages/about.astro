@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import heroImage from '../assets/images/model7.png';
+import storyImage from '../assets/images/model8.png';
+import detailImage from '../assets/images/necklace.png';
 
 const anchors = [
   ['Verified Provenance', 'A named, ongoing partnership with Ercole Moretti, not a vague "inspired by Venice" claim.'],
@@ -39,15 +41,18 @@ const anchors = [
       </div>
     </section>
 
-    <section class="bg-parchment px-6 py-24 sm:px-10">
-      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-        <h2 class="font-display text-[42px] font-light leading-none text-ink md:text-[64px]">Real Relationships, Not Just Real Glass.</h2>
-        <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-          <p>Authentic Murano glass isn't something you stumble into. It comes from real relationships with real artisans - the kind built over years, not algorithms.</p>
-          <p>That's exactly why I partner directly with Ercole Moretti, one of the most exclusive bead designers in Venice. Every piece I create starts there - with glass that has a verifiable origin, not a guess.</p>
-          <p>Alongside my original designs, I personally source and restore vintage Murano Millefiori pieces, bring uncirculated treasures back from my European supplier relationships, and curate freshwater pearls for those who want the same integrity in a different form.</p>
-          <p>This isn't a warehouse. It's not a dropship operation. It's one person - me - making sure what reaches you is actually what I say it is.</p>
+    <section class="bg-white px-6 py-24 sm:px-10">
+      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <div>
+          <h2 class="mb-8 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">Real Relationships, Not Just Real Glass.</h2>
+          <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+            <p>Authentic Murano glass isn't something you stumble into. It comes from real relationships with real artisans - the kind built over years, not algorithms.</p>
+            <p>That's exactly why I partner directly with Ercole Moretti, one of the most exclusive bead designers in Venice. Every piece I create starts there - with glass that has a verifiable origin, not a guess.</p>
+            <p>Alongside my original designs, I personally source and restore vintage Murano Millefiori pieces, bring uncirculated treasures back from my European supplier relationships, and curate freshwater pearls for those who want the same integrity in a different form.</p>
+            <p>This isn't a warehouse. It's not a dropship operation. It's one person - me - making sure what reaches you is actually what I say it is.</p>
+          </div>
         </div>
+        <img src={storyImage.src} alt="Rosario Leonardi Murano glass jewelry detail" class="aspect-[4/5] w-full object-cover" loading="lazy" />
       </div>
     </section>
 
@@ -67,17 +72,20 @@ const anchors = [
       </div>
     </section>
 
-    <section class="bg-parchment px-6 py-24 sm:px-10">
-      <div class="mx-auto max-w-[1180px]">
-        <h2 class="mb-12 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">What Makes This Different</h2>
-        <div class="grid gap-px border border-rule bg-rule md:grid-cols-2">
-          {anchors.map(([title, body]) => (
-            <article class="bg-white p-8">
-              <h3 class="mb-4 font-display text-[28px] font-normal leading-tight text-ink">{title}</h3>
-              <p class="font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{body}</p>
-            </article>
-          ))}
+    <section class="bg-white px-6 py-24 sm:px-10">
+      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[1fr_0.85fr] lg:items-start">
+        <div>
+          <h2 class="mb-12 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">What Makes This Different</h2>
+          <div class="grid gap-px border border-rule bg-rule md:grid-cols-2">
+            {anchors.map(([title, body]) => (
+              <article class="bg-white p-8">
+                <h3 class="mb-4 font-display text-[28px] font-normal leading-tight text-ink">{title}</h3>
+                <p class="font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{body}</p>
+              </article>
+            ))}
+          </div>
         </div>
+        <img src={detailImage.src} alt="Authentic Murano glass jewelry styling" class="aspect-[3/4] w-full object-cover" loading="lazy" />
       </div>
     </section>
 

@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import ProductsSection from '../components/ProductsSection.astro';
 import heroImage from '../assets/images/model6.png';
-import heroVideo from '../assets/videos/video2.mp4';
+import heroVideo from '../assets/videos/hero.mp4';
 import necklacesImage from '../assets/images/model.avif';
 import earringsImage from '../assets/images/model3.png';
 import braceletsImage from '../assets/images/model4.png';
@@ -55,7 +55,7 @@ const collections = [
   title="Rosario Leonardi Murano Glass"
   description="One-of-a-kind Murano glass jewelry and beads sourced through direct Venetian and European relationships."
 >
-  <Nav />
+  <Nav homeInitialMinimal />
   <main>
     <section id="hero">
       <video
@@ -264,7 +264,7 @@ const collections = [
     min-height: 90vh;
     display: flex;
     align-items: flex-end;
-    padding: 8rem 2.5rem 5rem;
+    padding: 8rem 0 5rem;
     overflow: hidden;
     background: var(--bg);
   }
@@ -289,6 +289,7 @@ const collections = [
     max-width: 1440px;
     width: 100%;
     margin: 0 auto;
+    padding: 0 2.5rem;
     display: grid;
     gap: 3rem;
   }
@@ -316,6 +317,7 @@ const collections = [
   .trust-grid {
     max-width: 1440px;
     margin: 0 auto;
+    padding: 0 2.5rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
@@ -584,8 +586,10 @@ const collections = [
   @media (max-width: 767px) {
     #hero {
       min-height: 85vh;
-      padding: 7rem 1.5rem 4rem;
+      padding: 7rem 0 4rem;
     }
+    .hero-content,
+    .trust-grid { padding-inline: 1.5rem; }
     .hero-sub-body { max-width: 100%; }
     .trust-item {
       padding: 1.25rem;

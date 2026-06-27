@@ -3,8 +3,11 @@ import rosarioIconGold from '../assets/images/rosario-icon-gold.png';
 
 export interface Props {
   position?: 'fixed' | 'sticky';
+  homeInitialMinimal?: boolean;
 }
 
+const { homeInitialMinimal = false } = Astro.props;
+const scrollThreshold = homeInitialMinimal ? 0 : 60;
 const accountHref = `https://${import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.myshopify.com'}/account`;
 const navLinks = [
   ['Shop', '/shop'],
@@ -17,22 +20,22 @@ const navLinks = [
 <header
   id="site-nav"
   x-data="{ open: false, scrolled: false, pastMarquee: false }"
-  x-init="
+  x-init={`
     const hero = document.getElementById('hero');
     const update = () => {
       const y = window.scrollY;
-      scrolled = y > 60 || !hero;
-      pastMarquee = hero ? y > hero.offsetHeight : true;
+      scrolled = y > ${scrollThreshold} || !hero;
+      pastMarquee = hero ? y > 16 : true;
     };
     window.addEventListener('scroll', update, { passive: true });
     update();
-  "
-  :class="scrolled ? 'scrolled' : ''"
-  class="site-nav"
+  `}
+  :class="{ 'scrolled': scrolled }"
+  class:list={['site-nav', { 'home-initial-minimal': homeInitialMinimal }]}
   role="banner"
 >
-  <div class="announcement" :class="pastMarquee ? 'hidden' : ''">
-    <a href="/shop">Real Moretti Murano. One-of-a-kind pieces, never restocked. →</a>
+  <div class="announcement bg-brand-dark-blue" :class="pastMarquee ? 'hidden' : ''">
+    <a href="/shop" class="text-white">Real Moretti Murano. One-of-a-kind pieces, never restocked. →</a>
   </div>
 
   <nav class="nav-bar" aria-label="Main navigation">
@@ -129,26 +132,33 @@ const navLinks = [
     border-bottom: 1px solid var(--border);
   }
   .announcement {
-    background: var(--surface);
     text-align: center;
     padding: 10px 24px;
     border-bottom: 1px solid var(--border);
     overflow: hidden;
     max-height: 44px;
-    transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1), padding 0.5s, border-color 0.5s;
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      max-height 0.55s cubic-bezier(0.16,1,0.3,1),
+      padding 0.55s cubic-bezier(0.16,1,0.3,1),
+      border-color 0.55s ease,
+      opacity 0.35s ease,
+      transform 0.55s cubic-bezier(0.16,1,0.3,1);
   }
   .announcement.hidden {
     max-height: 0;
     padding-top: 0;
     padding-bottom: 0;
     border-bottom-color: transparent;
+    opacity: 0;
+    transform: translateY(-100%);
   }
   .announcement a {
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--accent-light);
   }
   .nav-bar {
     max-width: 1440px;
@@ -172,7 +182,7 @@ const navLinks = [
     height: 34px;
     object-fit: contain;
     flex-shrink: 0;
-    transform: translateY(5px);
+    transform: translateY(2px);
   }
   .nav-wordmark {
     font-family: var(--font-wordmark);
@@ -217,6 +227,20 @@ const navLinks = [
     transition: width 0.3s cubic-bezier(0.16,1,0.3,1);
   }
   .nav-link:hover::after { width: 100%; }
+  .home-initial-minimal:not(.scrolled) .nav-links-right,
+  .home-initial-minimal:not(.scrolled) .nav-group-sep {
+    width: 0;
+    max-width: 0;
+    gap: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .home-initial-minimal .nav-links-right,
+  .home-initial-minimal .nav-group-sep {
+    transition: opacity 0.25s ease, max-width 0.3s ease, visibility 0.25s ease;
+  }
   .nav-group-sep,
   .nav-divider {
     width: 1px;
@@ -259,6 +283,11 @@ const navLinks = [
     background: oklch(100% 0 0 / 0.08);
     color: var(--fg);
     border: 1px solid oklch(100% 0 0 / 0.22);
+  }
+  .home-initial-minimal:not(.scrolled) .nav-cta {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
   }
   .site-nav:not(.scrolled) .nav-cta:hover {
     background: var(--accent);

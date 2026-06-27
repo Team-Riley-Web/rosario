@@ -18,6 +18,9 @@ export default {
           light: 'oklch(80% 0.08 78 / <alpha-value>)',
           deep: 'oklch(52% 0.10 68 / <alpha-value>)',
         },
+        brand: {
+          'dark-blue': '#061e3b',
+        },
         white: 'oklch(99.5% 0.003 75 / <alpha-value>)',
         rule: 'oklch(88% 0.006 72 / <alpha-value>)',
       },

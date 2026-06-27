@@ -142,8 +142,9 @@ const navLinks = [
     z-index: 100;
     transition: background 0.45s cubic-bezier(0.16,1,0.3,1), backdrop-filter 0.45s cubic-bezier(0.16,1,0.3,1), border-color 0.45s ease;
   }
-  .site-nav.scrolled {
-    background: oklch(12% 0.010 255 / 0.95);
+  .site-nav.scrolled,
+  .site-nav:not(.home-initial-minimal) {
+    background: rgb(6 30 59 / 0.96);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
   }

@@ -103,15 +103,17 @@ const lastVisibleIndex = firstVisibleIndex + 16;
           </p>
         )}
       </div>
-      <a
-        href={ctaHref}
-        class="link-arrow products-cta"
-      >
-        {ctaLabel}
-        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-        </svg>
-      </a>
+      {isFeatured && (
+        <a
+          href={ctaHref}
+          class="link-arrow products-cta"
+        >
+          {ctaLabel}
+          <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      )}
     </div>
 
     <!-- Filter tabs + grid (state) -->
@@ -393,6 +395,8 @@ const lastVisibleIndex = firstVisibleIndex + 16;
   }
   .products-sort {
     gap: 0.75rem;
+    justify-content: flex-end;
+    margin-left: auto;
   }
   .products-sort label {
     display: flex;

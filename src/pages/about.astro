@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import heroImage from '../assets/images/beader-header-3.png';
+import homeImage from '../assets/images/home.png';
 import storyImage from '../assets/images/model8.png';
 import detailImage from '../assets/images/necklace.png';
 
@@ -14,8 +15,8 @@ const anchors = [
 ---
 
 <Layout
-  title="About Rosario Leonardi Murano Glass"
-  description="The story behind Rosario Leonardi Murano Glass and its direct, verifiable sourcing relationships."
+  title="The Story of Rosario"
+  description="The story of Rosario Leonardi, the family name behind Rosario Leonardi Murano Glass."
 >
   <Nav />
   <main>
@@ -27,17 +28,71 @@ const anchors = [
         aria-hidden="true"
       />
       <div class="absolute inset-0 bg-ink/70" aria-hidden="true"></div>
-      <div class="relative mx-auto max-w-[1040px]">
-        <div class="mb-8 flex items-center gap-4">
+      <div class="relative mx-auto max-w-[1040px] text-center">
+        <div class="mb-8 flex items-center justify-center gap-4">
           <div class="h-px w-6 bg-gold"></div>
-          <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">About</span>
+          <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">The Story of Rosario</span>
+          <div class="h-px w-6 bg-gold"></div>
         </div>
         <h1 class="mb-7 font-display text-[48px] font-light leading-none tracking-normal md:text-[78px]">
-          From Venice Glassmakers to You.
+          Every Name Carries a Story.
         </h1>
-        <p class="max-w-[740px] font-sans text-[16px] font-light leading-[1.85] text-white/68">
-          The story behind Rosario Leonardi Murano Glass - and why authenticity isn't just a selling point, it's the whole point.
+        <p class="mx-auto max-w-[740px] font-sans text-[16px] font-light leading-[1.85] text-white/68">
+          Long before this was a shop, Rosario Leonardi was a man - and this is his.
         </p>
+      </div>
+    </section>
+
+    <section class="bg-white px-6 py-24 sm:px-10">
+      <div class="mx-auto max-w-[1180px]">
+        <div class="mx-auto mb-16 max-w-[860px] text-center">
+          <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">The Crossing</h2>
+          <div class="mx-auto space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+            <p>In the early 1900s, two identical twin brothers stood on a dock in Palermo, Sicily, and said goodbye to each other.</p>
+            <p>One boarded a ship bound for New York. The other - Rosario - boarded a different ship, The Manila, bound for New Orleans. Whatever words passed between them that day are lost now. What isn't lost is this: two brothers, born within minutes of each other, spent the rest of their lives an ocean and a country apart, building two entirely different futures out of the same beginning.</p>
+            <p>Rosario chose Louisiana. He chose the French Quarter. And he chose to build something with his hands.</p>
+          </div>
+        </div>
+
+        <div class="mb-16 grid overflow-hidden border border-rule lg:grid-cols-[0.95fr_1.05fr]">
+          <div class="min-h-[420px] bg-ink">
+            <img src={homeImage.src} alt="The New Orleans home connected to Rosario Leonardi's story" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="flex items-center bg-white p-8 sm:p-12 lg:p-14">
+            <div>
+              <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">A Trade Made of Fire and Iron</h2>
+              <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+                <p>In the French Quarter, Rosario became a farrier - the craftsman who shoes horses, working iron over fire until it bends into exactly what's needed. It's not a trade that forgives carelessness. You either know your material, or the horse pays for your mistake. Rosario knew his material. He became known for it, well-regarded in a city that didn't hand out reputations lightly.</p>
+                <p>He met Inga Fink, a young Irish woman, and built a life with her - not in some grand house, but in half of a shotgun double at 832 Barracks Street, the kind of narrow, shared New Orleans home where you could hear your neighbors through the wall and your children through every room. Together they raised five kids in that house.</p>
+                <p>No inheritance. No shortcuts. Just a trade, a marriage, and five children raised in a half of a house he earned by working iron with his own two hands.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mx-auto max-w-[860px] text-center">
+          <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">What Got Passed Down</h2>
+          <div class="mx-auto space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+            <p>I never met Rosario. By the time I came along, he was a name in old photographs and a few stories that survived being retold a hundred times.</p>
+            <p>But something about him stuck with me anyway - maybe because of what he chose, twice. He chose New Orleans over New York, separating from the brother he shared a face with. And he chose a trade where you can't fake what you don't know. Iron tells the truth. So does horseshoeing. So, it turns out, does Murano glass.</p>
+            <p>When I started this shop, I wasn't trying to build a tribute. I was trying to sell jewelry I believed in. But somewhere in sourcing real glass from real Venetian makers - refusing to pass off something fake as something true - I realized I was doing the same thing Rosario did at his forge a hundred years earlier: working with a material that doesn't lie, and refusing to cut corners on it.</p>
+            <p>That's why this shop carries his name.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-brand-dark-blue px-6 py-24 text-white sm:px-10">
+      <div class="mx-auto max-w-[960px] text-center">
+        <h2 class="mb-7 font-display text-[42px] font-light leading-none text-white md:text-[64px]">The Through-Line</h2>
+        <div class="mx-auto max-w-[760px] space-y-6 font-sans text-[16px] font-light leading-[1.9] text-white/72">
+          <p>Rosario crossed an ocean with nothing and built a life out of fire, iron, and honest work. I'm not shoeing horses in the French Quarter. But I'm still in the business of making sure what you're holding is real - sourced from people who actually make it, restored by hands that respect it, never dressed up as something it's not.</p>
+          <p>He built it from iron. I build it from glass. Same standard.</p>
+        </div>
+        <div class="mt-9 flex flex-wrap justify-center gap-3">
+          <a href="/shop" class="bg-white px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold-light">Shop Real Murano</a>
+          <a href="/contact" class="border border-white/25 px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:border-gold hover:text-gold-light">Ask Lisa</a>
+        </div>
       </div>
     </section>
 

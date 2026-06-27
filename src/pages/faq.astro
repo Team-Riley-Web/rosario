@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
+import heroImage from '../assets/images/model2.avif';
 
 const groups = [
   {
@@ -44,8 +45,15 @@ const groups = [
 >
   <Nav />
   <main>
-    <section id="hero" class="bg-ink px-6 pb-24 pt-40 text-white sm:px-10">
-      <div class="mx-auto max-w-[1040px]">
+    <section id="hero" class="relative overflow-hidden bg-ink px-6 pb-24 pt-40 text-white sm:px-10">
+      <img
+        src={heroImage.src}
+        alt=""
+        class="absolute inset-0 h-full w-full object-cover"
+        aria-hidden="true"
+      />
+      <div class="absolute inset-0 bg-ink/70" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-[1040px]">
         <div class="mb-8 flex items-center gap-4">
           <div class="h-px w-6 bg-gold"></div>
           <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">FAQ</span>

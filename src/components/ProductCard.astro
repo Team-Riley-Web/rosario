@@ -113,6 +113,7 @@ const productPageUrl = `/products/${product.handle}`;
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 344px;
   }
   .prod-card-name {
     font-family: var(--font-display);
@@ -139,8 +140,8 @@ const productPageUrl = `/products/${product.handle}`;
     font-size: 12px;
     font-weight: 300;
     color: var(--light-sub);
-    margin-bottom: 1.5rem;
-    flex: 1;
+    margin-bottom: 0;
+    min-height: calc(12px * 1.7 * 3);
     line-height: 1.7;
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -149,9 +150,15 @@ const productPageUrl = `/products/${product.handle}`;
   }
   .prod-card-action {
     align-self: flex-start;
+    margin-top: auto;
     border: 0;
     background: transparent;
     padding: 0;
+  }
+  @media (max-width: 767px) {
+    .prod-card-body {
+      min-height: 0;
+    }
   }
   .prod-card-action:disabled {
     color: var(--light-sub);

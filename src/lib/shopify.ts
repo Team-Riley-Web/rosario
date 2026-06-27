@@ -61,6 +61,7 @@ export interface ShopifyProductDetail extends Omit<ShopifyProduct, 'priceRange' 
     minVariantPrice: { amount: string; currencyCode: string };
     maxVariantPrice: { amount: string; currencyCode: string };
   };
+  options?: Array<{ name: string; values: string[] }>;
   images: { edges: Array<{ node: { url: string; altText: string | null } }> };
   variants: {
     edges: Array<{
@@ -417,6 +418,10 @@ const PRODUCT_DETAIL_QUERY = `
       priceRange {
         minVariantPrice { amount currencyCode }
         maxVariantPrice { amount currencyCode }
+      }
+      options {
+        name
+        values
       }
       images(first: 8) {
         edges { node { url altText } }

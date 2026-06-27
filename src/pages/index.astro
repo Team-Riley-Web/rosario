@@ -3,12 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import ProductsSection from '../components/ProductsSection.astro';
 import heroImage from '../assets/images/model6.png';
-import heroVideo from '../assets/videos/home-hero.mp4';
+import heroVideo from '../assets/videos/Rosario.mp4';
 import necklacesImage from '../assets/images/model.avif';
 import earringsImage from '../assets/images/model3.png';
 import braceletsImage from '../assets/images/model4.png';
 import ringsImage from '../assets/images/model1.avif';
 import beadsImage from '../assets/images/model2.avif';
+import authenticityImage from '../assets/images/model8.png';
 import personalImage from '../assets/images/model4.png';
 import giftImage from '../assets/images/model5.png';
 
@@ -96,28 +97,27 @@ const collections = [
 
     <section class="section section--white" data-section="authenticity">
       <div class="inner">
-        <div class="auth-grid">
-          <div class="reveal">
-            <div class="eyebrow">
+        <div class="auth-editorial">
+          <div class="auth-editorial-head reveal">
+            <div class="eyebrow centered">
               <span class="eyebrow-rule" aria-hidden="true"></span>
               <span class="eyebrow-text">Authenticity</span>
+              <span class="eyebrow-rule" aria-hidden="true"></span>
             </div>
             <h2 class="auth-headline">Most "Murano Glass" Online Isn't Actually Murano Glass.</h2>
           </div>
-          <div class="auth-right reveal reveal-delay-1">
-            <div class="auth-img">
-              <img
-                src={earringsImage.src}
-                alt="Rosario Leonardi Murano glass jewelry worn in warm natural light"
-                class="product-img"
-                loading="lazy"
-              />
-            </div>
-            <div class="auth-copy">
-              <p>The internet is flooded with mass-produced glass dressed up as Venetian heritage. Vague sourcing. Sellers who can't tell you who actually made the piece in your hands.</p>
-              <p>I built this shop to be different. Every piece traces back to a verifiable source - not a guess.</p>
-              <a href="/about" class="link-arrow">See What Makes It Real <span aria-hidden="true">→</span></a>
-            </div>
+          <div class="auth-img reveal reveal-delay-1">
+            <img
+              src={authenticityImage.src}
+              alt="Rosario Leonardi Murano glass jewelry worn in warm natural light"
+              class="product-img"
+              loading="lazy"
+            />
+          </div>
+          <div class="auth-copy reveal reveal-delay-2">
+            <p>The internet is flooded with mass-produced glass dressed up as Venetian heritage. Vague sourcing. Sellers who can't tell you who actually made the piece in your hands.</p>
+            <p>I built this shop to be different. Every piece traces back to a verifiable source - not a guess.</p>
+            <a href="/about" class="link-arrow">See What Makes It Real <span aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
@@ -358,10 +358,14 @@ const collections = [
     color: var(--cobalt);
   }
   .trust-bar--white .trust-label { color: oklch(35% 0.010 255); }
-  .auth-grid {
+  .auth-editorial {
     display: grid;
     gap: 3rem;
-    align-items: center;
+    max-width: 840px;
+    margin: 0 auto;
+  }
+  .auth-editorial-head {
+    text-align: center;
   }
   .auth-headline,
   .collections-h2,
@@ -376,12 +380,11 @@ const collections = [
     text-wrap: balance;
   }
   .auth-headline {
-    font-size: clamp(36px, 5.5vw, 66px);
+    font-size: clamp(48px, 7vw, 80px);
     color: var(--fg);
-  }
-  .auth-right {
-    display: grid;
-    gap: 2rem;
+    max-width: 840px;
+    margin: 0 auto;
+    text-align: center;
   }
   .auth-img,
   .coll-img-wrap,
@@ -390,8 +393,9 @@ const collections = [
   .gift-img {
     overflow: hidden;
   }
-  .auth-img .product-img,
   .personal-img .product-img { aspect-ratio: 4 / 5; }
+  .auth-img .product-img,
+  .beads-editorial-img .product-img { aspect-ratio: 16 / 9; }
   .coll-img-wrap .product-img {
     aspect-ratio: 4 / 3;
     transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
@@ -411,6 +415,10 @@ const collections = [
   .auth-copy p:last-of-type,
   .beads-editorial-copy p:last-of-type {
     margin-bottom: 2rem;
+  }
+  .auth-copy {
+    max-width: 600px;
+    margin: 0 auto;
   }
   .collections-header {
     max-width: 760px;
@@ -500,7 +508,6 @@ const collections = [
   .eyebrow.centered {
     justify-content: center;
   }
-  .beads-editorial-img .product-img { aspect-ratio: 16 / 9; }
   .beads-editorial-copy {
     max-width: 600px;
     margin: 0 auto;
@@ -560,7 +567,6 @@ const collections = [
     .coll-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (min-width: 768px) {
-    .auth-right { grid-template-columns: 0.82fr 1fr; align-items: center; }
     .cta-flex {
       flex-direction: row;
       align-items: center;
@@ -572,7 +578,6 @@ const collections = [
     .trust-item { border-bottom: none; }
     .trust-item:nth-child(2n) { border-right: 1px solid var(--light-border); }
     .trust-item:last-child { border-right: none; }
-    .auth-grid { grid-template-columns: 0.85fr 1.15fr; }
     .coll-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .personal-grid { grid-template-columns: 1fr 1fr; }
     .gift-grid { grid-template-columns: 0.95fr 1.05fr; }

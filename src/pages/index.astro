@@ -12,6 +12,7 @@ import beadsImage from '../assets/images/model2.avif';
 import authenticityImage from '../assets/images/model8.png';
 import personalImage from '../assets/images/model4.png';
 import giftImage from '../assets/images/gift.png';
+import rosarioIcon from '../assets/images/rosario-icon.png';
 
 const trustItems = [
   'Direct Partnership with Ercole Moretti',
@@ -95,7 +96,9 @@ const collections = [
       </div>
     </div>
 
-    <section class="section section--white" data-section="letter-from-lisa">
+    <section class="section section--white letter-section" data-section="letter-from-lisa">
+      <img src={rosarioIcon.src} alt="" class="letter-mark letter-mark--left" aria-hidden="true" />
+      <img src={rosarioIcon.src} alt="" class="letter-mark letter-mark--right" aria-hidden="true" />
       <div class="inner">
         <div class="auth-editorial">
           <div class="auth-editorial-head reveal">
@@ -163,14 +166,14 @@ const collections = [
 
     <ProductsSection />
 
-    <section class="section quote-section section--surface" data-section="quote">
-      <div class="quote-inner reveal">
-        <blockquote>
-          <p class="pull-quote">"I almost didn't buy it because I thought it had to be fake at that price for real vintage Murano. I was wrong, and I'm so glad."</p>
-          <cite class="quote-attr">Real customers. Real glass. Real stories.</cite>
-        </blockquote>
-      </div>
-    </section>
+    <!--<section class="section quote-section section&#45;&#45;surface" data-section="quote">-->
+    <!--  <div class="quote-inner reveal">-->
+    <!--    <blockquote>-->
+    <!--      <p class="pull-quote">"I almost didn't buy it because I thought it had to be fake at that price for real vintage Murano. I was wrong, and I'm so glad."</p>-->
+    <!--      <cite class="quote-attr">Real customers. Real glass. Real stories.</cite>-->
+    <!--    </blockquote>-->
+    <!--  </div>-->
+    <!--</section>-->
 
     <section class="section section--surface" data-section="meet-the-beads">
       <div class="inner">
@@ -361,11 +364,56 @@ const collections = [
     color: var(--cobalt);
   }
   .trust-bar--white .trust-label { color: oklch(35% 0.010 255); }
+  .letter-section {
+    position: relative;
+    overflow: hidden;
+  }
+  .letter-section .inner {
+    position: relative;
+    z-index: 1;
+  }
+  .letter-mark {
+    --mark-flip: 1;
+    position: absolute;
+    top: 50%;
+    z-index: 0;
+    width: clamp(260px, 32vw, 480px);
+    opacity: 0.05;
+    transform: translateY(-50%) scaleX(var(--mark-flip));
+    pointer-events: none;
+    user-select: none;
+  }
+  .letter-mark--left {
+    --mark-flip: -1;
+    left: max(-8rem, calc((100vw - 1180px) / 2 - 14rem));
+  }
+  .letter-mark--right {
+    right: max(-8rem, calc((100vw - 1180px) / 2 - 14rem));
+  }
   .auth-editorial {
+    position: relative;
+    isolation: isolate;
     display: grid;
     gap: 3rem;
     max-width: 840px;
     margin: 0 auto;
+  }
+  .letter-section .auth-editorial::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: -3rem -5rem;
+    background: radial-gradient(
+      ellipse at center,
+      oklch(99% 0.003 240) 0%,
+      oklch(99% 0.003 240 / 0.94) 42%,
+      oklch(99% 0.003 240 / 0) 74%
+    );
+    pointer-events: none;
+  }
+  .letter-section .auth-editorial > * {
+    position: relative;
+    z-index: 1;
   }
   .auth-editorial-head {
     text-align: center;

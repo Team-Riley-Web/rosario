@@ -13,6 +13,7 @@ import authenticityImage from '../assets/images/model8.png';
 import personalImage from '../assets/images/model4.png';
 import giftImage from '../assets/images/gift.png';
 import rosarioIcon from '../assets/images/rosario-icon.png';
+import marbleImage from '../assets/images/marble.jpg';
 
 const trustItems = [
   'Direct Partnership with Ercole Moretti',
@@ -96,7 +97,9 @@ const collections = [
       </div>
     </div>
 
-    <section class="section section--white letter-section" data-section="letter-from-lisa">
+    <section class="section section--white letter-section" data-section="letter-from-lisa"
+             <!--style={`&#45;&#45;letter-bg-image: url(${marbleImage.src});`}-->
+    >
       <img src={rosarioIcon.src} alt="" class="letter-mark letter-mark--left" aria-hidden="true" />
       <img src={rosarioIcon.src} alt="" class="letter-mark letter-mark--right" aria-hidden="true" />
       <div class="inner">
@@ -121,7 +124,7 @@ const collections = [
             <p>I didn't set out to sell jewelry.</p>
             <p>I fell in love with Murano glass on a trip to Venice - the way light moves through it, the way no two pieces are ever quite the same. I started collecting. Then restoring. Then, slowly, sourcing pieces directly from people in Venice who actually make this glass by hand, the way it's been made for centuries.</p>
             <p>Most of what you'll find online calling itself "Murano glass" isn't. It's imported, mass-produced, and dressed up with the right words. I got tired of watching people get fooled by that - and I got tired of seeing real Murano glass treated like it's interchangeable with the fakes.</p>
-            <p>So everything here is real. Sourced through people I actually know. Restored by my own hands when it's vintage. Backed for life, because I stand behind what I sell.</p>
+            <p>Everything here is real. Sourced through people I actually know. Restored by my own hands when it's vintage. Backed for life, because I stand behind what I sell.</p>
             <p>If you're here, I'm guessing you already know the difference matters. Let's find you something real.</p>
             <p class="auth-signature">- Lisa</p>
           </div>
@@ -188,7 +191,7 @@ const collections = [
           </div>
           <div class="beads-editorial-img reveal reveal-delay-1">
             <img
-              src={beadsImage.src}
+              src={authenticityImage.src}
               alt="Colorful Murano Millefiori glass beads close-up"
               class="product-img"
               loading="lazy"
@@ -367,16 +370,27 @@ const collections = [
   .letter-section {
     position: relative;
     overflow: hidden;
+    background-image: var(--letter-bg-image);
+    background-size: cover;
+    background-position: center;
+  }
+  .letter-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: oklch(99% 0.003 240 / 0.85);
+    pointer-events: none;
   }
   .letter-section .inner {
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
   .letter-mark {
     --mark-flip: 1;
     position: absolute;
     top: 50%;
-    z-index: 0;
+    z-index: 1;
     width: clamp(260px, 32vw, 480px);
     opacity: 0.05;
     transform: translateY(-50%) scaleX(var(--mark-flip));

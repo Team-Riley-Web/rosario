@@ -39,10 +39,10 @@ const contactOptions = [
       </div>
     </section>
 
-    <section class="bg-white px-6 pt-20 sm:px-10">
+    <section class="bg-[#fff] px-6 pt-20 sm:px-10">
       <div class="mx-auto grid max-w-[1180px] gap-px border border-rule bg-rule lg:grid-cols-3">
         {contactOptions.map(([title, body, cta]) => (
-          <article class="flex min-h-[260px] flex-col bg-white p-8">
+          <article class="flex min-h-[260px] flex-col bg-[#fff] p-8">
             <h2 class="mb-4 font-display text-[30px] font-normal leading-tight text-ink">{title}</h2>
             <p class="mb-8 font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{body}</p>
             <a href="#contact-form" class="mt-auto font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-gold">{cta}</a>
@@ -51,7 +51,7 @@ const contactOptions = [
       </div>
     </section>
 
-    <section id="contact-form" class="bg-white px-6 pb-24 pt-20 sm:px-10">
+    <section id="contact-form" class="bg-[#fff] px-6 pb-24 pt-20 sm:px-10">
       <div class="mx-auto max-w-[760px]">
         <div class="mx-auto mb-10 max-w-[560px] text-center">
           <h2 class="mb-5 font-display text-[42px] font-light leading-tight text-ink">Send Me a Message</h2>
@@ -66,7 +66,7 @@ const contactOptions = [
           netlify
           data-netlify="true"
           netlify-honeypot="bot-field"
-          class="grid gap-5 border border-rule bg-white p-6 sm:p-10"
+          class="grid gap-5 border border-rule bg-[#fff] p-6 sm:p-10"
         >
           <input type="hidden" name="form-name" value="contact" />
           <p class="hidden"><label>Do not fill this out: <input name="bot-field" /></label></p>

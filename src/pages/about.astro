@@ -3,8 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import heroImage from '../assets/images/beader-header-3.png';
 import homeImage from '../assets/images/home.png';
+import manilaImage from '../assets/images/manilla.jpg';
+import boyImage from '../assets/images/boy.jpg';
 import storyImage from '../assets/images/model8.png';
-import detailImage from '../assets/images/necklace.png';
 
 const anchors = [
   ['Verified Provenance', 'A named, ongoing partnership with Ercole Moretti, not a vague "inspired by Venice" claim.'],
@@ -43,40 +44,52 @@ const anchors = [
       </div>
     </section>
 
-    <section class="bg-white px-6 py-24 sm:px-10">
-      <div class="mx-auto max-w-[1180px]">
-        <div class="mx-auto mb-16 max-w-[860px] text-center">
-          <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">The Crossing</h2>
-          <div class="mx-auto space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-            <p>In the early 1900s, two identical twin brothers stood on a dock in Palermo, Sicily, and said goodbye to each other.</p>
-            <p>One boarded a ship bound for New York. The other - Rosario - boarded a different ship, The Manila, bound for New Orleans. Whatever words passed between them that day are lost now. What isn't lost is this: two brothers, born within minutes of each other, spent the rest of their lives an ocean and a country apart, building two entirely different futures out of the same beginning.</p>
-            <p>Rosario chose Louisiana. He chose the French Quarter. And he chose to build something with his hands.</p>
-          </div>
+    <section class="bg-[#fff]">
+      <div class="grid border-b border-rule lg:grid-cols-2">
+        <div class="min-h-[420px] bg-ink lg:min-h-[620px]">
+          <img src={manilaImage.src} alt="The Manila ship connected to Rosario Leonardi's crossing story" class="h-full w-full object-cover lg:object-left" loading="lazy" />
         </div>
-
-        <div class="mb-16 grid overflow-hidden border border-rule lg:grid-cols-[0.95fr_1.05fr]">
-          <div class="min-h-[420px] bg-ink">
-            <img src={homeImage.src} alt="The New Orleans home connected to Rosario Leonardi's story" class="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <div class="flex items-center bg-white p-8 sm:p-12 lg:p-14">
-            <div>
-              <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">A Trade Made of Fire and Iron</h2>
-              <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-                <p>In the French Quarter, Rosario became a farrier - the craftsman who shoes horses, working iron over fire until it bends into exactly what's needed. It's not a trade that forgives carelessness. You either know your material, or the horse pays for your mistake. Rosario knew his material. He became known for it, well-regarded in a city that didn't hand out reputations lightly.</p>
-                <p>He met Inga Fink, a young Irish woman, and built a life with her - not in some grand house, but in half of a shotgun double at 832 Barracks Street, the kind of narrow, shared New Orleans home where you could hear your neighbors through the wall and your children through every room. Together they raised five kids in that house.</p>
-                <p>No inheritance. No shortcuts. Just a trade, a marriage, and five children raised in a half of a house he earned by working iron with his own two hands.</p>
-              </div>
+        <div class="flex items-center px-6 py-20 sm:px-10 lg:px-20">
+          <div class="max-w-[620px]">
+            <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">The Crossing</h2>
+            <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+              <p>In the early 1900s, two identical twin brothers stood on a dock in Palermo, Sicily, and said goodbye to each other.</p>
+              <p>One boarded a ship bound for New York. The other - Rosario - boarded a different ship, The Manila, bound for New Orleans. Whatever words passed between them that day are lost now. What isn't lost is this: two brothers, born within minutes of each other, spent the rest of their lives an ocean and a country apart, building two entirely different futures out of the same beginning.</p>
+              <p>Rosario chose Louisiana. He chose the French Quarter. And he chose to build something with his hands.</p>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="mx-auto max-w-[860px] text-center">
-          <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">What Got Passed Down</h2>
-          <div class="mx-auto space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-            <p>I never met Rosario. By the time I came along, he was a name in old photographs and a few stories that survived being retold a hundred times.</p>
-            <p>But something about him stuck with me anyway - maybe because of what he chose, twice. He chose New Orleans over New York, separating from the brother he shared a face with. And he chose a trade where you can't fake what you don't know. Iron tells the truth. So does horseshoeing. So, it turns out, does Murano glass.</p>
-            <p>When I started this shop, I wasn't trying to build a tribute. I was trying to sell jewelry I believed in. But somewhere in sourcing real glass from real Venetian makers - refusing to pass off something fake as something true - I realized I was doing the same thing Rosario did at his forge a hundred years earlier: working with a material that doesn't lie, and refusing to cut corners on it.</p>
-            <p>That's why this shop carries his name.</p>
+      <div class="grid border-b border-rule lg:grid-cols-2">
+        <div class="flex items-center px-6 py-20 sm:px-10 lg:px-20">
+          <div class="ml-auto max-w-[620px]">
+            <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">A Trade Made of Fire and Iron</h2>
+            <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+              <p>In the French Quarter, Rosario became a farrier - the craftsman who shoes horses, working iron over fire until it bends into exactly what's needed. It's not a trade that forgives carelessness. You either know your material, or the horse pays for your mistake. Rosario knew his material. He became known for it, well-regarded in a city that didn't hand out reputations lightly.</p>
+              <p>He met Inga Fink, a young Irish woman, and built a life with her - not in some grand house, but in half of a shotgun double at 832 Barracks Street, the kind of narrow, shared New Orleans home where you could hear your neighbors through the wall and your children through every room. Together they raised five kids in that house.</p>
+              <p>No inheritance. No shortcuts. Just a trade, a marriage, and five children raised in a half of a house he earned by working iron with his own two hands.</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-ink">
+          <img src={homeImage.src} alt="The New Orleans home connected to Rosario Leonardi's story" class="h-full min-h-[320px] w-full object-cover lg:min-h-0" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2">
+        <div class="bg-ink">
+          <img src={boyImage.src} alt="Young boy connected to the Rosario Leonardi family story" class="h-full min-h-[320px] w-full object-cover lg:min-h-0" loading="lazy" />
+        </div>
+        <div class="flex items-center px-6 py-20 sm:px-10 lg:px-20">
+          <div class="max-w-[620px]">
+            <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">What Got Passed Down</h2>
+            <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+              <p>I never met Rosario. By the time I came along, he was a name in old photographs and a few stories that survived being retold a hundred times.</p>
+              <p>But something about him stuck with me anyway - maybe because of what he chose, twice. He chose New Orleans over New York, separating from the brother he shared a face with. And he chose a trade where you can't fake what you don't know. Iron tells the truth. So does horseshoeing. So, it turns out, does Murano glass.</p>
+              <p>When I started this shop, I wasn't trying to build a tribute. I was trying to sell jewelry I believed in. But somewhere in sourcing real glass from real Venetian makers - refusing to pass off something fake as something true - I realized I was doing the same thing Rosario did at his forge a hundred years earlier: working with a material that doesn't lie, and refusing to cut corners on it.</p>
+              <p>That's why this shop carries his name.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -96,7 +109,7 @@ const anchors = [
       </div>
     </section>
 
-    <section class="bg-white px-6 py-24 sm:px-10">
+    <section class="bg-[#fff] px-6 py-24 sm:px-10">
       <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <div>
           <h2 class="mb-8 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">Real Relationships, Not Just Real Glass.</h2>
@@ -111,46 +124,39 @@ const anchors = [
       </div>
     </section>
 
-    <section class="bg-white px-6 py-24 sm:px-10">
-      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
-        <div>
-          <div class="mb-6 flex items-center gap-4">
+    <section class="bg-[#fff] px-6 py-24 sm:px-10">
+      <div class="mx-auto max-w-[1180px] text-center">
+        <div class="mx-auto max-w-[820px]">
+          <div class="mb-6 flex items-center justify-center gap-4">
             <div class="h-px w-6 bg-gold"></div>
             <span class="font-label text-[10px] uppercase tracking-[var(--tracking-widest)] text-gold">Mission</span>
+            <div class="h-px w-6 bg-gold"></div>
           </div>
-          <h2 class="font-display text-[42px] font-light leading-none text-ink md:text-[64px]">Why I Care So Much About "Real."</h2>
-        </div>
-        <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
-          <p>The online market for Murano glass is flooded with mass-produced imports and vague sourcing claims. I've seen too many people get burned - paying real money for something that isn't what it claims to be.</p>
-          <p>I'd rather be the seller who proves it, every time, than the seller who just says "trust me."</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-white px-6 py-24 sm:px-10">
-      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[1fr_0.85fr] lg:items-start">
-        <div>
-          <h2 class="mb-12 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">What Makes This Different</h2>
-          <div class="grid gap-px border border-rule bg-rule md:grid-cols-2">
-            {anchors.map(([title, body]) => (
-              <article class="bg-white p-8">
-                <h3 class="mb-4 font-display text-[28px] font-normal leading-tight text-ink">{title}</h3>
-                <p class="font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{body}</p>
-              </article>
-            ))}
+          <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">Why I Care So Much About "Real."</h2>
+          <div class="mx-auto mb-14 max-w-[760px] space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+            <p>The online market for Murano glass is flooded with mass-produced imports and vague sourcing claims. I've seen too many people get burned - paying real money for something that isn't what it claims to be.</p>
+            <p>I'd rather be the seller who proves it, every time, than the seller who just says "trust me."</p>
           </div>
         </div>
-        <img src={detailImage.src} alt="Authentic Murano glass jewelry styling" class="aspect-[3/4] w-full object-cover" loading="lazy" />
+        <h3 class="mb-10 font-display text-[34px] font-light leading-tight text-ink md:text-[44px]">What Makes This Different</h3>
+        <div class="grid gap-px border border-rule bg-rule text-left md:grid-cols-2">
+          {anchors.map(([title, body]) => (
+            <article class="bg-[#fff] p-8">
+              <h4 class="mb-4 font-display text-[28px] font-normal leading-tight text-ink">{title}</h4>
+              <p class="font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{body}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
 
     <section class="bg-ink px-6 py-24 text-white sm:px-10">
-      <div class="mx-auto max-w-[1040px]">
+      <div class="mx-auto max-w-[960px] text-center">
         <h2 class="mb-7 font-display text-[42px] font-light leading-none md:text-[64px]">Whether You're Collecting, Gifting, or Creating -</h2>
-        <p class="mb-8 max-w-[760px] font-sans text-[16px] font-light leading-[1.9] text-white/70">
+        <p class="mx-auto mb-8 max-w-[760px] font-sans text-[16px] font-light leading-[1.9] text-white/70">
           I built this shop for the people who care about getting it right: collectors who want provenance, families looking for a gift that actually means something, and makers who need materials they can trust. Whoever you are, I'd love to help you find the piece that's actually yours.
         </p>
-        <div class="flex flex-wrap gap-3">
+        <div class="flex flex-wrap justify-center gap-3">
           <a href="/shop" class="bg-white px-6 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink transition-colors hover:bg-gold-light">Shop the Collection</a>
           <a href="/contact" class="border border-white/25 px-6 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-white transition-colors hover:border-gold hover:text-gold-light">Get in Touch</a>
         </div>

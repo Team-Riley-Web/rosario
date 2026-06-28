@@ -239,6 +239,27 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
   }
   @media (max-width: 767px) {
     .site-footer { padding: 3rem 1.5rem 2rem; }
+    .footer-grid {
+      justify-items: center;
+      text-align: center;
+    }
+    .footer-grid > div:nth-child(2),
+    .footer-grid > div:nth-child(3),
+    .footer-brand-tag {
+      display: none;
+    }
+    .footer-brand {
+      justify-content: center;
+    }
     .newsletter-form { max-width: none; }
+    .footer-bottom {
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+    .footer-legal {
+      justify-content: center;
+      gap: 1rem;
+    }
   }
 </style>

@@ -10,7 +10,7 @@ import braceletsImage from '../assets/images/bracelet.png';
 import ringsImage from '../assets/images/ring.png';
 import beadsImage from '../assets/images/model2.avif';
 import authenticityImage from '../assets/images/model8.png';
-import personalImage from '../assets/images/model4.png';
+import personalImage from '../assets/images/lisa.png';
 import giftImage from '../assets/images/gift.png';
 import rosarioIcon from '../assets/images/rosario-icon.png';
 import marbleImage from '../assets/images/marble.jpg';
@@ -169,13 +169,13 @@ const collections = [
       </div>
     </section>
 
-    <section class="section section--white" data-section="personal-story">
+    <section class="section section--white personal-story-section" data-section="personal-story">
       <div class="inner">
         <div class="personal-grid">
           <div class="personal-img reveal">
             <img
                 src={personalImage.src}
-                alt="Model wearing Rosario Leonardi Murano glass jewelry"
+                alt="Lisa, founder of Rosario Leonardi"
                 class="product-img"
                 loading="lazy"
             />
@@ -589,6 +589,28 @@ const collections = [
     gap: 3.5rem;
     align-items: center;
   }
+  .personal-story-section {
+    padding-bottom: 0;
+  }
+  .personal-story-section .personal-grid {
+    align-items: end;
+  }
+  .personal-story-section .personal-copy {
+    order: 1;
+  }
+  .personal-story-section .personal-img {
+    order: 2;
+  }
+  .personal-story-section .personal-copy {
+    max-width: 620px;
+    margin-inline: auto;
+  }
+  .personal-story-section .personal-copy h2 {
+    text-align: center;
+  }
+  .personal-story-section .personal-btns {
+    justify-content: center;
+  }
   .personal-copy h2,
   .gift-copy h2 {
     font-size: var(--text-h2);
@@ -650,6 +672,13 @@ const collections = [
     .trust-item:last-child { border-right: none; }
     .coll-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .personal-grid { grid-template-columns: 1fr 1fr; }
+    .personal-story-section .personal-img {
+      order: 1;
+    }
+    .personal-story-section .personal-copy {
+      order: 2;
+      padding-bottom: 6rem;
+    }
     .gift-grid { grid-template-columns: 0.95fr 1.05fr; }
   }
   @media (max-width: 767px) {

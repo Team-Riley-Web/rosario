@@ -249,7 +249,7 @@ const collections = [
           <h2>Be Bold. Buy Now.</h2>
           <p>Every piece is one-of-a-kind. Once it's gone, it's gone.</p>
         </div>
-        <a href="/shop" class="btn-primary">Shop the Collection <span aria-hidden="true">→</span></a>
+        <a href="/shop" class="btn-primary btn-primary--accent">Shop the Collection <span aria-hidden="true">→</span></a>
       </div>
     </section>
   </main>
@@ -605,20 +605,22 @@ const collections = [
     gap: 12px;
   }
   .cta-strip {
-    background: var(--cobalt);
+    background: var(--light-fg);
     border-top: 1px solid var(--border);
   }
   .cta-flex {
-    max-width: 1180px;
+    max-width: 960px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
   }
   .cta-text h2 {
     font-size: var(--text-h2);
     color: var(--fg);
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
   .cta-text p {
     font-size: 15px;
@@ -641,11 +643,6 @@ const collections = [
   }
   @media (min-width: 768px) {
     .auth-signature { justify-content: flex-end; }
-    .cta-flex {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
   }
   @media (min-width: 1024px) {
     .trust-grid { grid-template-columns: repeat(4, 1fr); }

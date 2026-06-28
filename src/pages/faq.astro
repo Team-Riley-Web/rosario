@@ -68,14 +68,14 @@ const groups = [
       </div>
     </section>
 
-    <section class="bg-white px-6 py-24 sm:px-10">
+    <section class="bg-[#fff] px-6 py-24 sm:px-10">
       <div class="mx-auto grid max-w-[1180px] gap-10">
         {groups.map((group) => (
           <section class="grid gap-6 lg:grid-cols-[300px_1fr]">
             <h2 class="font-display text-[34px] font-light leading-tight text-ink">{group.title}</h2>
             <div class="grid gap-px border border-rule bg-rule">
               {group.questions.map(([question, answer]) => (
-                <article class="bg-white p-7">
+                <article class="bg-[#fff] p-7">
                   <h3 class="mb-3 font-display text-[24px] font-normal leading-tight text-ink">{question}</h3>
                   <p class="font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{answer}</p>
                 </article>

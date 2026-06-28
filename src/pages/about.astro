@@ -20,7 +20,7 @@ const anchors = [
   description="The story of Rosario Leonardi, the family name behind Rosario Leonardi Murano Glass."
 >
   <Nav />
-  <main>
+  <main class="bg-[#fff]">
     <section id="hero" class="relative overflow-hidden bg-ink px-6 pb-24 pt-40 text-white sm:px-10">
       <img
         src={heroImage.src}
@@ -46,10 +46,10 @@ const anchors = [
 
     <section class="bg-[#fff]">
       <div class="grid border-b border-rule lg:grid-cols-2">
-        <div class="min-h-[420px] bg-ink lg:min-h-[620px]">
-          <img src={manilaImage.src} alt="The Manila ship connected to Rosario Leonardi's crossing story" class="h-full w-full object-cover lg:object-left" loading="lazy" />
+        <div class="relative aspect-[4/3] bg-[#fff] lg:aspect-auto">
+          <img src={manilaImage.src} alt="The Manila ship connected to Rosario Leonardi's crossing story" class="h-full w-full object-cover lg:absolute lg:inset-0 lg:object-left" loading="lazy" />
         </div>
-        <div class="flex items-center px-6 py-20 sm:px-10 lg:px-20">
+        <div class="flex items-center bg-[#fff] px-6 py-16 sm:px-10 lg:px-20">
           <div class="max-w-[620px]">
             <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">The Crossing</h2>
             <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
@@ -62,7 +62,7 @@ const anchors = [
       </div>
 
       <div class="grid border-b border-rule lg:grid-cols-2">
-        <div class="flex items-center px-6 py-20 sm:px-10 lg:px-20">
+        <div class="flex items-center bg-[#fff] px-6 py-16 sm:px-10 lg:px-20">
           <div class="ml-auto max-w-[620px]">
             <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">A Trade Made of Fire and Iron</h2>
             <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
@@ -72,16 +72,16 @@ const anchors = [
             </div>
           </div>
         </div>
-        <div class="bg-ink">
-          <img src={homeImage.src} alt="The New Orleans home connected to Rosario Leonardi's story" class="h-full min-h-[320px] w-full object-cover lg:min-h-0" loading="lazy" />
+        <div class="relative aspect-[4/3] bg-[#fff] lg:aspect-auto">
+          <img src={homeImage.src} alt="The New Orleans home connected to Rosario Leonardi's story" class="h-full w-full object-cover lg:absolute lg:inset-0" loading="lazy" />
         </div>
       </div>
 
       <div class="grid lg:grid-cols-2">
-        <div class="bg-ink">
-          <img src={boyImage.src} alt="Young boy connected to the Rosario Leonardi family story" class="h-full min-h-[320px] w-full object-cover lg:min-h-0" loading="lazy" />
+        <div class="relative aspect-[4/3] bg-[#fff] lg:aspect-auto">
+          <img src={boyImage.src} alt="Young boy connected to the Rosario Leonardi family story" class="h-full w-full object-cover lg:absolute lg:inset-0" loading="lazy" />
         </div>
-        <div class="flex items-center px-6 py-20 sm:px-10 lg:px-20">
+        <div class="flex items-center bg-[#fff] px-6 py-16 sm:px-10 lg:px-20">
           <div class="max-w-[620px]">
             <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">What Got Passed Down</h2>
             <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">

@@ -36,7 +36,7 @@
   <!-- Header -->
   <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100">
     <div class="flex items-center gap-2.5">
-      <h2 class="text-sm font-black tracking-[0.18em] uppercase text-slate-900">Your Cart</h2>
+      <h2 class="text-sm font-black tracking-[var(--tracking-wider)] uppercase text-slate-900">Your Cart</h2>
       <span
         x-show="$store.cart.totalQuantity > 0"
         x-text="`(${$store.cart.totalQuantity})`"
@@ -45,7 +45,7 @@
     </div>
     <button
       @click="$store.cart.close()"
-      class="p-1.5 text-slate-400 hover:text-slate-700 transition-colors rounded-lg hover:bg-slate-100"
+      class="p-1.5 text-slate-400 hover:text-slate-700 transition-colors rounded-md hover:bg-slate-100"
       aria-label="Close cart"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -59,7 +59,7 @@
     x-show="$store.cart.isLoading"
     class="absolute inset-0 bg-white/70 flex items-center justify-center z-10"
   >
-    <svg class="animate-spin w-8 h-8 text-[#B8950A]" fill="none" viewBox="0 0 24 24">
+    <svg class="animate-spin w-8 h-8 text-[var(--accent)]" fill="none" viewBox="0 0 24 24">
       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
       <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
     </svg>
@@ -87,7 +87,7 @@
     <p class="text-slate-300 text-xs mb-6">Add some products to get started</p>
     <button
       @click="$store.cart.close()"
-      class="text-[11px] font-black tracking-[0.2em] uppercase text-[#B8950A] hover:text-[#9A7D08] transition-colors"
+      class="text-[11px] font-black tracking-[var(--tracking-widest)] uppercase text-[var(--accent)] hover:text-[var(--accent-deep)] transition-colors"
     >
       Continue Shopping
     </button>
@@ -101,7 +101,7 @@
     <template x-for="item in $store.cart.items" :key="item.id">
       <div class="flex gap-4 py-4 border-b border-slate-50 last:border-0">
         <!-- Image -->
-        <div class="w-20 h-20 rounded-xl overflow-hidden bg-slate-50 shrink-0">
+        <div class="w-20 h-20 rounded-lg overflow-hidden bg-slate-50 shrink-0">
           <img
             :src="item.imageUrl"
             :alt="item.productTitle"
@@ -118,7 +118,7 @@
             x-text="item.variantTitle"
           ></p>
           <p
-            class="text-xs text-[#B8950A] mt-0.5"
+            class="text-xs text-[var(--accent)] mt-0.5"
             x-show="item.sellingPlanName"
             x-text="item.sellingPlanName"
           ></p>
@@ -128,13 +128,13 @@
           <div class="flex items-center gap-0.5 mt-2">
             <button
               @click="$store.cart.updateItem(item.id, item.quantity - 1)"
-              class="w-7 h-7 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:border-slate-400 hover:text-slate-900 transition-colors text-base leading-none"
+              class="w-7 h-7 flex items-center justify-center rounded-md border border-slate-200 text-slate-500 hover:border-slate-400 hover:text-slate-900 transition-colors text-base leading-none"
               aria-label="Decrease quantity"
             >−</button>
             <span class="w-8 text-center text-sm font-medium text-slate-900" x-text="item.quantity"></span>
             <button
               @click="$store.cart.updateItem(item.id, item.quantity + 1)"
-              class="w-7 h-7 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:border-slate-400 hover:text-slate-900 transition-colors text-base leading-none"
+              class="w-7 h-7 flex items-center justify-center rounded-md border border-slate-200 text-slate-500 hover:border-slate-400 hover:text-slate-900 transition-colors text-base leading-none"
               aria-label="Increase quantity"
             >+</button>
           </div>
@@ -166,13 +166,13 @@
     <p class="text-xs text-slate-400 -mt-2">Shipping and taxes calculated at checkout.</p>
     <a
       :href="$store.cart.checkoutUrl"
-      class="block w-full text-center py-3.5 bg-[#B8950A] hover:bg-[#9A7D08] text-white text-[11px] font-black tracking-[0.2em] uppercase rounded-full transition-colors duration-200"
+      class="btn-primary btn-primary--accent w-full justify-center"
     >
       Checkout
     </a>
     <button
       @click="$store.cart.close()"
-      class="block w-full text-center text-[11px] font-bold tracking-[0.15em] uppercase text-slate-400 hover:text-slate-700 transition-colors"
+      class="block w-full text-center text-[11px] font-bold tracking-[var(--tracking-wide)] uppercase text-slate-400 hover:text-slate-700 transition-colors"
     >
       Continue Shopping
     </button>

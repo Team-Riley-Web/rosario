@@ -124,15 +124,15 @@ const variantsJson = JSON.stringify(variants.map(v => ({
       <div class="max-w-[1440px] mx-auto px-10 py-3 flex items-center gap-2.5">
         <a
           href="/shop"
-          class="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.18em] uppercase text-gold-light hover:text-gold transition-colors duration-200"
+          class="inline-flex items-center gap-2 font-label text-[9px] tracking-[var(--tracking-wider)] uppercase text-gold-light hover:text-gold transition-colors duration-200"
         >
           <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
           </svg>
           All Pieces
         </a>
-        <span class="font-mono text-[9px] text-white/20">/</span>
-        <span class="font-mono text-[9px] tracking-[0.12em] uppercase text-white truncate max-w-[240px]">{product.title}</span>
+        <span class="font-label text-[9px] text-white/20">/</span>
+        <span class="font-label text-[9px] tracking-[var(--tracking-wide)] uppercase text-white truncate max-w-[240px]">{product.title}</span>
       </div>
     </div>
 
@@ -172,7 +172,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
           >
 
             <!-- Main image -->
-            <div class="relative overflow-hidden bg-parchment aspect-[3/4]">
+            <div class="relative overflow-hidden bg-white aspect-[3/4]">
               {images.length > 0 ? (
                 <button
                   type="button"
@@ -202,12 +202,12 @@ const variantsJson = JSON.stringify(variants.map(v => ({
               )}
 
               {step && (
-                <span class="absolute top-4 left-4 bg-white text-gold-deep font-mono text-[9px] tracking-[0.12em] uppercase px-2 py-1">
+                <span class="absolute top-4 left-4 bg-white text-gold-deep font-label text-[9px] tracking-[var(--tracking-wide)] uppercase px-2 py-1">
                   {step.label}
                 </span>
               )}
               {!product.availableForSale && (
-                <span class="absolute top-4 right-4 bg-ink text-white font-mono text-[9px] tracking-[0.12em] uppercase px-2 py-1">
+                <span class="absolute top-4 right-4 bg-ink text-white font-label text-[9px] tracking-[var(--tracking-wide)] uppercase px-2 py-1">
                   Sold Out
                 </span>
               )}
@@ -368,15 +368,14 @@ const variantsJson = JSON.stringify(variants.map(v => ({
             {step && (
               <div class="flex items-center gap-3 mb-5">
                 <div class="h-px bg-gold w-6"></div>
-                <span class="font-mono text-[9px] tracking-[0.2em] uppercase text-gold">
+                <span class="font-label text-[9px] tracking-[var(--tracking-widest)] uppercase text-gold">
                   {step.label}
                 </span>
               </div>
             )}
 
             <h1
-              class="font-display font-light text-ink leading-[1.05] tracking-[-0.01em] mb-4"
-              style="font-size: clamp(28px, 3.2vw, 44px);"
+              class="font-display font-light text-ink leading-[var(--leading-heading)] tracking-normal mb-4 text-[length:var(--text-h2)]"
             >
               {product.title}
             </h1>
@@ -393,14 +392,14 @@ const variantsJson = JSON.stringify(variants.map(v => ({
             <div>
               {hasVariantChoice && (
                 <div class="mb-6">
-                  <p class="font-mono text-[9px] tracking-[0.18em] uppercase text-ink-soft mb-3">{variantOptionLabel}</p>
+                  <p class="font-label text-[9px] tracking-[var(--tracking-wider)] uppercase text-ink-soft mb-3">{variantOptionLabel}</p>
                   <div class="flex flex-wrap gap-2">
                     {variants.map((v) => (
                       <button
                         type="button"
                         @click={`selectVariant(${JSON.stringify(v.id)})`}
                         :class={`selectedId === ${JSON.stringify(v.id)} ? 'bg-ink text-white border-ink' : 'bg-white text-ink border-rule hover:border-ink'`}
-                        class="font-mono text-[10px] tracking-[0.1em] uppercase border px-4 py-2.5 transition-all duration-200"
+                        class="font-label text-[10px] tracking-[var(--tracking-wide)] uppercase border px-4 py-2.5 transition-all duration-200"
                         disabled={!v.availableForSale || undefined}
                         style={!v.availableForSale ? 'opacity: 0.4; cursor: not-allowed;' : undefined}
                       >
@@ -413,7 +412,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
 
               {hasSellingPlans && (
                 <div class="mb-6">
-                  <p class="font-mono text-[9px] tracking-[0.18em] uppercase text-ink-soft mb-3">Purchase Options</p>
+                  <p class="font-label text-[9px] tracking-[var(--tracking-wider)] uppercase text-ink-soft mb-3">Purchase Options</p>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button
                       type="button"
@@ -438,7 +437,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
                         class="relative min-h-[76px] w-full border bg-white px-4 py-3 text-left transition-all duration-200"
                       >
                         <span
-                          class="absolute -top-3 right-3 bg-gold-deep px-2 py-1 font-mono text-[9px] leading-none tracking-[0.08em] uppercase text-white"
+                          class="absolute -top-3 right-3 bg-gold-deep px-2 py-1 font-label text-[9px] leading-none tracking-[var(--tracking-wide)] uppercase text-white"
                         >
                           {discountLabel}
                         </span>
@@ -468,7 +467,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
                     setTimeout(() => { added = false; }, 2000);
                   }`}
                   :disabled="adding || undefined"
-                  class="w-full font-mono text-[10px] tracking-[0.2em] uppercase py-4 mb-3 transition-all duration-200"
+                  class="w-full font-label text-[10px] tracking-[var(--tracking-widest)] uppercase py-4 mb-3 transition-all duration-200"
                   :class="added ? 'bg-gold-deep text-white' : 'bg-ink text-white hover:bg-gold-deep'"
                 >
                   <span x-show="!adding && !added">Add to Cart</span>
@@ -478,7 +477,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
               ) : (
                 <button
                   disabled
-                  class="w-full bg-rule text-ink-soft font-mono text-[10px] tracking-[0.2em] uppercase py-4 mb-3 cursor-not-allowed"
+                  class="w-full bg-rule text-ink-soft font-label text-[10px] tracking-[var(--tracking-widest)] uppercase py-4 mb-3 cursor-not-allowed"
                 >
                   Sold Out
                 </button>
@@ -498,7 +497,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
                 type="button"
                 @click="buyNow()"
                 :disabled="adding || undefined"
-                class="block w-full text-center font-mono text-[10px] tracking-[0.2em] uppercase py-4 border border-rule text-ink-soft hover:border-ink hover:text-ink transition-colors duration-200"
+                class="block w-full text-center font-label text-[10px] tracking-[var(--tracking-widest)] uppercase py-4 border border-rule text-ink-soft hover:border-ink hover:text-ink transition-colors duration-200"
               >
                 Buy Now
               </button>
@@ -539,10 +538,10 @@ const variantsJson = JSON.stringify(variants.map(v => ({
             <div class="lg:pt-6 flex flex-wrap items-center gap-4 lg:flex-col lg:items-start lg:gap-5">
               <div class="flex items-center gap-4">
                 <div class="h-px bg-gold w-6 shrink-0"></div>
-                <span class="font-mono text-[10px] font-semibold tracking-[0.2em] uppercase text-ink whitespace-nowrap">Product Details</span>
+                <span class="font-label text-[10px] font-semibold tracking-[var(--tracking-widest)] uppercase text-ink whitespace-nowrap">Product Details</span>
               </div>
 
-              <a href="/contact" class="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-gold lg:inline-flex">
+              <a href="/contact" class="hidden font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-gold lg:inline-flex">
                 Have a question? Ask me →
               </a>
             </div>
@@ -556,11 +555,11 @@ const variantsJson = JSON.stringify(variants.map(v => ({
     )}
 
     {relatedProducts.length > 0 && (
-      <section class="bg-parchment py-20">
+      <section class="bg-white py-20">
         <div class="max-w-5xl mx-auto px-10">
           <div class="flex items-center gap-4 mb-10">
             <div class="h-px bg-gold w-6 shrink-0"></div>
-            <span class="font-mono text-[10px] tracking-[0.2em] uppercase text-gold">More One-of-a-Kind Pieces</span>
+            <span class="font-label text-[10px] tracking-[var(--tracking-widest)] uppercase text-gold">More One-of-a-Kind Pieces</span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px">

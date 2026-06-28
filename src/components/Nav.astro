@@ -144,9 +144,10 @@ const navLinks = [
   }
   .site-nav.scrolled,
   .site-nav:not(.home-initial-minimal) {
-    background: rgb(6 30 59 / 0.96);
+    background: oklch(from var(--cobalt) l c h / 0.96);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.08), 0 24px 48px rgba(0,0,0,0.10);
   }
   .announcement {
     display: flex;
@@ -166,10 +167,10 @@ const navLinks = [
     border-bottom-color: transparent;
   }
   .announcement a {
-    font-family: var(--font-mono);
+    font-family: var(--font-label);
     font-size: 10px;
     line-height: 1;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-wider);
     text-transform: uppercase;
   }
   .nav-bar {
@@ -185,7 +186,7 @@ const navLinks = [
   .nav-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-3);
     flex-shrink: 0;
     z-index: 1;
   }
@@ -199,7 +200,7 @@ const navLinks = [
   .nav-wordmark {
     font-family: var(--font-wordmark);
     font-size: 28px;
-    letter-spacing: 1px;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--fg);
     line-height: 1;
@@ -208,7 +209,7 @@ const navLinks = [
     margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: var(--space-5);
     z-index: 1;
     transition: gap 0.45s cubic-bezier(0.16,1,0.3,1);
   }
@@ -223,9 +224,9 @@ const navLinks = [
     visibility: visible;
   }
   .nav-link {
-    font-family: var(--font-mono);
+    font-family: var(--font-label);
     font-size: 10px;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-wider);
     text-transform: uppercase;
     color: var(--fg-sub);
     position: relative;
@@ -295,18 +296,18 @@ const navLinks = [
     right: -7px;
     width: 16px;
     height: 16px;
-    border-radius: 50%;
+    border-radius: var(--radius-pill);
     background: var(--accent);
     color: var(--bg);
-    font-family: var(--font-mono);
-    font-size: 9px;
+    font-family: var(--font-label);
+    font-size: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 1;
   }
   .nav-cta {
-    padding: 10px 22px;
+    padding: var(--space-3) 1.5rem;
     transition:
       background 0.35s cubic-bezier(0.16,1,0.3,1),
       border-color 0.35s cubic-bezier(0.16,1,0.3,1),
@@ -365,9 +366,9 @@ const navLinks = [
   .mobile-link {
     display: block;
     padding: 1.25rem 0;
-    font-family: var(--font-mono);
+    font-family: var(--font-label);
     font-size: 11px;
-    letter-spacing: 0.25em;
+    letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
     color: var(--fg-sub);
     border-bottom: 1px solid var(--border);
@@ -375,15 +376,15 @@ const navLinks = [
   .mobile-actions {
     margin-top: 1.5rem;
     display: flex;
-    gap: 12px;
+    gap: var(--space-3);
   }
   .mobile-actions a {
     flex: 1;
     text-align: center;
     padding: 12px;
-    font-family: var(--font-mono);
+    font-family: var(--font-label);
     font-size: 10px;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-wider);
     text-transform: uppercase;
   }
   .mobile-account { border: 1px solid var(--border-lift); color: var(--fg-sub); }

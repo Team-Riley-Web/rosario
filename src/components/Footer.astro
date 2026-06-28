@@ -103,13 +103,13 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
   .site-footer {
     background: var(--bg);
     border-top: 1px solid var(--border);
-    padding: 4rem 2.5rem 2.5rem;
+    padding: var(--space-8) 2.5rem 2.5rem;
   }
   .footer-grid {
     max-width: 1180px;
-    margin: 0 auto 3rem;
+    margin: 0 auto var(--space-7);
     display: grid;
-    gap: 3rem;
+    gap: var(--space-7);
   }
   .footer-brand {
     display: inline-flex;
@@ -126,7 +126,7 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
   .footer-brand-name {
     font-family: var(--font-wordmark);
     font-size: 28px;
-    letter-spacing: 1px;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--fg);
     line-height: 1;
@@ -134,9 +134,9 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
   .footer-brand-tag {
     font-size: 13px;
     font-weight: 300;
-    line-height: 1.7;
+    line-height: var(--leading-body);
     color: var(--fg-sub);
-    margin-bottom: 1.75rem;
+    margin-bottom: var(--space-6);
     max-width: 300px;
   }
   .newsletter-form {
@@ -146,7 +146,7 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
   .newsletter-input {
     flex: 1;
     min-width: 0;
-    padding: 11px 16px;
+    padding: var(--space-3) var(--space-4);
     background: var(--surface-lift);
     border: 1px solid var(--border-lift);
     border-right: none;
@@ -159,13 +159,13 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
   .newsletter-input::placeholder { color: var(--muted); }
   .newsletter-input:focus { border-color: var(--accent); }
   .newsletter-btn {
-    padding: 11px 20px;
+    padding: var(--space-3) 1.25rem;
     background: var(--accent);
     color: var(--bg);
     border: 1px solid var(--accent);
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.16em;
+    font-family: var(--font-label);
+    font-size: 10px;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     white-space: nowrap;
     transition: background 0.2s, border-color 0.2s;
@@ -173,17 +173,17 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
   .newsletter-btn:hover { background: var(--accent-light); border-color: var(--accent-light); }
   .newsletter-thanks {
     display: none;
-    font-family: var(--font-mono);
+    font-family: var(--font-label);
     font-size: 10px;
-    letter-spacing: 0.16em;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--accent);
-    padding: 11px 0;
+    padding: var(--space-3) 0;
   }
   .footer-nav-title {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.22em;
+    font-family: var(--font-label);
+    font-size: 10px;
+    letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: 1rem;
@@ -210,9 +210,9 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
   }
   .footer-copy,
   .footer-legal a {
-    font-family: var(--font-mono);
+    font-family: var(--font-label);
     font-size: 9px;
-    letter-spacing: 0.14em;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--muted);
   }

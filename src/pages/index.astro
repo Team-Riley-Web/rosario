@@ -284,9 +284,7 @@ const collections = [
   .hero-overlay {
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(to top, oklch(7% 0.010 255 / 1) 0%, oklch(7% 0.010 255 / 0.82) 28%, oklch(7% 0.010 255 / 0.45) 55%, oklch(7% 0.010 255 / 0.15) 80%, transparent 100%),
-      radial-gradient(circle at 50% 72%, oklch(7% 0.010 255 / 0.36) 0%, oklch(7% 0.010 255 / 0.18) 34%, transparent 64%);
+    background: var(--hero-overlay);
   }
   .hero-content {
     position: relative;
@@ -311,9 +309,9 @@ const collections = [
   .hero-h1 {
     font-family: var(--font-display);
     font-weight: 300;
-    line-height: 0.9;
-    letter-spacing: 0;
-    font-size: clamp(68px, 10vw, 128px);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-display);
     color: var(--fg);
     margin-bottom: 2rem;
   }
@@ -346,15 +344,15 @@ const collections = [
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-mono);
+    font-family: var(--font-label);
     font-size: 11px;
     color: var(--accent);
     flex-shrink: 0;
   }
   .trust-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-label);
     font-size: 10px;
-    letter-spacing: 0.16em;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--fg-sub);
     line-height: 1.5;
@@ -365,8 +363,8 @@ const collections = [
   }
   .trust-bar--white .trust-item { border-color: var(--light-border); }
   .trust-bar--white .trust-check {
-    border-color: #061e3b;
-    color: #061e3b;
+    border-color: var(--cobalt);
+    color: var(--cobalt);
   }
   .trust-bar--white .trust-label { color: oklch(35% 0.010 255); }
   .letter-section {
@@ -442,12 +440,12 @@ const collections = [
   .cta-text h2 {
     font-family: var(--font-display);
     font-weight: 300;
-    line-height: 0.98;
-    letter-spacing: 0;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-normal);
     text-wrap: balance;
   }
   .auth-headline {
-    font-size: clamp(40px, 5vw, 60px);
+    font-size: var(--text-h2);
     color: var(--fg);
     max-width: 840px;
     margin: 0 auto;
@@ -474,7 +472,7 @@ const collections = [
   .gift-copy p {
     font-size: 16px;
     font-weight: 300;
-    line-height: 1.9;
+    line-height: var(--leading-loose);
     color: var(--fg-sub);
     margin-bottom: 1.5rem;
     text-wrap: pretty;
@@ -498,7 +496,7 @@ const collections = [
     margin-bottom: 3.5rem;
   }
   .collections-h2 {
-    font-size: clamp(38px, 5.5vw, 68px);
+    font-size: var(--text-h1);
     color: var(--fg);
   }
   .coll-grid {
@@ -525,15 +523,15 @@ const collections = [
     font-family: var(--font-display);
     font-weight: 400;
     line-height: 1.1;
-    font-size: clamp(28px, 3vw, 34px);
-    letter-spacing: 0;
+    font-size: var(--text-h3);
+    letter-spacing: var(--tracking-normal);
     color: var(--fg);
     margin-bottom: 1.25rem;
   }
   .coll-desc {
     font-size: 14px;
     font-weight: 300;
-    line-height: 1.85;
+    line-height: var(--leading-loose);
     color: var(--fg-sub);
     margin-bottom: 2rem;
     flex: 1;
@@ -553,17 +551,17 @@ const collections = [
     font-style: italic;
     font-weight: 300;
     line-height: 1.25;
-    letter-spacing: 0;
-    font-size: clamp(26px, 4vw, 52px);
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-h2);
     color: var(--fg);
     margin-bottom: 2rem;
     text-wrap: balance;
   }
   .quote-attr {
-    font-family: var(--font-mono);
+    font-family: var(--font-label);
     font-size: 10px;
     font-style: normal;
-    letter-spacing: 0.22em;
+    letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
     color: var(--accent-light);
   }
@@ -575,7 +573,7 @@ const collections = [
   }
   .beads-editorial-head { text-align: center; }
   .beads-editorial-head h2 {
-    font-size: clamp(48px, 7vw, 80px);
+    font-size: var(--text-h1);
     color: var(--fg);
   }
   .eyebrow.centered {
@@ -593,7 +591,7 @@ const collections = [
   }
   .personal-copy h2,
   .gift-copy h2 {
-    font-size: clamp(36px, 5vw, 64px);
+    font-size: var(--text-h2);
     margin-bottom: 1.75rem;
   }
   .personal-copy p,
@@ -606,7 +604,7 @@ const collections = [
     gap: 12px;
   }
   .cta-strip {
-    background: #061e3b;
+    background: var(--cobalt);
     border-top: 1px solid var(--border);
   }
   .cta-flex {
@@ -617,14 +615,14 @@ const collections = [
     gap: 2rem;
   }
   .cta-text h2 {
-    font-size: clamp(36px, 5vw, 66px);
+    font-size: var(--text-h2);
     color: var(--fg);
     margin-bottom: 0.75rem;
   }
   .cta-text p {
     font-size: 15px;
     font-weight: 300;
-    line-height: 1.8;
+    line-height: var(--leading-loose);
     color: oklch(97% 0.008 75 / 0.68);
   }
   .section--white .auth-headline,

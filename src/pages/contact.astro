@@ -27,7 +27,7 @@ const contactOptions = [
       <div class="relative mx-auto max-w-[1040px]">
         <div class="mb-8 flex items-center gap-4">
           <div class="h-px w-6 bg-gold"></div>
-          <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">Contact</span>
+          <span class="font-label text-[10px] uppercase tracking-[var(--tracking-widest)] text-gold">Contact</span>
         </div>
         <h1 class="mb-7 font-display text-[48px] font-light leading-none tracking-normal md:text-[76px]">
           Ask Me Anything Before You Buy.
@@ -44,7 +44,7 @@ const contactOptions = [
           <article class="flex min-h-[260px] flex-col bg-white p-8">
             <h2 class="mb-4 font-display text-[30px] font-normal leading-tight text-ink">{title}</h2>
             <p class="mb-8 font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{body}</p>
-            <a href="#contact-form" class="mt-auto font-mono text-[10px] uppercase tracking-[0.18em] text-gold">{cta}</a>
+            <a href="#contact-form" class="mt-auto font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-gold">{cta}</a>
           </article>
         ))}
       </div>
@@ -70,15 +70,15 @@ const contactOptions = [
           <p class="hidden"><label>Do not fill this out: <input name="bot-field" /></label></p>
 
           <label class="grid gap-2">
-            <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-soft">Name</span>
+            <span class="font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink-soft">Name</span>
             <input name="name" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold" />
           </label>
           <label class="grid gap-2">
-            <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-soft">Email</span>
+            <span class="font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink-soft">Email</span>
             <input type="email" name="email" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold" />
           </label>
           <label class="grid gap-2">
-            <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-soft">What can I help you with?</span>
+            <span class="font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink-soft">What can I help you with?</span>
             <select name="topic" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold">
               <option value="">Choose one</option>
               <option>Choosing a piece</option>
@@ -89,10 +89,10 @@ const contactOptions = [
             </select>
           </label>
           <label class="grid gap-2">
-            <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-soft">Message</span>
+            <span class="font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink-soft">Message</span>
             <textarea name="message" rows="6" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold"></textarea>
           </label>
-          <button class="justify-self-start bg-ink px-7 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white transition-colors hover:bg-gold-deep">
+          <button class="justify-self-start bg-ink px-7 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-white transition-colors hover:bg-gold-deep">
             Send Message
           </button>
         </form>
@@ -103,8 +103,8 @@ const contactOptions = [
       <div class="mx-auto grid max-w-[960px] gap-8 md:grid-cols-[0.8fr_1.2fr] md:items-center">
         <h2 class="font-display text-[42px] font-light leading-none text-ink">Find the Shop</h2>
         <div class="flex flex-wrap gap-3">
-          <a href="https://www.etsy.com/shop/LakeviewPearls" target="_blank" rel="noopener" class="border border-rule bg-white px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:border-gold hover:text-gold-deep">Etsy Shop: LakeviewPearls</a>
-          <a href="/faq" class="border border-rule bg-white px-6 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink transition-colors hover:border-gold hover:text-gold-deep">Read FAQ</a>
+          <a href="https://www.etsy.com/shop/LakeviewPearls" target="_blank" rel="noopener" class="border border-rule bg-white px-6 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink transition-colors hover:border-gold hover:text-gold-deep">Etsy Shop: LakeviewPearls</a>
+          <a href="/faq" class="border border-rule bg-white px-6 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink transition-colors hover:border-gold hover:text-gold-deep">Read FAQ</a>
         </div>
       </div>
     </section>

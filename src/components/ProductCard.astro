@@ -8,6 +8,7 @@ export interface Props {
 
 const { product } = Astro.props;
 const image = product.images.edges[0]?.node;
+const hoverImage = product.images.edges[1]?.node;
 const variant = product.variants.edges[0]?.node;
 const price = formatPrice(product.priceRange.minVariantPrice.amount);
 const productPageUrl = `/products/${product.handle}`;
@@ -20,12 +21,23 @@ const productPageUrl = `/products/${product.handle}`;
 >
   <a href={productPageUrl} class="prod-card-img" aria-label={product.title}>
     {image ? (
-      <img
-        class="product-img"
-        src={image.url}
-        alt={image.altText ?? product.title}
-        loading="lazy"
-      />
+      <>
+        <img
+          class="product-img product-img--primary"
+          src={image.url}
+          alt={image.altText ?? product.title}
+          loading="lazy"
+        />
+        {hoverImage && (
+          <img
+            class="product-img product-img--hover"
+            src={hoverImage.url}
+            alt=""
+            loading="lazy"
+            aria-hidden="true"
+          />
+        )}
+      </>
     ) : (
       <div class="product-img product-img--empty">
         <span>Rosario Leonardi</span>
@@ -85,9 +97,20 @@ const productPageUrl = `/products/${product.handle}`;
     aspect-ratio: 3 / 4;
     width: 100%;
     object-fit: cover;
-    transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    transition:
+      opacity 0.85s cubic-bezier(0.16,1,0.3,1),
+      transform 1.15s cubic-bezier(0.16,1,0.3,1);
+    will-change: opacity, transform;
   }
-  .prod-card:hover .prod-card-img .product-img { transform: scale(1.04); }
+  .product-img--hover {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    opacity: 0;
+  }
+  .prod-card:hover .prod-card-img .product-img { transform: scale(1.025); }
+  .prod-card:hover .product-img--hover { opacity: 1; }
+  .prod-card:hover .product-img--primary:has(+ .product-img--hover) { opacity: 0.18; }
   .product-img--empty {
     display: flex;
     align-items: center;

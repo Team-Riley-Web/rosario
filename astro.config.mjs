@@ -4,7 +4,7 @@ import alpinejs from '@astrojs/alpinejs';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://example.com',
+  site: 'https://rosarioleonardi.shop',
   integrations: [
     tailwind(),
     alpinejs({ entrypoint: '/src/entrypoint' }),

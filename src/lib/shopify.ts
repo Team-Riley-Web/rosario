@@ -12,15 +12,31 @@ function getEnvValue(keys: string[], fallback = ''): string {
 }
 
 const USE_MOCKS = env.SHOPIFY_USE_MOCKS === 'true' || env.PUBLIC_SHOPIFY_USE_MOCKS === 'true';
+const SHOULD_THROW_SHOPIFY_ERRORS =
+  !USE_MOCKS && (env.NETLIFY === 'true' || env.CONTEXT === 'production' || env.SHOPIFY_STRICT_FETCH === 'true');
 
 export const SHOPIFY_DOMAIN = getEnvValue(['SHOPIFY_STORE_DOMAIN', 'PUBLIC_SHOPIFY_STORE_DOMAIN'], 'your-store.myshopify.com');
 const STOREFRONT_TOKEN = getEnvValue(['SHOPIFY_STOREFRONT_TOKEN', 'PUBLIC_SHOPIFY_STOREFRONT_TOKEN']);
-const API_VERSION = getEnvValue(['SHOPIFY_API_VERSION', 'PUBLIC_SHOPIFY_API_VERSION'], '2024-01');
+const API_VERSION = getEnvValue(['SHOPIFY_API_VERSION', 'PUBLIC_SHOPIFY_API_VERSION'], '2026-01');
 export const FEATURED_COLLECTION_HANDLE = 'frontpage';
 
 export const STOREFRONT_URL = `https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`;
 
+function handleShopifyError(context: string, error: unknown): void {
+  const message = error instanceof Error ? error.message : String(error);
+
+  if (SHOULD_THROW_SHOPIFY_ERRORS) {
+    throw new Error(`${context}: ${message}`);
+  }
+
+  console.warn(`${context}:`, message);
+}
+
 export async function shopifyFetch<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
+  if (SHOPIFY_DOMAIN === 'your-store.myshopify.com' && !USE_MOCKS) {
+    throw new Error('Missing Shopify store domain');
+  }
+
   if (!STOREFRONT_TOKEN && !USE_MOCKS) {
     throw new Error('Missing Shopify Storefront API token');
   }
@@ -311,7 +327,7 @@ export async function getProducts(first = 24, sortKey = 'BEST_SELLING'): Promise
     );
     return filterRetailProducts(data.products.edges.map(e => e.node));
   } catch (error) {
-    console.warn('Shopify products fetch failed:', error instanceof Error ? error.message : error);
+    handleShopifyError('Shopify products fetch failed', error);
     return [];
   }
 }
@@ -339,7 +355,7 @@ export async function getAllProducts(sortKey = 'BEST_SELLING'): Promise<ShopifyP
       hasNextPage = data.products.pageInfo.hasNextPage;
       after = data.products.pageInfo.endCursor;
     } catch (error) {
-      console.warn('Shopify all-products fetch failed:', error instanceof Error ? error.message : error);
+      handleShopifyError('Shopify all-products fetch failed', error);
       return filterRetailProducts(products);
     }
   }
@@ -362,7 +378,7 @@ export async function getCollectionProducts(handle: string, first = 24): Promise
     );
     return filterRetailProducts(data.collection?.products.edges.map(e => e.node) ?? []);
   } catch (error) {
-    console.warn('Shopify collection fetch failed:', error instanceof Error ? error.message : error);
+    handleShopifyError('Shopify collection fetch failed', error);
     return [];
   }
 }
@@ -382,7 +398,8 @@ export async function getProductsByHandles(handles: readonly string[]): Promise<
         { handle }
       );
       return data.product;
-    } catch {
+    } catch (error) {
+      handleShopifyError(`Shopify product fetch failed for ${handle}`, error);
       return null;
     }
   }));
@@ -525,7 +542,8 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
       ...data.product,
       relatedProducts: filterRetailProducts(rawReferences),
     };
-  } catch {
+  } catch (error) {
+    handleShopifyError(`Shopify product detail fetch failed for ${handle}`, error);
     return null;
   }
 }

@@ -35,6 +35,7 @@ const navLinks = [
   :class="{ 'scrolled': scrolled }"
   class:list={['site-nav', { 'home-initial-minimal': homeInitialMinimal }]}
   role="banner"
+  @keydown.escape.window="open = false; document.body.style.overflow = ''"
 >
   {homeInitialMinimal && (
     <div
@@ -119,12 +120,35 @@ const navLinks = [
     </div>
   </nav>
 
+  <div
+    class="mobile-backdrop"
+    :class="open ? 'open' : ''"
+    :aria-hidden="open ? 'false' : 'true'"
+    @click="open = false; document.body.style.overflow = ''"
+  ></div>
+
   <nav
     id="mobile-drawer"
     aria-label="Mobile navigation"
     :aria-hidden="open ? 'false' : 'true'"
     :class="open ? 'open' : ''"
+    @click.outside="if (open && !$event.target.closest('.hamburger')) { open = false; document.body.style.overflow = ''; }"
   >
+    <div class="mobile-drawer-head">
+      <a href="/" class="mobile-drawer-brand" aria-label="Rosario Leonardi, Home" @click="open = false; document.body.style.overflow = ''">
+        <img src={rosarioIconGold.src} alt="" aria-hidden="true" />
+      </a>
+      <button
+        type="button"
+        class="mobile-close"
+        aria-label="Close menu"
+        @click="open = false; document.body.style.overflow = ''"
+      >
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
     {navLinks.map(([label, href]) => (
       <a href={href} class="mobile-link" @click="open = false; document.body.style.overflow = ''">{label}</a>
     ))}
@@ -346,22 +370,75 @@ const navLinks = [
   .hamburger.open span:nth-child(2) { transform: rotate(-45deg) translate(3px, -4px); width: 20px; }
   #mobile-drawer {
     position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 99;
-    padding: 96px 2rem 2.5rem;
+    inset: 0 0 0 auto;
+    background: var(--cobalt);
+    z-index: 102;
+    width: min(86vw, 380px);
+    height: 100vh;
+    height: 100dvh;
+    padding: 1.25rem 2rem max(2.5rem, env(safe-area-inset-bottom));
     display: flex;
     flex-direction: column;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-8px);
+    transform: translateX(100%);
     transition: opacity 0.25s ease, transform 0.25s ease;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: -24px 0 48px rgba(0,0,0,0.28);
   }
   #mobile-drawer.open {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translateX(0);
+  }
+  .mobile-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 101;
+    background: oklch(0% 0 0 / 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .mobile-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .mobile-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    margin-bottom: 2rem;
+  }
+  .mobile-drawer-brand {
+    display: inline-flex;
+    align-items: center;
+  }
+  .mobile-drawer-brand img {
+    width: 28px;
+    height: 34px;
+    object-fit: contain;
+  }
+  .mobile-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--fg);
+    border: 1px solid oklch(100% 0 0 / 0.18);
+    border-radius: var(--radius-sharp);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .mobile-close:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .mobile-close svg {
+    width: 18px;
+    height: 18px;
   }
   .mobile-link {
     display: block;

@@ -82,7 +82,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
 ---
 
 <section
-  class={`section section--white products-section ${isFeatured ? 'products-section--featured' : ''}`}
+  class={`section products-section ${isFeatured ? 'products-section--featured' : 'section--white'}`}
   id="products"
 >
   <div class="inner--wide">
@@ -349,6 +349,10 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     background: var(--light-bg);
     color: var(--light-fg);
   }
+  .products-section--featured {
+    background: var(--bg);
+    color: var(--fg);
+  }
   .products-header {
     max-width: 760px;
     margin-bottom: var(--space-8);
@@ -368,6 +372,9 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     font-size: var(--text-h1);
     color: var(--light-fg);
     text-wrap: balance;
+  }
+  .products-section--featured .products-heading {
+    color: var(--fg);
   }
   .products-intro {
     margin-top: var(--space-4);
@@ -495,6 +502,9 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     background: var(--light-border);
     width: max-content;
     min-width: 100%;
+  }
+  .products-section--featured .prod-scroll-grid {
+    background: var(--border);
   }
   .prod-scroll-grid .product-cell {
     width: clamp(240px, 28vw, 300px);

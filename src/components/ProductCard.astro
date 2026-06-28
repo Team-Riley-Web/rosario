@@ -87,6 +87,23 @@ const productPageUrl = `/products/${product.handle}`;
     color: var(--light-fg);
   }
   .prod-card:hover { background: var(--light-surface); }
+  :global(.products-section--featured) .prod-card {
+    background: var(--surface);
+    color: var(--fg);
+  }
+  :global(.products-section--featured) .prod-card:hover {
+    background: var(--surface-lift);
+  }
+  :global(.products-section--featured) .prod-card-img {
+    background: var(--surface-lift);
+  }
+  :global(.products-section--featured) .prod-card-name {
+    color: var(--fg);
+  }
+  :global(.products-section--featured) .prod-card-price,
+  :global(.products-section--featured) .prod-card-sub {
+    color: var(--fg-sub);
+  }
   .prod-card-img {
     position: relative;
     display: block;

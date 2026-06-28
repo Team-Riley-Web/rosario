@@ -14,6 +14,7 @@ import personalImage from '../assets/images/model4.png';
 import giftImage from '../assets/images/gift.png';
 import rosarioIcon from '../assets/images/rosario-icon.png';
 import marbleImage from '../assets/images/marble.jpg';
+import signatureImage from '../assets/images/signature.png';
 
 const trustItems = [
   'Direct Partnership with Ercole Moretti',
@@ -99,9 +100,7 @@ const collections = [
       </div>
     </div>
 
-    <section class="section section--white letter-section" data-section="letter-from-lisa"
-             <!--style={`&#45;&#45;letter-bg-image: url(${marbleImage.src});`}-->
-    >
+    <section class="section section--white letter-section" data-section="letter-from-lisa">
       <img src={rosarioIcon.src} alt="" class="letter-mark letter-mark--left" aria-hidden="true" />
       <img src={rosarioIcon.src} alt="" class="letter-mark letter-mark--right" aria-hidden="true" />
       <div class="inner">
@@ -128,7 +127,9 @@ const collections = [
             <p>Most of what you'll find online calling itself "Murano glass" isn't. It's imported, mass-produced, and dressed up with the right words. I got tired of watching people get fooled by that - and I got tired of seeing real Murano glass treated like it's interchangeable with the fakes.</p>
             <p>Everything here is real. Sourced through people I actually know. Restored by my own hands when it's vintage. Backed for life, because I stand behind what I sell.</p>
             <p>If you're here, I'm guessing you already know the difference matters. Let's find you something real.</p>
-            <p class="auth-signature">- Lisa</p>
+            <div class="auth-signature">
+              <img src={signatureImage.src} alt="Lisa" loading="lazy" />
+            </div>
           </div>
         </div>
       </div>
@@ -169,59 +170,20 @@ const collections = [
       </div>
     </section>
 
-    <ProductsSection />
-
-    <!--<section class="section quote-section section&#45;&#45;surface" data-section="quote">-->
-    <!--  <div class="quote-inner reveal">-->
-    <!--    <blockquote>-->
-    <!--      <p class="pull-quote">"I almost didn't buy it because I thought it had to be fake at that price for real vintage Murano. I was wrong, and I'm so glad."</p>-->
-    <!--      <cite class="quote-attr">Real customers. Real glass. Real stories.</cite>-->
-    <!--    </blockquote>-->
-    <!--  </div>-->
-    <!--</section>-->
-
-    <section class="section section--surface" data-section="meet-the-beads">
-      <div class="inner">
-        <div class="beads-editorial">
-          <div class="beads-editorial-head reveal">
-            <div class="eyebrow centered">
-              <span class="eyebrow-rule" aria-hidden="true"></span>
-              <span class="eyebrow-text">Meet the Beads</span>
-              <span class="eyebrow-rule" aria-hidden="true"></span>
-            </div>
-            <h2>Venetian glass with a name behind it.</h2>
-          </div>
-          <div class="beads-editorial-img reveal reveal-delay-1">
-            <img
-              src={authenticityImage.src}
-              alt="Colorful Murano Millefiori glass beads close-up"
-              class="product-img"
-              loading="lazy"
-            />
-          </div>
-          <div class="beads-editorial-copy reveal reveal-delay-2">
-            <p>On the island of Murano, a short boat ride from Venice, a small number of families have been making glass beads for over seven centuries. Ercole Moretti is one of the last.</p>
-            <p>That direct relationship matters. It is how I can tell you where the glass came from, why it is different, and why each piece deserves more than a generic "Murano-style" label.</p>
-            <a href="/about" class="link-arrow">Read the Story <span aria-hidden="true">→</span></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="section section--white" data-section="personal-story">
       <div class="inner">
         <div class="personal-grid">
           <div class="personal-img reveal">
             <img
-              src={personalImage.src}
-              alt="Model wearing Rosario Leonardi Murano glass jewelry"
-              class="product-img"
-              loading="lazy"
+                src={personalImage.src}
+                alt="Model wearing Rosario Leonardi Murano glass jewelry"
+                class="product-img"
+                loading="lazy"
             />
           </div>
           <div class="personal-copy reveal reveal-delay-1">
             <h2>You're Not Buying From a Faceless Storefront.</h2>
-            <p>Have a question before you buy? Call me. I'm not a chatbot script. I'm a person who actually answers, whether you're choosing a gift, building a collection, or sourcing materials for your own work.</p>
+            <p>Have a question before you buy? Fill out the contact form and will personally call you back, whether you're choosing a gift, building a collection, or sourcing materials for your own work.</p>
             <div class="personal-btns">
               <a href="/contact" class="btn-primary">Get Gift Guidance</a>
               <a href="/contact" class="btn-ghost">Ask a Question</a>
@@ -231,7 +193,9 @@ const collections = [
       </div>
     </section>
 
-    <section class="section section--surface" data-section="gift">
+    <ProductsSection />
+
+    <section class="section section--white" data-section="gift">
       <div class="inner">
         <div class="gift-grid">
           <div class="gift-copy reveal">
@@ -241,15 +205,43 @@ const collections = [
           </div>
           <div class="gift-img reveal reveal-delay-1">
             <img
-              src={giftImage.src}
-              alt="Statement Murano glass jewelry styled for a personal gift"
-              class="product-img"
-              loading="lazy"
+                src={giftImage.src}
+                alt="Statement Murano glass jewelry styled for a personal gift"
+                class="product-img"
+                loading="lazy"
             />
           </div>
         </div>
       </div>
     </section>
+
+    <!--<section class="section section&#45;&#45;surface" data-section="meet-the-beads">-->
+    <!--  <div class="inner">-->
+    <!--    <div class="beads-editorial">-->
+    <!--      <div class="beads-editorial-head reveal">-->
+    <!--        <div class="eyebrow centered">-->
+    <!--          <span class="eyebrow-rule" aria-hidden="true"></span>-->
+    <!--          <span class="eyebrow-text">Meet the Beads</span>-->
+    <!--          <span class="eyebrow-rule" aria-hidden="true"></span>-->
+    <!--        </div>-->
+    <!--        <h2>Venetian glass with a name behind it.</h2>-->
+    <!--      </div>-->
+    <!--      <div class="beads-editorial-img reveal reveal-delay-1">-->
+    <!--        <img-->
+    <!--          src={authenticityImage.src}-->
+    <!--          alt="Colorful Murano Millefiori glass beads close-up"-->
+    <!--          class="product-img"-->
+    <!--          loading="lazy"-->
+    <!--        />-->
+    <!--      </div>-->
+    <!--      <div class="beads-editorial-copy reveal reveal-delay-2">-->
+    <!--        <p>On the island of Murano, a short boat ride from Venice, a small number of families have been making glass beads for over seven centuries. Ercole Moretti is one of the last.</p>-->
+    <!--        <p>That direct relationship matters. It is how I can tell you where the glass came from, why it is different, and why each piece deserves more than a generic "Murano-style" label.</p>-->
+    <!--        <a href="/about" class="link-arrow">Read the Story <span aria-hidden="true">→</span></a>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--  </div>-->
+    <!--</section>-->
 
     <section class="section cta-strip" data-section="cta">
       <div class="cta-flex">
@@ -363,8 +355,8 @@ const collections = [
   }
   .trust-bar--white .trust-item { border-color: var(--light-border); }
   .trust-bar--white .trust-check {
-    border-color: var(--cobalt);
-    color: var(--cobalt);
+    border-color: var(--accent);
+    color: var(--accent);
   }
   .trust-bar--white .trust-label { color: oklch(35% 0.010 255); }
   .letter-section {
@@ -481,14 +473,23 @@ const collections = [
   .beads-editorial-copy p:last-of-type {
     margin-bottom: 2rem;
   }
+  .auth-copy p:last-of-type {
+    margin-bottom: 0;
+  }
   .auth-copy {
     max-width: 600px;
     margin: 0 auto;
   }
+  .auth-signature {
+    display: flex;
+    justify-content: center;
+    margin-top: 0;
+  }
+  .auth-signature img {
+    width: min(220px, 56vw);
+    height: auto;
+  }
   .section--white .auth-copy .auth-signature {
-    font-family: var(--font-display);
-    font-size: 26px;
-    line-height: 1.2;
     color: var(--light-fg);
   }
   .collections-header {
@@ -639,6 +640,7 @@ const collections = [
     .coll-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (min-width: 768px) {
+    .auth-signature { justify-content: flex-end; }
     .cta-flex {
       flex-direction: row;
       align-items: center;

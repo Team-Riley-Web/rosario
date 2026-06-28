@@ -25,7 +25,7 @@ const anchors = [
       <img
         src={heroImage.src}
         alt=""
-        class="absolute inset-0 h-full w-full object-cover"
+        class="absolute inset-0 h-full w-full object-cover object-center sm:object-center"
         aria-hidden="true"
       />
       <div class="absolute inset-0 bg-ink/70" aria-hidden="true"></div>
@@ -46,10 +46,10 @@ const anchors = [
 
     <section class="bg-[#fff]">
       <div class="grid border-b border-rule lg:grid-cols-2">
-        <div class="relative aspect-[4/3] bg-[#fff] lg:aspect-auto">
+        <div class="relative order-2 aspect-[4/3] bg-[#fff] lg:order-1 lg:aspect-auto">
           <img src={manilaImage.src} alt="The Manila ship connected to Rosario Leonardi's crossing story" class="h-full w-full object-cover lg:absolute lg:inset-0 lg:object-left" loading="lazy" />
         </div>
-        <div class="flex items-center bg-[#fff] px-6 py-[7rem] sm:px-10 lg:px-20">
+        <div class="order-1 flex items-center bg-[#fff] px-6 py-[7rem] sm:px-10 lg:order-2 lg:px-20">
           <div class="max-w-[620px]">
             <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[44px]">The Crossing</h2>
             <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
@@ -78,10 +78,10 @@ const anchors = [
       </div>
 
       <div class="grid lg:grid-cols-2">
-        <div class="relative aspect-[4/3] bg-[#fff] lg:aspect-auto">
+        <div class="relative order-2 aspect-[4/3] bg-[#fff] lg:order-1 lg:aspect-auto">
           <img src={boyImage.src} alt="Young boy connected to the Rosario Leonardi family story" class="h-full w-full object-cover lg:absolute lg:inset-0" loading="lazy" />
         </div>
-        <div class="flex items-center bg-[#fff] px-6 py-[7rem] sm:px-10 lg:px-20">
+        <div class="order-1 flex items-center bg-[#fff] px-6 py-[7rem] sm:px-10 lg:order-2 lg:px-20">
           <div class="max-w-[620px]">
             <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[44px]">What Got Passed Down</h2>
             <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
@@ -109,10 +109,10 @@ const anchors = [
       </div>
     </section>
 
-    <section class="bg-[#fff] px-6 py-24 sm:px-10">
-      <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-        <div>
-          <h2 class="mb-8 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">Real Relationships, Not Just Real Glass.</h2>
+    <section class="bg-[#fff] px-6 pb-0 pt-24 sm:px-10">
+      <div class="mx-auto grid max-w-[1180px] gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-24">
+        <div class="pb-14 lg:pb-24">
+          <h2 class="mb-8 font-display text-[45px] font-light leading-none text-ink">Real Relationships, Not Just Real Glass.</h2>
           <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
             <p>Authentic Murano glass isn't something you stumble into. It comes from real relationships with real artisans.</p>
             <p>That's exactly why I partner directly with Ercole Moretti, one of the most exclusive bead designers in Venice. Every piece I create starts there - with glass that has a verifiable origin, not a guess.</p>
@@ -124,20 +124,23 @@ const anchors = [
       </div>
     </section>
 
-    <section class="bg-[#fff] px-6 py-24 sm:px-10">
-      <div class="mx-auto max-w-[1180px] text-center">
-        <div class="mx-auto max-w-[820px]">
+    <section class="bg-ink px-6 py-24 text-white sm:px-10">
+      <div class="mx-auto max-w-[820px] text-center">
           <div class="mb-6 flex items-center justify-center gap-4">
             <div class="h-px w-6 bg-gold"></div>
             <span class="font-label text-[10px] uppercase tracking-[var(--tracking-widest)] text-gold">Mission</span>
             <div class="h-px w-6 bg-gold"></div>
           </div>
-          <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[64px]">Why I Care So Much About "Real."</h2>
-          <div class="mx-auto mb-14 max-w-[760px] space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+          <h2 class="mb-7 font-display text-[42px] font-light leading-none text-white md:text-[64px]">Why I Care So Much About "Real."</h2>
+          <div class="mx-auto max-w-[760px] space-y-6 font-sans text-[16px] font-light leading-[1.9] text-white/70">
             <p>The online market for Murano glass is flooded with mass-produced imports and vague sourcing claims. I've seen too many people get burned - paying real money for something that isn't what it claims to be.</p>
             <p>I'd rather be the seller who proves it, every time, than the seller who just says "trust me."</p>
           </div>
-        </div>
+      </div>
+    </section>
+
+    <section class="bg-[#fff] px-6 py-24 sm:px-10">
+      <div class="mx-auto max-w-[1180px] text-center">
         <h3 class="mb-10 font-display text-[34px] font-light leading-tight text-ink md:text-[44px]">What Makes This Different</h3>
         <div class="grid gap-px border border-rule bg-rule text-left md:grid-cols-2">
           {anchors.map(([title, body]) => (
@@ -152,7 +155,7 @@ const anchors = [
 
     <section class="bg-ink px-6 py-24 text-white sm:px-10">
       <div class="mx-auto max-w-[960px] text-center">
-        <h2 class="mb-7 font-display text-[42px] font-light leading-none md:text-[64px]">Whether You're Collecting, Gifting, or Creating -</h2>
+        <h2 class="mb-7 font-display text-[42px] font-light leading-none md:text-[64px]">Collecting, Gifting, or Creating</h2>
         <p class="mx-auto mb-8 max-w-[760px] font-sans text-[16px] font-light leading-[1.9] text-white/70">
           I built this shop for the people who care about getting it right: collectors who want provenance, families looking for a gift that actually means something, and makers who need materials they can trust. Whoever you are, I'd love to help you find the piece that's actually yours.
         </p>

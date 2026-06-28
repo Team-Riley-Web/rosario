@@ -82,7 +82,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
 ---
 
 <section
-  class={`section products-section ${isFeatured ? 'products-section--featured' : 'section--white'}`}
+  class={`section products-section ${isFeatured ? 'products-section--featured' : 'products-section--complete section--white'}`}
   id="products"
 >
   <div class="inner--wide">
@@ -353,6 +353,9 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     background: var(--bg);
     color: var(--fg);
   }
+  .products-section--complete {
+    padding-top: 9rem;
+  }
   .products-header {
     max-width: 760px;
     margin-bottom: var(--space-8);
@@ -479,7 +482,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
   }
   .products-grid-inner {
     display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1px;
   }
   .product-cell {
@@ -534,9 +537,6 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     gap: 0.5rem;
     padding: 0 14px;
   }
-  @media (min-width: 640px) {
-    .products-grid-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
   @media (min-width: 1024px) {
     .products-controls {
       flex-direction: row;
@@ -549,6 +549,9 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     .products-grid-inner { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
   @media (max-width: 767px) {
+    .products-section--complete {
+      padding-top: 6.5rem;
+    }
     .products-section--featured .products-header {
       display: block;
     }

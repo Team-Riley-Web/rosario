@@ -1,6 +1,6 @@
 ---
 import rosarioIconGold from '../assets/images/rosario-icon-gold.png';
-import { Heart } from '@lucide/astro';
+import { Facebook, Heart, Instagram, Phone } from '@lucide/astro';
 
 const shopLinks = [
   { label: 'Authentic Vintage Moretti', href: '/shop?filter=signature-moretti' },
@@ -15,6 +15,12 @@ const aboutLinks = [
   { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
   { label: 'Returns', href: '/returns' },
+];
+
+const contactLinks = [
+  { label: '504-275-5222', href: 'tel:+15042755222', Icon: Phone },
+  { label: 'Facebook', href: 'https://www.facebook.com/LakeviewPearls', Icon: Facebook },
+  { label: 'Instagram', href: 'https://instagram.com/lakeviewpearls', Icon: Instagram },
 ];
 
 const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.myshopify.com';
@@ -48,6 +54,18 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
       <div class="footer-nav-title">About</div>
       <nav class="footer-nav" aria-label="Company navigation">
         {aboutLinks.map(({ label, href }) => <a href={href}>{label}</a>)}
+      </nav>
+    </div>
+
+    <div>
+      <div class="footer-nav-title">Contact</div>
+      <nav class="footer-nav footer-contact" aria-label="Contact and social links">
+        {contactLinks.map(({ label, href, Icon }) => (
+          <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener' : undefined}>
+            <Icon class="footer-contact-icon h-3.5 w-3.5" aria-hidden="true" />
+            <span>{label}</span>
+          </a>
+        ))}
       </nav>
     </div>
   </div>
@@ -199,6 +217,15 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
     transition: color 0.2s;
   }
   .footer-nav a:hover { color: var(--accent); }
+  .footer-contact a {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .footer-contact-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+  }
   .footer-bottom {
     max-width: 1180px;
     margin: 0 auto;
@@ -235,7 +262,7 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
     color: var(--accent);
   }
   @media (min-width: 768px) {
-    .footer-grid { grid-template-columns: 1.2fr 1fr 0.8fr; gap: 4rem; }
+    .footer-grid { grid-template-columns: 1.2fr 1fr 0.8fr 0.8fr; gap: 4rem; }
   }
   @media (max-width: 767px) {
     .site-footer { padding: 3rem 1.5rem 2rem; }
@@ -247,6 +274,9 @@ const shopDomain = import.meta.env.PUBLIC_SHOPIFY_STORE_DOMAIN || 'your-store.my
     .footer-grid > div:nth-child(3),
     .footer-brand-tag {
       display: none;
+    }
+    .footer-contact a {
+      justify-content: center;
     }
     .footer-brand {
       justify-content: center;

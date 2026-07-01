@@ -152,10 +152,7 @@ const navLinks = [
     {navLinks.map(([label, href]) => (
       <a href={href} class="mobile-link" @click="open = false; document.body.style.overflow = ''">{label}</a>
     ))}
-    <div class="mobile-actions">
-      <a href={accountHref} class="mobile-account">Account</a>
-      <a href="/shop" class="mobile-shop">Shop Now</a>
-    </div>
+    <a href={accountHref} class="mobile-link" @click="open = false; document.body.style.overflow = ''">Account</a>
     <a href="tel:+15042755222" class="mobile-phone" @click="open = false; document.body.style.overflow = ''">
       Call 504-275-5222
     </a>
@@ -453,22 +450,6 @@ const navLinks = [
     color: var(--fg-sub);
     border-bottom: 1px solid var(--border);
   }
-  .mobile-actions {
-    margin-top: 1.5rem;
-    display: flex;
-    gap: var(--space-3);
-  }
-  .mobile-actions a {
-    flex: 1;
-    text-align: center;
-    padding: 12px;
-    font-family: var(--font-label);
-    font-size: 10px;
-    letter-spacing: var(--tracking-wider);
-    text-transform: uppercase;
-  }
-  .mobile-account { border: 1px solid var(--border-lift); color: var(--fg-sub); }
-  .mobile-shop { background: var(--fg); color: var(--bg); }
   .mobile-phone {
     margin-top: var(--space-4);
     display: none;

@@ -29,7 +29,7 @@ export default (Alpine: Alpine) => {
     submitSearch() {
       const q = this.query.trim();
       if (!q) return;
-      window.location.href = `/shop?search=${encodeURIComponent(q)}`;
+      window.location.href = `/shop?group=all&search=${encodeURIComponent(q)}`;
     },
 
     async doSearch() {

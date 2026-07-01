@@ -21,18 +21,44 @@ const hasProducts = products.length > 0;
 
 const displayProducts = products;
 const defaultFilter = 'all';
-const filters = [
-  { label: 'All Pieces', value: 'all' },
-  { label: 'Necklaces', value: 'necklaces' },
-  { label: 'Earrings', value: 'earrings' },
-  { label: 'Bracelets', value: 'bracelets' },
-  { label: 'Rings', value: 'rings' },
-  { label: 'Authentic Moretti', value: 'signature-moretti' },
-  { label: 'Vintage Millefiori', value: 'vintage-millefiori' },
-  { label: 'Uncirculated Finds', value: 'uncirculated-vintage' },
-  { label: 'Freshwater Pearls', value: 'freshwater-pearls' },
-  { label: 'Beads for Makers', value: 'beads-for-makers' },
+const defaultGroup = isFeatured ? 'all' : 'murano';
+const primaryFilters = [
+  { label: 'Murano', value: 'murano' },
+  { label: 'Pearls', value: 'pearls' },
+  { label: 'All', value: 'all' },
 ];
+const subFilters = {
+  murano: [
+    { label: 'All Murano', value: 'all' },
+    { label: 'Necklaces', value: 'necklaces' },
+    { label: 'Earrings', value: 'earrings' },
+    { label: 'Bracelets', value: 'bracelets' },
+    { label: 'Rings', value: 'rings' },
+    { label: 'Signature Moretti', value: 'signature-moretti' },
+    { label: 'Beads', value: 'beads-for-makers' },
+  ],
+  pearls: [
+    { label: 'All Pearls', value: 'all' },
+    { label: 'Necklaces', value: 'necklaces' },
+    { label: 'Earrings', value: 'earrings' },
+    { label: 'Bracelets', value: 'bracelets' },
+    { label: 'Rings', value: 'rings' },
+  ],
+  all: [
+    { label: 'All Pieces', value: 'all' },
+    { label: 'Necklaces', value: 'necklaces' },
+    { label: 'Earrings', value: 'earrings' },
+    { label: 'Bracelets', value: 'bracelets' },
+    { label: 'Rings', value: 'rings' },
+    { label: 'Signature Moretti', value: 'signature-moretti' },
+    { label: 'Beads', value: 'beads-for-makers' },
+  ],
+};
+const legacyFilterValues = ['vintage-millefiori', 'uncirculated-vintage', 'freshwater-pearls'];
+const allowedFilterValues = [...new Set([
+  ...Object.values(subFilters).flat().map(({ value }) => value),
+  ...legacyFilterValues,
+])];
 const heading = isFeatured ? 'Bestsellers' : 'Every Piece Is One of a Kind.';
 const ctaHref = '/shop';
 const ctaLabel = isFeatured ? 'Shop the Collection' : 'Reset View';
@@ -54,6 +80,7 @@ const productState = displayProducts.map((product, index) => {
     ...product.collections.edges.flatMap(({ node }) => [node.title, node.handle]),
   ].join(' ').toLowerCase();
   const categories = ['all'];
+  const groups = ['all'];
 
   if (/(necklace|choker|pendant|lariat)/.test(productText)) categories.push('necklaces');
   if (/(earring|stud|hoop|dangle|drop)/.test(productText)) categories.push('earrings');
@@ -64,11 +91,17 @@ const productState = displayProducts.map((product, index) => {
   if (/(uncirculated|european find|rare find)/.test(productText)) categories.push('uncirculated-vintage');
   if (/(freshwater|pearl)/.test(productText)) categories.push('freshwater-pearls');
   if (/(bead|lampwork|maker|supply|supplies)/.test(productText)) categories.push('beads-for-makers');
+  if (/(pearl|freshwater)/.test(productText)) groups.push('pearls');
+  if (/(murano|moretti|millefiori|venetian|venice|lampwork|glass|bead|wedding cake)/.test(productText)) {
+    groups.push('murano');
+  }
+  if (groups.length === 1) groups.push('murano');
 
   return {
     id: product.id,
     title: product.title,
     searchText: productText,
+    groups,
     categories,
     available: product.availableForSale,
     price: Number(product.priceRange.minVariantPrice.amount),
@@ -120,6 +153,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     <!-- Filter tabs + grid (state) -->
     <div
       x-data={`{
+        activeGroup: ${JSON.stringify(defaultGroup)},
         active: ${JSON.stringify(defaultFilter)},
         searchQuery: '',
         sortBy: 'alpha',
@@ -128,17 +162,32 @@ const lastVisibleIndex = firstVisibleIndex + 16;
         products: ${JSON.stringify(productState)},
         init() {
           const params = new URLSearchParams(window.location.search);
+          const group = params.get('group');
           const filter = params.get('filter');
           const search = params.get('search');
-          if (${JSON.stringify(filters.map(({ value }) => value))}.includes(filter ?? '')) {
+          if (${JSON.stringify(primaryFilters.map(({ value }) => value))}.includes(group ?? '')) {
+            this.activeGroup = group;
+          }
+          if (${JSON.stringify(allowedFilterValues)}.includes(filter ?? '')) {
             this.active = filter;
+            if (!group && filter === 'freshwater-pearls') this.activeGroup = 'pearls';
+            if (!group && filter === 'beads-for-makers') this.activeGroup = 'murano';
           }
           if (search) {
             this.searchQuery = search.trim().toLowerCase();
             this.page = 1;
           }
         },
+        currentSubFilters() {
+          return ${JSON.stringify(subFilters)}[this.activeGroup] || ${JSON.stringify(subFilters.murano)};
+        },
+        setGroup(nextGroup) {
+          this.activeGroup = nextGroup;
+          this.active = 'all';
+          this.page = 1;
+        },
         reset() {
+          this.activeGroup = ${JSON.stringify(defaultGroup)};
           this.active = ${JSON.stringify(defaultFilter)};
           this.searchQuery = '';
           this.sortBy = 'alpha';
@@ -146,10 +195,11 @@ const lastVisibleIndex = firstVisibleIndex + 16;
         },
         filteredProducts() {
           return this.products.filter((product) => {
+            const matchesGroup = this.activeGroup === 'all' || product.groups.includes(this.activeGroup);
             const matchesFilter = this.active === 'all' || product.categories.includes(this.active);
             const matchesSearch = !this.searchQuery || product.searchText.includes(this.searchQuery);
 
-            return matchesFilter && matchesSearch;
+            return matchesGroup && matchesFilter && matchesSearch;
           });
         },
         sortedProducts() {
@@ -223,18 +273,32 @@ const lastVisibleIndex = firstVisibleIndex + 16;
       {/* Filter + sort — only for complete variant */}
       {!isFeatured && (
         <div class="products-controls">
-          <div class="products-filters">
-            {filters.map(f => (
-              <button
-                @click={`active = '${f.value}'; page = 1`}
-                :class={`active === '${f.value}' ? 'is-active' : ''`}
-                class="filter-btn"
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
+          <div class="products-filter-stack">
+            <div class="products-filters products-filters--primary" aria-label="Primary product filters">
+              {primaryFilters.map(f => (
+                <button
+                  @click={`setGroup('${f.value}')`}
+                  :class={`activeGroup === '${f.value}' ? 'is-active' : ''`}
+                  class="filter-btn"
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
 
+            <div class="products-filters" aria-label="Product subfilters">
+              <template x-for="filter in currentSubFilters()" :key="filter.value">
+                <button
+                  @click="active = filter.value; page = 1"
+                  :class="active === filter.value ? 'is-active' : ''"
+                  class="filter-btn"
+                  type="button"
+                >
+                  <span x-text="filter.label"></span>
+                </button>
+              </template>
+            </div>
+          </div>
           <div class="products-sort">
             <label for="product-sort">
               <span>Sort by</span>
@@ -454,12 +518,19 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     flex-direction: column;
     gap: var(--space-4);
   }
+  .products-filter-stack {
+    display: grid;
+    gap: var(--space-3);
+  }
   .products-filters,
   .products-sort {
     display: flex;
     flex-wrap: wrap;
     gap: 2px;
     align-items: center;
+  }
+  .products-filters--primary .filter-btn {
+    border-color: oklch(72% 0.008 255);
   }
   .products-sort {
     gap: var(--space-3);

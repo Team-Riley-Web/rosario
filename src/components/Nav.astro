@@ -15,6 +15,11 @@ const navLinks = [
   ['FAQ', '/faq'],
   ['Contact', '/contact'],
 ];
+const shopDropdownLinks = [
+  ['Murano', '/shop?group=murano'],
+  ['Pearls', '/shop?group=pearls'],
+  ['All', '/shop?group=all'],
+];
 ---
 
 <header
@@ -63,7 +68,16 @@ const navLinks = [
         :style="homeInitialMinimal ? 'max-width: ' + (navProgress * 280) + 'px; opacity: ' + navProgress + '; gap: ' + (navProgress * 1.75) + 'rem;' : ''"
       >
         {navLinks.map(([label, href]) => (
-          <li><a href={href} class="nav-link">{label}</a></li>
+          <li class={label === 'Shop' ? 'nav-item nav-item--shop' : 'nav-item'}>
+            <a href={href} class="nav-link">{label}</a>
+            {label === 'Shop' && (
+              <div class="shop-dropdown" aria-label="Shop categories">
+                {shopDropdownLinks.map(([dropdownLabel, dropdownHref]) => (
+                  <a href={dropdownHref}>{dropdownLabel}</a>
+                ))}
+              </div>
+            )}
+          </li>
         ))}
       </ul>
 
@@ -247,8 +261,11 @@ const navLinks = [
     list-style: none;
     max-width: 280px;
     opacity: 1;
-    overflow: hidden;
+    overflow: visible;
     visibility: visible;
+  }
+  .nav-item {
+    position: relative;
   }
   .nav-link {
     font-family: var(--font-label);
@@ -272,6 +289,48 @@ const navLinks = [
     transition: width 0.3s cubic-bezier(0.16,1,0.3,1);
   }
   .nav-link:hover::after { width: 100%; }
+  .shop-dropdown {
+    position: absolute;
+    top: calc(100% + 18px);
+    left: 50%;
+    min-width: 160px;
+    padding: var(--space-2);
+    background: var(--cobalt);
+    border: 1px solid var(--border-lift);
+    border-radius: var(--radius-sharp);
+    box-shadow: 0 18px 48px rgba(0,0,0,0.22);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -6px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .shop-dropdown::before {
+    content: '';
+    position: absolute;
+    inset: -18px 0 auto;
+    height: 18px;
+  }
+  .shop-dropdown a {
+    display: block;
+    padding: 0.65rem 0.75rem;
+    color: var(--fg-sub);
+    font-family: var(--font-label);
+    font-size: 10px;
+    letter-spacing: var(--tracking-wider);
+    text-align: center;
+    text-transform: uppercase;
+    transition: color 0.2s, background 0.2s;
+  }
+  .shop-dropdown a:hover {
+    background: oklch(100% 0 0 / 0.05);
+    color: var(--fg);
+  }
+  .nav-item--shop:hover .shop-dropdown,
+  .nav-item--shop:focus-within .shop-dropdown {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
   .home-initial-minimal:not(.scrolled) .nav-links-right,
   .home-initial-minimal:not(.scrolled) .nav-group-sep {
     width: 0;

@@ -164,6 +164,14 @@ const lastVisibleIndex = firstVisibleIndex + 16;
         totalPages() {
           return Math.max(1, Math.ceil(this.filteredProducts().length / this.perPage));
         },
+        paginationItems() {
+          const total = this.totalPages();
+          if (total <= 6) return Array.from({ length: total }, (_, index) => index + 1);
+
+          const visiblePages = Array.from({ length: 5 }, (_, index) => index + 1);
+
+          return [...visiblePages, 'ellipsis', total];
+        },
         totalResults() {
           return this.filteredProducts().length;
         },
@@ -277,25 +285,35 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                 Prev
               </a>
 
-              <template x-for="pageNumber in totalPages()" :key="pageNumber">
-                <a
-                  :href="pageNumber === 1 ? '/shop' : `/shop/page/${pageNumber}`"
-                  @click.prevent="setPage(pageNumber)"
-                  :aria-current="pageNumber === page ? 'page' : undefined"
-                  class="page-link page-number"
-                  :class="pageNumber === page ? 'is-active' : ''"
-                >
-                  <span x-text="pageNumber"></span>
-                </a>
+              <template x-for="paginationItem in paginationItems()" :key="paginationItem">
+                <span>
+                  <span
+                    x-show="paginationItem === 'ellipsis'"
+                    class="page-ellipsis"
+                    aria-hidden="true"
+                  >
+                    ...
+                  </span>
+                  <a
+                    x-show="paginationItem !== 'ellipsis'"
+                    :href="paginationItem === 1 ? '/shop' : `/shop/page/${paginationItem}`"
+                    @click.prevent="setPage(paginationItem)"
+                    :aria-current="paginationItem === page ? 'page' : undefined"
+                    class="page-link page-number"
+                    :class="paginationItem === page ? 'is-active' : ''"
+                  >
+                    <span x-text="paginationItem"></span>
+                  </a>
+                </span>
               </template>
 
               <a
                 href={getShopPageHref(initialPage + 1)}
                 @click.prevent="setPage(page + 1)"
                 x-show="page < totalPages()"
-                class="page-link"
+                class="page-link page-arrow"
+                aria-label="Next page"
               >
-                Next
                 <ArrowRight class="w-3.5 h-3.5" />
               </a>
             </nav>
@@ -541,6 +559,20 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     justify-content: center;
     gap: 0.5rem;
     padding: 0 14px;
+  }
+  .page-ellipsis {
+    display: inline-flex;
+    min-width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    color: var(--light-sub);
+    font-family: var(--font-label);
+    font-size: 10px;
+    letter-spacing: var(--tracking-wide);
+  }
+  .page-arrow {
+    padding: 0;
   }
   @media (min-width: 1024px) {
     .products-controls {

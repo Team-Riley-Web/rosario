@@ -166,11 +166,35 @@ const lastVisibleIndex = firstVisibleIndex + 16;
         },
         paginationItems() {
           const total = this.totalPages();
-          if (total <= 6) return Array.from({ length: total }, (_, index) => index + 1);
+          const windowSize = 5;
+          const pages = [];
 
-          const visiblePages = Array.from({ length: 5 }, (_, index) => index + 1);
+          if (total <= windowSize + 2) {
+            return Array.from({ length: total }, (_, index) => ({
+              type: 'page',
+              page: index + 1,
+              key: `page-${index + 1}`,
+            }));
+          }
 
-          return [...visiblePages, 'ellipsis', total];
+          const groupStart = Math.floor((this.page - 1) / windowSize) * windowSize + 1;
+          const groupEnd = Math.min(groupStart + windowSize - 1, total);
+
+          if (groupStart > 1) {
+            pages.push({ type: 'page', page: 1, key: 'page-1' });
+            if (groupStart > 2) pages.push({ type: 'ellipsis', key: 'ellipsis-start' });
+          }
+
+          for (let pageNumber = groupStart; pageNumber <= groupEnd; pageNumber += 1) {
+            pages.push({ type: 'page', page: pageNumber, key: `page-${pageNumber}` });
+          }
+
+          if (groupEnd < total) {
+            if (groupEnd < total - 1) pages.push({ type: 'ellipsis', key: 'ellipsis-end' });
+            pages.push({ type: 'page', page: total, key: `page-${total}` });
+          }
+
+          return pages;
         },
         totalResults() {
           return this.filteredProducts().length;
@@ -285,24 +309,24 @@ const lastVisibleIndex = firstVisibleIndex + 16;
                 Prev
               </a>
 
-              <template x-for="paginationItem in paginationItems()" :key="paginationItem">
+              <template x-for="paginationItem in paginationItems()" :key="paginationItem.key">
                 <span>
                   <span
-                    x-show="paginationItem === 'ellipsis'"
+                    x-show="paginationItem.type === 'ellipsis'"
                     class="page-ellipsis"
                     aria-hidden="true"
                   >
                     ...
                   </span>
                   <a
-                    x-show="paginationItem !== 'ellipsis'"
-                    :href="paginationItem === 1 ? '/shop' : `/shop/page/${paginationItem}`"
-                    @click.prevent="setPage(paginationItem)"
-                    :aria-current="paginationItem === page ? 'page' : undefined"
+                    x-show="paginationItem.type === 'page'"
+                    :href="paginationItem.page === 1 ? '/shop' : `/shop/page/${paginationItem.page}`"
+                    @click.prevent="setPage(paginationItem.page)"
+                    :aria-current="paginationItem.page === page ? 'page' : undefined"
                     class="page-link page-number"
-                    :class="paginationItem === page ? 'is-active' : ''"
+                    :class="paginationItem.page === page ? 'is-active' : ''"
                   >
-                    <span x-text="paginationItem"></span>
+                    <span x-text="paginationItem.page"></span>
                   </a>
                 </span>
               </template>
@@ -566,10 +590,11 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     height: 40px;
     align-items: center;
     justify-content: center;
-    color: var(--light-sub);
+    color: var(--light-fg);
     font-family: var(--font-label);
-    font-size: 10px;
-    letter-spacing: var(--tracking-wide);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: var(--tracking-normal);
   }
   .page-arrow {
     padding: 0;

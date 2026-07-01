@@ -240,7 +240,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
             </div>
           )}
 
-          <div class={isFeatured ? 'prod-scroll-outer' : 'products-grid'} id={isFeatured ? 'bestsellers-scroll' : undefined} role={isFeatured ? 'region' : 'list'} aria-label={isFeatured ? 'Bestsellers - scroll to see more' : undefined}>
+          <div x-cloak class={isFeatured ? 'prod-scroll-outer' : 'products-grid'} id={isFeatured ? 'bestsellers-scroll' : undefined} role={isFeatured ? 'region' : 'list'} aria-label={isFeatured ? 'Bestsellers - scroll to see more' : undefined}>
             <div class={isFeatured ? 'prod-scroll-grid' : 'products-grid-inner'}>
             {displayProducts.map((product, i) => {
               const isInitiallyVisible = i >= firstVisibleIndex && i < lastVisibleIndex;

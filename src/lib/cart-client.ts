@@ -243,7 +243,7 @@ export async function updateCartDiscountCodes(cartId: string, discountCodes: str
 export async function searchProducts(query: string): Promise<SearchProduct[]> {
   const data = await gql<any>(
     `query predictiveSearch($query: String!) {
-      predictiveSearch(query: $query, types: [PRODUCT], limit: 8) {
+      predictiveSearch(query: $query, types: [PRODUCT], limit: 3) {
         products {
           id title handle
           priceRange { minVariantPrice { amount currencyCode } }

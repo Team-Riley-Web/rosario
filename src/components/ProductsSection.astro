@@ -68,6 +68,7 @@ const productState = displayProducts.map((product, index) => {
   return {
     id: product.id,
     title: product.title,
+    searchText: productText,
     categories,
     available: product.availableForSale,
     price: Number(product.priceRange.minVariantPrice.amount),
@@ -120,24 +121,35 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     <div
       x-data={`{
         active: ${JSON.stringify(defaultFilter)},
+        searchQuery: '',
         sortBy: 'alpha',
         page: ${initialPage},
         perPage: 16,
         products: ${JSON.stringify(productState)},
         init() {
-          const filter = new URLSearchParams(window.location.search).get('filter');
+          const params = new URLSearchParams(window.location.search);
+          const filter = params.get('filter');
+          const search = params.get('search');
           if (${JSON.stringify(filters.map(({ value }) => value))}.includes(filter ?? '')) {
             this.active = filter;
+          }
+          if (search) {
+            this.searchQuery = search.trim().toLowerCase();
+            this.page = 1;
           }
         },
         reset() {
           this.active = ${JSON.stringify(defaultFilter)};
+          this.searchQuery = '';
           this.sortBy = 'alpha';
           this.page = 1;
         },
         filteredProducts() {
           return this.products.filter((product) => {
-            return this.active === 'all' || product.categories.includes(this.active);
+            const matchesFilter = this.active === 'all' || product.categories.includes(this.active);
+            const matchesSearch = !this.searchQuery || product.searchText.includes(this.searchQuery);
+
+            return matchesFilter && matchesSearch;
           });
         },
         sortedProducts() {

@@ -26,12 +26,18 @@ export default (Alpine: Alpine) => {
     },
     close() { this.isOpen = false; },
 
+    submitSearch() {
+      const q = this.query.trim();
+      if (!q) return;
+      window.location.href = `/shop?search=${encodeURIComponent(q)}`;
+    },
+
     async doSearch() {
       const q = this.query.trim();
       if (!q) { this.results = []; return; }
       this.isLoading = true;
       try {
-        this.results = await searchProducts(q);
+        this.results = (await searchProducts(q)).slice(0, 3);
       } catch {
         this.results = [];
       } finally {

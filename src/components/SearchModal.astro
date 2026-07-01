@@ -1,7 +1,6 @@
 ---
 ---
 
-<!-- Backdrop — sits below the nav (z-[49]) so the search panel in the nav stays visible above it -->
 <div
   x-data
   x-cloak
@@ -13,6 +12,201 @@
   x-transition:leave-start="opacity-100"
   x-transition:leave-end="opacity-0"
   @click="$store.search.close()"
-  class="fixed inset-0 z-[49] bg-black/30"
+  class="fixed inset-0 z-[90] bg-black/30"
   aria-hidden="true"
 ></div>
+
+<section
+  x-data
+  x-cloak
+  x-show="$store.search.isOpen"
+  x-transition:enter="transition ease-out duration-200"
+  x-transition:enter-start="-translate-y-2 opacity-0"
+  x-transition:enter-end="translate-y-0 opacity-100"
+  x-transition:leave="transition ease-in duration-150"
+  x-transition:leave-start="translate-y-0 opacity-100"
+  x-transition:leave-end="-translate-y-2 opacity-0"
+  @keydown.escape.window="$store.search.close()"
+  class="search-dropdown"
+  role="dialog"
+  aria-label="Search products"
+>
+  <div class="search-inner">
+    <label class="search-label" for="site-search-input">Search the collection</label>
+    <div class="search-row">
+      <input
+        id="site-search-input"
+        type="search"
+        x-model="$store.search.query"
+        @input.debounce.300ms="$store.search.doSearch()"
+        x-effect="if ($store.search.isOpen) { $nextTick(() => $el.focus()); }"
+        class="search-input"
+        placeholder="Search Murano glass, pearls, beads..."
+        autocomplete="off"
+      />
+      <button type="button" class="search-close" @click="$store.search.close()">Close</button>
+    </div>
+
+    <div class="search-status" x-show="$store.search.isLoading">Searching...</div>
+    <div class="search-status" x-show="!$store.search.isLoading && $store.search.query && $store.search.results.length === 0">
+      No products found.
+    </div>
+
+    <div class="search-results" x-show="$store.search.results.length > 0">
+      <template x-for="product in $store.search.results" :key="product.id">
+        <a
+          class="search-result"
+          :href="'/products/' + product.handle"
+          @click="$store.search.close()"
+        >
+          <div class="search-result-img">
+            <img
+              x-show="product.imageUrl"
+              :src="product.imageUrl"
+              :alt="product.imageAlt || product.title"
+              loading="lazy"
+            />
+          </div>
+          <div class="search-result-copy">
+            <span class="search-result-title" x-text="product.title"></span>
+            <span class="search-result-price" x-text="$store.search.formatPrice(product.price)"></span>
+          </div>
+        </a>
+      </template>
+    </div>
+  </div>
+</section>
+
+<style>
+  .search-dropdown {
+    position: fixed;
+    inset: 72px 0 auto;
+    z-index: 99;
+    background: white;
+    border-bottom: 1px solid var(--light-border);
+    box-shadow: 0 18px 48px rgba(0,0,0,0.16);
+    color: var(--light-fg);
+  }
+  .search-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: var(--space-5) 2.5rem var(--space-6);
+  }
+  .search-label {
+    display: block;
+    margin-bottom: var(--space-3);
+    color: var(--light-sub);
+    font-family: var(--font-label);
+    font-size: 10px;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+  }
+  .search-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-3);
+  }
+  .search-input {
+    min-width: 0;
+    border: 1px solid var(--light-border);
+    border-radius: var(--radius-sharp);
+    padding: 0.9rem 1rem;
+    color: var(--light-fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus {
+    border-color: var(--accent);
+  }
+  .search-close {
+    border: 1px solid var(--light-border);
+    border-radius: var(--radius-sharp);
+    padding: 0 1rem;
+    color: var(--light-sub);
+    font-family: var(--font-label);
+    font-size: 10px;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+  }
+  .search-close:hover {
+    border-color: var(--light-fg);
+    color: var(--light-fg);
+  }
+  .search-status {
+    padding-top: var(--space-4);
+    color: var(--light-sub);
+    font-size: 14px;
+  }
+  .search-results {
+    margin-top: var(--space-5);
+    display: grid;
+    gap: 1px;
+    border: 1px solid var(--light-border);
+    background: var(--light-border);
+  }
+  .search-result {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    align-items: center;
+    gap: var(--space-4);
+    background: white;
+    padding: var(--space-3);
+    transition: background 0.2s;
+  }
+  .search-result:hover {
+    background: var(--light-surface);
+  }
+  .search-result-img {
+    width: 72px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: var(--radius-sharp);
+    background: var(--light-surface);
+  }
+  .search-result-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .search-result-copy {
+    min-width: 0;
+    display: grid;
+    gap: 0.25rem;
+  }
+  .search-result-title {
+    overflow: hidden;
+    color: var(--light-fg);
+    font-family: var(--font-display);
+    font-size: 24px;
+    line-height: var(--leading-heading);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .search-result-price {
+    color: var(--light-sub);
+    font-family: var(--font-label);
+    font-size: 11px;
+    letter-spacing: var(--tracking-wide);
+  }
+  @media (max-width: 1023px) {
+    .search-dropdown {
+      inset-block-start: 72px;
+    }
+    .search-inner {
+      padding-inline: 1.5rem;
+    }
+  }
+  @media (max-width: 640px) {
+    .search-row {
+      grid-template-columns: 1fr;
+    }
+    .search-close {
+      min-height: 40px;
+    }
+    .search-result-title {
+      font-size: 20px;
+    }
+  }
+</style>

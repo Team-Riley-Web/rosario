@@ -173,7 +173,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
             return Array.from({ length: total }, (_, index) => ({
               type: 'page',
               page: index + 1,
-              key: `page-${index + 1}`,
+              key: 'page-' + (index + 1),
             }));
           }
 
@@ -186,12 +186,12 @@ const lastVisibleIndex = firstVisibleIndex + 16;
           }
 
           for (let pageNumber = groupStart; pageNumber <= groupEnd; pageNumber += 1) {
-            pages.push({ type: 'page', page: pageNumber, key: `page-${pageNumber}` });
+            pages.push({ type: 'page', page: pageNumber, key: 'page-' + pageNumber });
           }
 
           if (groupEnd < total) {
             if (groupEnd < total - 1) pages.push({ type: 'ellipsis', key: 'ellipsis-end' });
-            pages.push({ type: 'page', page: total, key: `page-${total}` });
+            pages.push({ type: 'page', page: total, key: 'page-' + total });
           }
 
           return pages;

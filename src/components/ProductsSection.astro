@@ -484,6 +484,9 @@ const lastVisibleIndex = firstVisibleIndex + 16;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-5);
   }
+  .products-section--complete :global(.prod-card-img) {
+    border-radius: var(--radius-sharp);
+  }
   .products-section--complete :global(.prod-card-img .product-img) {
     aspect-ratio: 1 / 1;
   }
@@ -546,6 +549,9 @@ const lastVisibleIndex = firstVisibleIndex + 16;
       justify-content: space-between;
     }
     .products-grid-inner { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .products-section--complete :global(.prod-card-name) {
+      font-size: 25px;
+    }
   }
   @media (max-width: 767px) {
     .products-section--complete {

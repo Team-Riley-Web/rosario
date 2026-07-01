@@ -4,9 +4,9 @@ import Nav from '../components/Nav.astro';
 import heroImage from '../assets/images/beader-header-1.png';
 
 const contactOptions = [
-  ['Have a Question About a Piece?', "Send me a message and I'll help you figure out if it's the right fit.", 'Contact Form'],
-  ['Shopping for a Gift?', "Let's get on a quick call. I'll ask about the person you're shopping for and help you choose with confidence.", 'Schedule a Call'],
-  ['Sourcing Beads for Your Own Work?', 'I answer sizing, quantity, and material questions directly - no faceless storefront.', 'Message Me'],
+  ['Have a Question About a Piece?', "Send me a message and I'll help you figure out if it's the right fit.", 'Contact Form', '#contact-form'],
+  ['Shopping for a Gift?', "Call 504-275-5222. I'll ask about the person you're shopping for and help you choose with confidence.", 'Call 504-275-5222', 'tel:+15042755222'],
+  ['Sourcing Beads for Your Own Work?', 'I answer sizing, quantity, and material questions directly - no faceless storefront.', 'Message Me', '#contact-form'],
 ];
 ---
 
@@ -41,11 +41,11 @@ const contactOptions = [
 
     <section class="bg-[#fff] px-6 pt-20 sm:px-10">
       <div class="mx-auto grid max-w-[1180px] gap-px border border-rule bg-rule lg:grid-cols-3">
-        {contactOptions.map(([title, body, cta]) => (
+        {contactOptions.map(([title, body, cta, href]) => (
           <article class="flex min-h-[260px] flex-col bg-[#fff] p-8">
             <h2 class="mb-4 font-display text-[30px] font-normal leading-tight text-ink">{title}</h2>
             <p class="mb-8 font-sans text-[14px] font-light leading-[1.85] text-ink-soft">{body}</p>
-            <a href="#contact-form" class="mt-auto font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-gold">{cta}</a>
+            <a href={href} class="mt-auto font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-gold">{cta}</a>
           </article>
         ))}
       </div>
@@ -66,7 +66,7 @@ const contactOptions = [
           netlify
           data-netlify="true"
           netlify-honeypot="bot-field"
-          class="grid gap-5 border border-rule bg-[#fff] p-6 sm:p-10"
+          class="grid gap-5 border border-rule bg-[var(--light-surface)] p-6 sm:p-10"
         >
           <input type="hidden" name="form-name" value="contact" />
           <p class="hidden"><label>Do not fill this out: <input name="bot-field" /></label></p>

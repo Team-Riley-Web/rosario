@@ -40,7 +40,7 @@ const contactOptions = [
     </section>
 
     <section class="bg-[#fff] px-6 pt-20 sm:px-10">
-      <div class="mx-auto grid max-w-[1180px] gap-px border border-rule bg-rule lg:grid-cols-3">
+      <div class="mx-auto grid max-w-[1180px] gap-px overflow-hidden rounded-sharp border border-rule bg-rule lg:grid-cols-3">
         {contactOptions.map(([title, body, cta, href]) => (
           <article class="flex min-h-[200px] flex-col bg-[#fff] p-8">
             <h2 class="mb-4 font-display text-[30px] font-normal leading-tight text-ink">{title}</h2>
@@ -66,22 +66,22 @@ const contactOptions = [
           netlify
           data-netlify="true"
           netlify-honeypot="bot-field"
-          class="grid gap-5 border border-rule bg-[var(--light-surface)] p-6 sm:p-10"
+          class="grid gap-5 rounded-sharp border border-rule bg-[#f4f1f230] p-6 sm:p-10"
         >
           <input type="hidden" name="form-name" value="contact" />
           <p class="hidden"><label>Do not fill this out: <input name="bot-field" /></label></p>
 
           <label class="grid gap-2">
             <span class="font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink-soft">Name</span>
-            <input name="name" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold" />
+            <input name="name" required class="rounded-sharp border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold" />
           </label>
           <label class="grid gap-2">
             <span class="font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink-soft">Email</span>
-            <input type="email" name="email" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold" />
+            <input type="email" name="email" required class="rounded-sharp border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold" />
           </label>
           <label class="grid gap-2">
             <span class="font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink-soft">What can I help you with?</span>
-            <select name="topic" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold">
+            <select name="topic" required class="rounded-sharp border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold">
               <option value="">Choose one</option>
               <option>Choosing a piece</option>
               <option>Gift guidance</option>
@@ -92,9 +92,9 @@ const contactOptions = [
           </label>
           <label class="grid gap-2">
             <span class="font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink-soft">Message</span>
-            <textarea name="message" rows="6" required class="border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold"></textarea>
+            <textarea name="message" rows="6" required class="rounded-sharp border border-rule px-4 py-3 font-sans text-sm outline-none focus:border-gold"></textarea>
           </label>
-          <button class="justify-self-start bg-ink px-7 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-white transition-colors hover:bg-gold-deep">
+          <button class="justify-self-start rounded-sharp bg-ink px-7 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-white transition-colors hover:bg-gold-deep">
             Send Message
           </button>
         </form>

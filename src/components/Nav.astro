@@ -28,6 +28,9 @@ const navLinks = [
       announcementProgress = hero ? Math.min(y, 44) : 44;
       navProgress = hero ? Math.min(y / 44, 1) : (scrolled ? 1 : 0);
       pastMarquee = announcementProgress >= 44;
+      const navHeight = 72 - (navProgress * 16);
+      const announcementHeight = homeInitialMinimal && hero ? 44 - announcementProgress : 0;
+      document.documentElement.style.setProperty('--site-nav-offset', (navHeight + announcementHeight) + 'px');
     };
     window.addEventListener('scroll', update, { passive: true });
     update();

@@ -562,7 +562,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
   }
   .products-section--featured .prod-scroll-grid {
     background: transparent;
-    gap: 1px;
+    gap: var(--space-5);
   }
   .prod-scroll-grid .product-cell {
     width: clamp(240px, 28vw, 300px);
@@ -571,6 +571,8 @@ const lastVisibleIndex = firstVisibleIndex + 16;
   .products-section--featured .product-cell {
     background: var(--surface);
     border: 1px solid var(--border);
+    border-radius: var(--radius-sharp);
+    overflow: hidden;
   }
   .products-empty {
     margin-top: 2rem;

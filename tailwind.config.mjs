@@ -21,6 +21,7 @@ export default {
         brand: {
           'dark-blue': 'oklch(from var(--cobalt) l c h / <alpha-value>)',
         },
+        charcoal: '#0e0f13',
         white: 'oklch(from var(--fg) l c h / <alpha-value>)',
         rule: 'oklch(from var(--light-border) l c h / <alpha-value>)',
       },

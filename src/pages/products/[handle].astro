@@ -145,8 +145,12 @@ const variantsJson = JSON.stringify(variants.map(v => ({
           <div
             x-data={`{
               active: 0,
+              preview: null,
               modalOpen: false,
               imageCount: ${images.length},
+              displayIndex() {
+                return this.preview ?? this.active;
+              },
               openModal(index) {
                 this.active = index;
                 this.modalOpen = true;
@@ -177,7 +181,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
                 <button
                   type="button"
                   class="absolute inset-0 block h-full w-full cursor-zoom-in text-left"
-                  @click="openModal(active)"
+                  @click="openModal(displayIndex())"
                   aria-label="Open larger product image gallery"
                 >
                   {images.map((img, i) => (
@@ -185,7 +189,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
                       src={img.url}
                       alt={img.altText ?? product.title}
                       class="absolute inset-0 w-full h-full object-cover transition-opacity duration-400"
-                      x-show={`active === ${i}`}
+                      x-show={`displayIndex() === ${i}`}
                       loading={i === 0 ? 'eager' : 'lazy'}
                       width="900"
                       height="1200"
@@ -219,6 +223,8 @@ const variantsJson = JSON.stringify(variants.map(v => ({
                 {images.map((img, i) => (
                   <button
                     @click={`active = ${i}`}
+                    @mouseenter={`if (window.matchMedia('(hover: hover)').matches) preview = ${i}`}
+                    @mouseleave="preview = null"
                     :class={`active === ${i} ? 'border-gold' : 'border-rule hover:border-ink/40'`}
                     class="w-[72px] h-[96px] shrink-0 overflow-hidden border-2 transition-colors duration-200"
                     aria-label={`Image ${i + 1}`}

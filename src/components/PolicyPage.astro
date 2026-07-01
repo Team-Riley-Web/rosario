@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Nav from './Nav.astro';
+import heroImage from '../assets/images/beader-header-1.png';
 
 export interface PolicySection {
   title: string;
@@ -25,7 +26,14 @@ const { title, description, eyebrow, intro, updatedLabel, sections } = Astro.pro
 
   <main>
     <section class="bg-ink pt-[160px] pb-[84px] relative overflow-hidden">
-      <div class="max-w-[1440px] mx-auto px-6 sm:px-10">
+      <img
+        src={heroImage.src}
+        alt=""
+        class="absolute inset-0 h-full w-full object-cover object-[20%_center] sm:object-center"
+        aria-hidden="true"
+      />
+      <div class="absolute inset-0 bg-ink/75" aria-hidden="true"></div>
+      <div class="relative max-w-[1440px] mx-auto px-6 sm:px-10">
         <div class="max-w-[760px]">
           <div class="flex items-center gap-4 mb-8">
             <div class="h-px bg-gold w-6"></div>

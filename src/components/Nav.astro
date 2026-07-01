@@ -267,6 +267,14 @@ const shopDropdownLinks = [
   .nav-item {
     position: relative;
   }
+  .nav-item--shop::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: -28px;
+    width: calc(100% + 56px);
+    height: 24px;
+  }
   .nav-link {
     font-family: var(--font-label);
     font-size: 10px;
@@ -291,7 +299,7 @@ const shopDropdownLinks = [
   .nav-link:hover::after { width: 100%; }
   .shop-dropdown {
     position: absolute;
-    top: calc(100% + 18px);
+    top: calc(100% + 10px);
     left: 50%;
     min-width: 160px;
     padding: var(--space-2);
@@ -307,8 +315,8 @@ const shopDropdownLinks = [
   .shop-dropdown::before {
     content: '';
     position: absolute;
-    inset: -18px 0 auto;
-    height: 18px;
+    inset: -10px 0 auto;
+    height: 10px;
   }
   .shop-dropdown a {
     display: block;

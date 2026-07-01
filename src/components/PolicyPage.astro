@@ -34,15 +34,16 @@ const { title, description, eyebrow, intro, updatedLabel, sections } = Astro.pro
       />
       <div class="absolute inset-0 bg-ink/75" aria-hidden="true"></div>
       <div class="relative max-w-[1440px] mx-auto px-6 sm:px-10">
-        <div class="max-w-[760px]">
-          <div class="flex items-center gap-4 mb-8">
+        <div class="max-w-[760px] mx-auto text-center">
+          <div class="flex items-center justify-center gap-4 mb-8">
             <div class="h-px bg-gold w-6"></div>
             <span class="font-label text-[10px] tracking-[var(--tracking-widest)] uppercase text-gold">{eyebrow}</span>
+            <div class="h-px bg-gold w-6"></div>
           </div>
           <h1 class="font-display font-light text-white leading-[var(--leading-heading)] tracking-normal mb-6 text-[length:var(--text-h1)]">
             {title}
           </h1>
-          <p class="font-sans font-light text-[16px] leading-[var(--leading-loose)] max-w-[620px] text-white/60">
+          <p class="font-sans font-light text-[16px] leading-[var(--leading-loose)] max-w-[620px] mx-auto text-white/60">
             {intro}
           </p>
           <p class="mt-8 font-label text-[10px] tracking-[var(--tracking-wider)] uppercase text-white/45">

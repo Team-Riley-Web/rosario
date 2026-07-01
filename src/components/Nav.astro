@@ -156,6 +156,9 @@ const navLinks = [
       <a href={accountHref} class="mobile-account">Account</a>
       <a href="/shop" class="mobile-shop">Shop Now</a>
     </div>
+    <a href="tel:+15042755222" class="mobile-phone" @click="open = false; document.body.style.overflow = ''">
+      Call 504-275-5222
+    </a>
   </nav>
 </header>
 
@@ -466,6 +469,18 @@ const navLinks = [
   }
   .mobile-account { border: 1px solid var(--border-lift); color: var(--fg-sub); }
   .mobile-shop { background: var(--fg); color: var(--bg); }
+  .mobile-phone {
+    margin-top: var(--space-4);
+    display: none;
+    padding: 12px;
+    border: 1px solid var(--border-lift);
+    color: var(--accent);
+    font-family: var(--font-label);
+    font-size: 10px;
+    letter-spacing: var(--tracking-wider);
+    text-align: center;
+    text-transform: uppercase;
+  }
   @media (max-width: 1023px) {
     .nav-wordmark,
     .nav-links-right,
@@ -474,5 +489,6 @@ const navLinks = [
     .nav-cta { display: none; }
     .hamburger { display: flex; }
     .nav-bar { padding: 0 1.5rem; }
+    .mobile-phone { display: block; }
   }
 </style>

@@ -10,6 +10,7 @@ export const productFixture: ShopifyProduct = {
   title: 'Cobalt Millefiori Statement Necklace',
   handle: 'cobalt-millefiori-statement-necklace',
   description: 'Restored vintage Murano Millefiori necklace fixture',
+  category: { id: 'gid://shopify/TaxonomyCategory/aa-1-13-7', name: 'Necklaces' },
   availableForSale: true,
   tags: ['Vintage', 'Millefiori'],
   priceRange: { minVariantPrice: { amount: '28.00', currencyCode: 'USD' } },

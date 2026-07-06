@@ -34,6 +34,7 @@ const subFilters = {
     { label: 'Earrings', value: 'earrings' },
     { label: 'Bracelets', value: 'bracelets' },
     { label: 'Rings', value: 'rings' },
+    { label: 'Jewelry Sets', value: 'jewelry-sets' },
     { label: 'Signature Moretti', value: 'signature-moretti' },
     { label: 'Beads', value: 'beads-for-makers' },
   ],
@@ -43,6 +44,7 @@ const subFilters = {
     { label: 'Earrings', value: 'earrings' },
     { label: 'Bracelets', value: 'bracelets' },
     { label: 'Rings', value: 'rings' },
+    { label: 'Jewelry Sets', value: 'jewelry-sets' },
   ],
   all: [
     { label: 'All Pieces', value: 'all' },
@@ -50,6 +52,7 @@ const subFilters = {
     { label: 'Earrings', value: 'earrings' },
     { label: 'Bracelets', value: 'bracelets' },
     { label: 'Rings', value: 'rings' },
+    { label: 'Jewelry Sets', value: 'jewelry-sets' },
     { label: 'Signature Moretti', value: 'signature-moretti' },
     { label: 'Beads', value: 'beads-for-makers' },
   ],
@@ -67,34 +70,80 @@ function getShopPageHref(page: number): string {
   return page === 1 ? '/shop' : `/shop/page/${page}`;
 }
 
+const categoryRules = [
+  { value: 'necklaces', pattern: /\b(necklaces?|chokers?|pendants?|lariat)\b/ },
+  { value: 'earrings', pattern: /\b(earrings?|studs?|hoops?|dangles?|drops?)\b/ },
+  { value: 'bracelets', pattern: /\b(bracelets?|bangles?|cuffs?)\b/ },
+  { value: 'rings', pattern: /\b(rings?)\b/ },
+  { value: 'jewelry-sets', pattern: /\b(jewelry sets?|sets?)\b/ },
+  { value: 'signature-moretti', pattern: /\b(moretti|signature)\b/ },
+  { value: 'vintage-millefiori', pattern: /\b(vintage|millefiori|restored)\b/ },
+  { value: 'uncirculated-vintage', pattern: /\b(uncirculated|european find|rare find)\b/ },
+  { value: 'freshwater-pearls', pattern: /\b(freshwater|pearls?)\b/ },
+  { value: 'beads-for-makers', pattern: /\b(beads?|lampwork|makers?|supplies|supply)\b/ },
+];
+
+const shopifyCategoryRules = [
+  { value: 'necklaces', pattern: /^necklaces?$/ },
+  { value: 'bracelets', pattern: /^bracelets?$/ },
+  { value: 'rings', pattern: /^rings?$/ },
+  { value: 'beads-for-makers', pattern: /^beads?$/ },
+  { value: 'jewelry-sets', pattern: /^jewelry sets?$/ },
+];
+
+const groupRules = [
+  { value: 'pearls', pattern: /\b(pearls?|freshwater)\b/ },
+  { value: 'murano', pattern: /\b(murano|moretti|millefiori|venetian|venice|lampwork|glass|beads?|wedding cake)\b/ },
+];
+
+type MatchRule = { value: string; pattern: RegExp };
+
+function compactText(values: Array<string | null | undefined>): string {
+  return values.filter(Boolean).join(' ').toLowerCase();
+}
+
+function matchRuleValues(rules: MatchRule[], values: Array<string | null | undefined>): string[] {
+  const text = compactText(values);
+  if (!text) return [];
+
+  return rules
+    .filter(({ pattern }) => pattern.test(text))
+    .map(({ value }) => value);
+}
+
 const productState = displayProducts.map((product, index) => {
   const rankedProduct = product as ShopifyProduct & { bestSellingRank?: number };
   const bestSellingRank = typeof rankedProduct.bestSellingRank === 'number'
     ? rankedProduct.bestSellingRank
     : index;
-  const productText = [
+  const shopifyCategoryText = [
+    product.category?.name,
+  ];
+  const merchandisingText = [
+    ...product.tags,
+    ...product.collections.edges.flatMap(({ node }) => [node.title, node.handle]),
+  ];
+  const descriptiveText = [
     product.title,
     product.handle,
     product.description,
-    ...product.tags,
-    ...product.collections.edges.flatMap(({ node }) => [node.title, node.handle]),
-  ].join(' ').toLowerCase();
-  const categories = ['all'];
-  const groups = ['all'];
+  ];
+  const productText = [
+    ...shopifyCategoryText,
+    ...merchandisingText,
+    ...descriptiveText,
+  ].filter(Boolean).join(' ').toLowerCase();
+  let categoryMatches = matchRuleValues(shopifyCategoryRules, shopifyCategoryText);
+  if (categoryMatches.length === 0) categoryMatches = matchRuleValues(categoryRules, merchandisingText);
+  if (categoryMatches.length === 0) categoryMatches = matchRuleValues(categoryRules, descriptiveText);
 
-  if (/(necklace|choker|pendant|lariat)/.test(productText)) categories.push('necklaces');
-  if (/(earring|stud|hoop|dangle|drop)/.test(productText)) categories.push('earrings');
-  if (/(bracelet|bangle|cuff)/.test(productText)) categories.push('bracelets');
-  if (/(ring)/.test(productText)) categories.push('rings');
-  if (/(moretti|signature)/.test(productText)) categories.push('signature-moretti');
-  if (/(vintage|millefiori|restored)/.test(productText)) categories.push('vintage-millefiori');
-  if (/(uncirculated|european find|rare find)/.test(productText)) categories.push('uncirculated-vintage');
-  if (/(freshwater|pearl)/.test(productText)) categories.push('freshwater-pearls');
-  if (/(bead|lampwork|maker|supply|supplies)/.test(productText)) categories.push('beads-for-makers');
-  if (/(pearl|freshwater)/.test(productText)) groups.push('pearls');
-  if (/(murano|moretti|millefiori|venetian|venice|lampwork|glass|bead|wedding cake)/.test(productText)) {
-    groups.push('murano');
-  }
+  const categories = ['all', ...categoryMatches];
+  const groups = ['all'];
+  const groupMatches = [...new Set([
+    ...matchRuleValues(groupRules, [...shopifyCategoryText, ...merchandisingText]),
+    ...matchRuleValues(groupRules, descriptiveText),
+  ])];
+  groups.push(...groupMatches);
   if (groups.length === 1) groups.push('murano');
 
   return {

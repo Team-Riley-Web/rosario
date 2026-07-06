@@ -61,6 +61,7 @@ export interface ShopifyProduct {
   title: string;
   handle: string;
   description: string;
+  category: { id: string; name: string } | null;
   availableForSale: boolean;
   priceRange: {
     minVariantPrice: { amount: string; currencyCode: string };
@@ -159,6 +160,10 @@ const PRODUCT_FIELDS = `
   title
   handle
   description
+  category {
+    id
+    name
+  }
   availableForSale
   tags
   priceRange {
@@ -182,6 +187,7 @@ function getMockProducts(): ShopifyProduct[] {
       title: 'Cobalt Millefiori Statement Necklace',
       handle: 'cobalt-millefiori-statement-necklace',
       description: 'Restored vintage Murano Millefiori glass with a bold cobalt palette.',
+      category: { id: 'gid://shopify/TaxonomyCategory/aa-1-13-7', name: 'Necklaces' },
       availableForSale: true,
       tags: ['Vintage', 'Millefiori'],
       priceRange: { minVariantPrice: { amount: '328.00', currencyCode: 'USD' } },
@@ -196,6 +202,7 @@ function getMockProducts(): ShopifyProduct[] {
       title: 'Emerald Moretti Glass Bracelet',
       handle: 'emerald-moretti-glass-bracelet',
       description: 'Signature design made with glass beads sourced through the Moretti partnership.',
+      category: { id: 'gid://shopify/TaxonomyCategory/aa-1-13-2', name: 'Bracelets' },
       availableForSale: true,
       tags: ['Signature Moretti'],
       priceRange: { minVariantPrice: { amount: '246.00', currencyCode: 'USD' } },
@@ -210,6 +217,7 @@ function getMockProducts(): ShopifyProduct[] {
       title: 'Ruby Uncirculated Vintage Pendant',
       handle: 'ruby-uncirculated-vintage-pendant',
       description: 'Rare uncirculated vintage glass sourced through European supplier relationships.',
+      category: { id: 'gid://shopify/TaxonomyCategory/aa-1-13-7', name: 'Necklaces' },
       availableForSale: false,
       tags: ['Uncirculated Vintage'],
       priceRange: { minVariantPrice: { amount: '198.00', currencyCode: 'USD' } },
@@ -224,6 +232,7 @@ function getMockProducts(): ShopifyProduct[] {
       title: 'Freshwater Pearl Drop Earrings',
       handle: 'freshwater-pearl-drop-earrings',
       description: 'Freshwater pearls curated with the same sourcing integrity as the Murano pieces.',
+      category: { id: 'gid://shopify/TaxonomyCategory/aa-1-13-4', name: 'Earrings' },
       availableForSale: true,
       tags: ['Freshwater Pearls'],
       priceRange: { minVariantPrice: { amount: '124.00', currencyCode: 'USD' } },
@@ -238,6 +247,7 @@ function getMockProducts(): ShopifyProduct[] {
       title: 'Murano Millefiori Bead Set',
       handle: 'murano-millefiori-bead-set',
       description: 'Authentic Murano Millefiori beads for makers who need materials they can trust.',
+      category: null,
       availableForSale: true,
       tags: ['Beads for Makers', 'Millefiori'],
       priceRange: { minVariantPrice: { amount: '62.00', currencyCode: 'USD' } },
@@ -252,6 +262,7 @@ function getMockProducts(): ShopifyProduct[] {
       title: 'Lampwork Bead Maker Bundle',
       handle: 'lampwork-bead-maker-bundle',
       description: 'A maker-friendly selection of authentic Murano lampwork beads.',
+      category: null,
       availableForSale: true,
       tags: ['Beads for Makers', 'Lampwork'],
       priceRange: { minVariantPrice: { amount: '58.00', currencyCode: 'USD' } },
@@ -266,6 +277,7 @@ function getMockProducts(): ShopifyProduct[] {
       title: 'Amber Restored Millefiori Necklace',
       handle: 'amber-restored-millefiori-necklace',
       description: 'Restored vintage Millefiori glass with warm amber and gold tones.',
+      category: { id: 'gid://shopify/TaxonomyCategory/aa-1-13-7', name: 'Necklaces' },
       availableForSale: true,
       tags: ['Vintage', 'Millefiori'],
       priceRange: { minVariantPrice: { amount: '344.00', currencyCode: 'USD' } },
@@ -430,6 +442,10 @@ const PRODUCT_DETAIL_QUERY = `
       handle
       description
       descriptionHtml
+      category {
+        id
+        name
+      }
       availableForSale
       tags
       priceRange {

@@ -96,6 +96,11 @@ const groupRules = [
   { value: 'murano', pattern: /\b(murano|moretti|millefiori|venetian|venice|lampwork|glass|beads?|wedding cake)\b/ },
 ];
 
+const shopifyTagGroupRules = [
+  { value: 'pearls', pattern: /^pearls?$/ },
+  { value: 'murano', pattern: /^murano$/ },
+];
+
 type MatchRule = { value: string; pattern: RegExp };
 
 function compactText(values: Array<string | null | undefined>): string {
@@ -139,10 +144,17 @@ const productState = displayProducts.map((product, index) => {
 
   const categories = ['all', ...categoryMatches];
   const groups = ['all'];
-  const groupMatches = [...new Set([
-    ...matchRuleValues(groupRules, [...shopifyCategoryText, ...merchandisingText]),
-    ...matchRuleValues(groupRules, descriptiveText),
-  ])];
+  let groupMatches = matchRuleValues(shopifyTagGroupRules, product.tags);
+  if (groupMatches.length === 0) {
+    groupMatches = [
+      ...matchRuleValues(groupRules, [
+        ...shopifyCategoryText,
+        ...product.collections.edges.flatMap(({ node }) => [node.title, node.handle]),
+      ]),
+      ...matchRuleValues(groupRules, descriptiveText),
+    ];
+  }
+  groupMatches = [...new Set(groupMatches)];
   groups.push(...groupMatches);
   if (groups.length === 1) groups.push('murano');
 

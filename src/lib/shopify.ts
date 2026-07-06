@@ -18,7 +18,7 @@ const SHOULD_THROW_SHOPIFY_ERRORS =
 export const SHOPIFY_DOMAIN = getEnvValue(['SHOPIFY_STORE_DOMAIN', 'PUBLIC_SHOPIFY_STORE_DOMAIN'], 'your-store.myshopify.com');
 const STOREFRONT_TOKEN = getEnvValue(['SHOPIFY_STOREFRONT_TOKEN', 'PUBLIC_SHOPIFY_STOREFRONT_TOKEN']);
 const API_VERSION = getEnvValue(['SHOPIFY_API_VERSION', 'PUBLIC_SHOPIFY_API_VERSION'], '2026-01');
-export const FEATURED_COLLECTION_HANDLE = 'frontpage';
+export const FEATURED_COLLECTION_HANDLE = 'best-sellers';
 
 export const STOREFRONT_URL = `https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`;
 

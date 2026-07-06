@@ -38,7 +38,7 @@ describe('Shopify product utilities', () => {
     expect(products[0].variants.edges[0].node.id).toBe(variantId);
   });
 
-  it('returns products from the frontpage Shopify collection', async () => {
+  it('returns products from the best-sellers Shopify collection', async () => {
     const handles = ['desk-notebook', 'gift-card', 'canvas-pouch'];
     const featuredProducts = handles.map((handle, index) => ({
       ...productFixture,
@@ -48,7 +48,7 @@ describe('Shopify product utilities', () => {
 
     vi.stubGlobal('fetch', vi.fn(async (_url, init) => {
       const body = JSON.parse(String((init as RequestInit).body));
-      expect(body.variables.handle).toBe('frontpage');
+      expect(body.variables.handle).toBe('best-sellers');
 
       return {
         ok: true,
@@ -64,7 +64,7 @@ describe('Shopify product utilities', () => {
     expect(products.map(product => product.handle)).toEqual(handles);
   });
 
-  it('falls back to best-selling products when the frontpage collection is empty', async () => {
+  it('falls back to best-selling products when the best-sellers collection is empty', async () => {
     vi.stubGlobal('fetch', vi.fn(async (_url, init) => {
       const body = JSON.parse(String((init as RequestInit).body));
 

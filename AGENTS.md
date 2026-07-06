@@ -148,3 +148,17 @@ For more details, see README.md and docs/QUICKSTART.md.
 - If push fails, resolve and retry until it succeeds
 
 <!-- END BEADS INTEGRATION -->
+
+## GBrain (personal knowledge brain)
+
+A `gbrain` MCP server is registered (also available as the `gbrain` CLI). It holds
+Joshua's curated memory, including the page `design-style-profile` — the house
+design style distilled from 13 Team Riley sites (typography, color logic, layout
+skeleton, motion vocabulary). Fetch it before any design-facing work on this site.
+
+Prefer gbrain over grep for semantic questions:
+- "Where is X handled?" → `search` / `query` MCP tools (or `gbrain search "<terms>"`)
+- Past decisions, plans, learnings → `gbrain query "<question>"`
+- Read a page → `get_page` MCP tool (or `gbrain get <slug>`)
+
+Grep remains right for known exact strings, regex, and file globs.

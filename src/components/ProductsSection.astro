@@ -118,6 +118,19 @@ function matchRuleValues(rules: MatchRule[], values: Array<string | null | undef
     .map(({ value }) => value);
 }
 
+function matchIndividualRuleValues(rules: MatchRule[], values: Array<string | null | undefined>): string[] {
+  const matches = values.flatMap((value) => {
+    const text = value?.trim().toLowerCase();
+    if (!text) return [];
+
+    return rules
+      .filter(({ pattern }) => pattern.test(text))
+      .map(({ value }) => value);
+  });
+
+  return [...new Set(matches)];
+}
+
 const productState = displayProducts.map((product, index) => {
   const rankedProduct = product as ShopifyProduct & { bestSellingRank?: number };
   const bestSellingRank = typeof rankedProduct.bestSellingRank === 'number'
@@ -146,7 +159,7 @@ const productState = displayProducts.map((product, index) => {
 
   const categories = ['all', ...categoryMatches];
   const groups = ['all'];
-  let groupMatches = matchRuleValues(shopifyTagGroupRules, product.tags);
+  let groupMatches = matchIndividualRuleValues(shopifyTagGroupRules, product.tags);
   if (groupMatches.length === 0) {
     groupMatches = [
       ...matchRuleValues(groupRules, [

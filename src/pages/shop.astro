@@ -1,15 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
-import ProductsSection from '../components/ProductsSection.astro';
+import ProductsSection, { SHOP_PRODUCTS_PER_PAGE } from '../components/ProductsSection.astro';
 import { getAllProducts } from '../lib/shopify';
 
-const PRODUCTS_PER_PAGE = 16;
 const allProducts = await getAllProducts();
 const products = allProducts
   .map((product, bestSellingRank) => ({ ...product, bestSellingRank }))
   .sort((a, b) => a.title.localeCompare(b.title));
-const totalPages = Math.max(1, Math.ceil(products.length / PRODUCTS_PER_PAGE));
+const totalPages = Math.max(1, Math.ceil(products.length / SHOP_PRODUCTS_PER_PAGE));
 ---
 
 <Layout

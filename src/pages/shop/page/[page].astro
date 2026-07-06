@@ -1,17 +1,16 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import Nav from '../../../components/Nav.astro';
-import ProductsSection from '../../../components/ProductsSection.astro';
+import ProductsSection, { SHOP_PRODUCTS_PER_PAGE } from '../../../components/ProductsSection.astro';
 import { getAllProducts } from '../../../lib/shopify';
 import type { ShopifyProduct } from '../../../lib/shopify';
 
 export async function getStaticPaths() {
-  const productsPerPage = 16;
   const allProducts = await getAllProducts();
   const products = allProducts
     .map((product, bestSellingRank) => ({ ...product, bestSellingRank }))
     .sort((a, b) => a.title.localeCompare(b.title));
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  const totalPages = Math.ceil(products.length / SHOP_PRODUCTS_PER_PAGE);
 
   return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
     const currentPage = index + 2;

@@ -14,9 +14,11 @@ export interface Props {
   };
 }
 
+export const SHOP_PRODUCTS_PER_PAGE = 15;
+
 const { variant = 'featured', products: providedProducts, pagination } = Astro.props;
 const isFeatured = variant === 'featured';
-const products = providedProducts ?? (isFeatured ? await getFeaturedProducts() : await getProducts(16));
+const products = providedProducts ?? (isFeatured ? await getFeaturedProducts() : await getProducts(SHOP_PRODUCTS_PER_PAGE));
 const hasProducts = products.length > 0;
 
 const displayProducts = products;
@@ -172,8 +174,8 @@ const productState = displayProducts.map((product, index) => {
 
 const initialPage = pagination?.currentPage ?? 1;
 const totalProductsLabel = pagination?.totalProducts ?? displayProducts.length;
-const firstVisibleIndex = (initialPage - 1) * 16;
-const lastVisibleIndex = firstVisibleIndex + 16;
+const firstVisibleIndex = (initialPage - 1) * SHOP_PRODUCTS_PER_PAGE;
+const lastVisibleIndex = firstVisibleIndex + SHOP_PRODUCTS_PER_PAGE;
 ---
 
 <section
@@ -219,7 +221,7 @@ const lastVisibleIndex = firstVisibleIndex + 16;
         searchQuery: '',
         sortBy: 'alpha',
         page: ${initialPage},
-        perPage: 16,
+        perPage: ${SHOP_PRODUCTS_PER_PAGE},
         products: ${JSON.stringify(productState)},
         init() {
           const params = new URLSearchParams(window.location.search);

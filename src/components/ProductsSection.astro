@@ -273,7 +273,7 @@ const lastVisibleIndex = firstVisibleIndex + SHOP_PRODUCTS_PER_PAGE;
           return this.products.filter((product) => {
             const matchesGroup = this.activeGroup === 'all' || product.groups.includes(this.activeGroup);
             const matchesFilter = this.active === 'all' || product.categories.includes(this.active);
-            const matchesSearch = !this.searchQuery || product.searchText.includes(this.searchQuery);
+            const matchesSearch = !this.searchQuery || this.searchQuery.split(/\\s+/).filter(Boolean).every((term) => product.searchText.includes(term));
 
             return matchesGroup && matchesFilter && matchesSearch;
           });

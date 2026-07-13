@@ -62,21 +62,15 @@ const collections = [
   <Nav homeInitialMinimal />
   <main>
     <section id="hero">
-      <img
-        class="hero-img hero-img--still"
-        src={heroImage.src}
-        alt=""
-        aria-hidden="true"
-      />
       <video
-        class="hero-img hero-img--video"
+        class="hero-img"
+        autoplay
         muted
         loop
         playsinline
-        preload="auto"
+        preload="metadata"
         poster={heroImage.src}
         aria-hidden="true"
-        data-hero-video
       >
         <source src={heroVideo} type="video/mp4" />
       </video>
@@ -260,29 +254,6 @@ const collections = [
   </main>
 </Layout>
 
-<script>
-  const hero = document.getElementById('hero');
-  const heroVideo = document.querySelector<HTMLVideoElement>('[data-hero-video]');
-
-  if (hero && heroVideo) {
-    const showVideo = () => {
-      hero.classList.add('hero-video-active');
-    };
-
-    heroVideo.addEventListener('playing', showVideo, { once: true });
-
-    window.setTimeout(() => {
-      const playPromise = heroVideo.play();
-
-      if (playPromise) {
-        playPromise.catch(() => {
-          hero.classList.remove('hero-video-active');
-        });
-      }
-    }, 3000);
-  }
-</script>
-
 <style>
   #hero {
     position: relative;
@@ -300,20 +271,6 @@ const collections = [
     height: 100%;
     object-fit: cover;
     object-position: center 22%;
-  }
-  .hero-img--still {
-    opacity: 1;
-    transition: opacity 900ms ease;
-  }
-  .hero-img--video {
-    opacity: 0;
-    transition: opacity 900ms ease;
-  }
-  #hero.hero-video-active .hero-img--still {
-    opacity: 0;
-  }
-  #hero.hero-video-active .hero-img--video {
-    opacity: 1;
   }
   .hero-overlay {
     position: absolute;
@@ -744,10 +701,6 @@ const collections = [
     .coll-body { padding: 1.5rem; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero-img--still,
-    .hero-img--video {
-      transition: none;
-    }
     .coll-card:hover .product-img {
       transform: none !important;
     }

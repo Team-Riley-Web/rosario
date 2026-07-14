@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import ProductsSection from '../components/ProductsSection.astro';
-import heroImage from '../assets/images/social-share.png';
+import heroPoster from '../assets/images/hero-video-first-frame.jpg';
 import heroVideo from '../assets/videos/Rosario2.mp4';
 import necklacesImage from '../assets/images/necklace.png';
 import earringsImage from '../assets/images/earring.png';
@@ -69,7 +69,7 @@ const collections = [
         loop
         playsinline
         preload="metadata"
-        poster={heroImage.src}
+        poster={heroPoster.src}
         aria-hidden="true"
       >
         <source src={heroVideo} type="video/mp4" />

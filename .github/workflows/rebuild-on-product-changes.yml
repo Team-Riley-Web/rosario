@@ -4,27 +4,31 @@ name: Rebuild site when products change
 # fingerprints the full catalog (every product's handle + updatedAt), and
 # triggers a Netlify build ONLY if the fingerprint differs from the last
 # run's — catching creates, edits, and deletes alike. Quiet days cost zero
-# build minutes. The last fingerprint is stored in the PRODUCTS_FINGERPRINT
-# repo variable (never in a commit, so it can't itself trigger a deploy).
+# build minutes. The last fingerprint is stored in the Actions cache
+# (never in a commit, so it can't itself trigger a deploy).
 
 on:
   schedule:
     - cron: '0 10 * * *' # daily at 5:00 AM Central (10:00 UTC)
   workflow_dispatch: {}
 
-permissions:
-  actions: write # lets GITHUB_TOKEN update the PRODUCTS_FINGERPRINT variable
-
 jobs:
   check-and-rebuild:
     runs-on: ubuntu-latest
     steps:
+      - name: Restore previous catalog fingerprint
+        uses: actions/cache/restore@v4
+        with:
+          path: fingerprint.txt
+          key: products-fingerprint-${{ github.run_id }}
+          restore-keys: |
+            products-fingerprint-
+
       - name: Fingerprint the Shopify catalog
         id: check
         env:
           SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
           SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.SHOPIFY_STOREFRONT_TOKEN }}
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
 
@@ -52,7 +56,7 @@ jobs:
           fi
 
           fingerprint=$(echo "$catalog" | sort | sha256sum | cut -d' ' -f1)
-          previous=$(gh variable get PRODUCTS_FINGERPRINT --repo "$GITHUB_REPOSITORY" 2>/dev/null || echo "none")
+          previous=$(cat fingerprint.txt 2>/dev/null || echo "none")
           echo "Products: $count | fingerprint: $fingerprint | previous: $previous"
 
           if [ "$fingerprint" != "$previous" ]; then
@@ -62,7 +66,7 @@ jobs:
             echo "No catalog changes — skipping build"
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
-          echo "fingerprint=$fingerprint" >> "$GITHUB_OUTPUT"
+          printf '%s' "$fingerprint" > fingerprint.txt
 
       - name: Trigger Netlify build
         if: steps.check.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
@@ -73,8 +77,7 @@ jobs:
           echo "Netlify build triggered."
 
       - name: Remember catalog fingerprint
-        if: steps.check.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh variable set PRODUCTS_FINGERPRINT --repo "$GITHUB_REPOSITORY" --body "${{ steps.check.outputs.fingerprint }}"
+        uses: actions/cache/save@v4
+        with:
+          path: fingerprint.txt
+          key: products-fingerprint-${{ github.run_id }}

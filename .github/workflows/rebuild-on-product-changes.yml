@@ -1,0 +1,55 @@
+name: Rebuild site when products change
+
+# Product pages are baked at build time from Shopify. This runs daily and
+# triggers a Netlify build ONLY if a product was created or updated since the
+# last check, so quiet days cost zero build minutes.
+
+on:
+  schedule:
+    - cron: '0 10 * * *' # daily at 5:00 AM Central (10:00 UTC)
+  workflow_dispatch: {}
+
+jobs:
+  check-and-rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Shopify for recent product changes
+        id: check
+        env:
+          SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
+          SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.SHOPIFY_STOREFRONT_TOKEN }}
+        run: |
+          latest=$(curl -sf "https://${SHOPIFY_STORE_DOMAIN}/api/2026-01/graphql.json" \
+            -H "Content-Type: application/json" \
+            -H "X-Shopify-Storefront-Access-Token: ${SHOPIFY_STOREFRONT_TOKEN}" \
+            -d '{"query":"query { products(first: 1, sortKey: UPDATED_AT, reverse: true) { edges { node { updatedAt handle } } } }"}' \
+            | jq -r '.data.products.edges[0].node.updatedAt')
+
+          if [ -z "$latest" ] || [ "$latest" = "null" ]; then
+            echo "Could not read product data from Shopify" >&2
+            exit 1
+          fi
+
+          latest_epoch=$(date -u -d "$latest" +%s)
+          # 26h window: covers the 24h cron interval plus scheduling jitter.
+          cutoff_epoch=$(date -u -d '26 hours ago' +%s)
+
+          if [ "$latest_epoch" -gt "$cutoff_epoch" ]; then
+            echo "Most recent product change: $latest — triggering rebuild"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No product changes since $(date -u -d '26 hours ago' +%FT%TZ) — skipping build"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trigger Netlify build
+        if: steps.check.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        env:
+          NETLIFY_BUILD_HOOK_URL: ${{ secrets.NETLIFY_BUILD_HOOK_URL }}
+        run: |
+          if [ -z "$NETLIFY_BUILD_HOOK_URL" ]; then
+            echo "NETLIFY_BUILD_HOOK_URL secret is not set" >&2
+            exit 1
+          fi
+          curl -sf -X POST "$NETLIFY_BUILD_HOOK_URL" -d '{}'
+          echo "Netlify build triggered."

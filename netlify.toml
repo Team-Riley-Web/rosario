@@ -5,6 +5,15 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# Products added in Shopify after the last build have no static page yet
+# (rebuilt daily by the rebuild-on-product-changes workflow). Send those to
+# the shop page instead of letting the catch-all serve the homepage.
+# Netlify skips this rule when a real /products/<handle> page exists.
+[[redirects]]
+  from = "/products/*"
+  to = "/shop"
+  status = "302"
+
 [[redirects]]
   from = "/discount/*"
   to = "/discount/index.html"

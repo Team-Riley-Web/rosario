@@ -381,7 +381,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
             )}
 
             <h1
-              class="font-display font-light text-ink leading-[var(--leading-heading)] tracking-normal mb-4 text-[length:var(--text-h2)]"
+              class="font-display font-light text-ink leading-[var(--leading-heading)] tracking-normal mb-4 text-[34px] lg:text-[40px]"
             >
               {product.title}
             </h1>
@@ -568,7 +568,7 @@ const variantsJson = JSON.stringify(variants.map(v => ({
             <span class="font-label text-[10px] tracking-[var(--tracking-widest)] uppercase text-gold">More One-of-a-Kind Pieces</span>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px">
+          <div class="product-related-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px">
             {relatedProducts.slice(0, 4).map((relatedProduct) => (
               <ProductCard product={relatedProduct} />
             ))}
@@ -621,6 +621,10 @@ const variantsJson = JSON.stringify(variants.map(v => ({
   }
   .product-description :global(li) {
     margin-bottom: 0.35rem;
+  }
+  :global(.product-related-grid .prod-card-name) {
+    font-size: 20px;
+    line-height: 1.1;
   }
   /* Strip Shopify editor noise */
   .product-description :global([data-start]),

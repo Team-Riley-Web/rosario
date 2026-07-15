@@ -1,7 +1,3 @@
-
-# Dolt database files (added by bd init)
-.dolt/
-*.db
 .DS_Store
 
 # Astro

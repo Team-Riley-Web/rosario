@@ -6,6 +6,8 @@ import homeImage from '../assets/images/home.png';
 import manilaImage from '../assets/images/manilla.jpg';
 import boyImage from '../assets/images/boy.jpg';
 import storyImage from '../assets/images/lisa.png';
+import dogImage from '../assets/images/dog.jpg';
+import dogsImage from '../assets/images/dog4.jpg';
 import veniceVideo from '../assets/videos/venice.mp4';
 import birdVideo from '../assets/videos/bird.mp4';
 import venicePoster from '../assets/images/venice-poster.jpg';
@@ -198,6 +200,57 @@ const anchors = [
         <!--    </article>-->
         <!--  ))}-->
         <!--</div>-->
+      </div>
+    </section>
+
+    <section class="bg-[#fff] px-6 pb-24 sm:px-10">
+      <div class="mx-auto grid max-w-[1180px] gap-14 border-t border-rule pt-24 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-24">
+        <div class="mx-auto grid w-full max-w-[620px] gap-6 sm:grid-cols-[1.05fr_0.95fr] sm:items-start lg:mx-0">
+          <figure class="relative bg-white p-3 pb-7 shadow-lift sm:-rotate-1">
+            <div class="absolute -top-3 left-1/2 h-6 w-28 -translate-x-1/2 rotate-2 bg-gold/40" aria-hidden="true"></div>
+            <img
+              src={dogImage.src}
+              alt="A golden retriever wearing Rosario Leonardi Murano glass jewelry"
+              class="aspect-[4/5] w-full object-cover object-center"
+              loading="lazy"
+            />
+            <figcaption class="mt-5 text-center">
+              <span class="mb-2 block font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-gold-deep">The Jewelry Model</span>
+              <span class="font-display text-[21px] italic leading-snug text-ink">Very much part of the work.</span>
+            </figcaption>
+          </figure>
+          <figure class="relative bg-white p-3 pb-7 shadow-lift sm:mt-16 sm:rotate-1">
+            <div class="absolute -top-3 left-1/2 h-6 w-24 -translate-x-1/2 -rotate-2 bg-gold/40" aria-hidden="true"></div>
+            <img
+              src={dogsImage.src}
+              alt="Polly, Rosie and Bubba gathered together"
+              class="aspect-[4/5] w-full object-cover object-center"
+              loading="lazy"
+            />
+            <figcaption class="mt-5 text-center">
+              <span class="mb-2 block font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-gold-deep">Polly, Rosie and Bubba</span>
+              <span class="font-display text-[21px] italic leading-snug text-ink">Part of the story from the beginning.</span>
+            </figcaption>
+          </figure>
+        </div>
+        <div>
+          <div class="mb-6 flex items-center gap-4">
+            <div class="h-px w-6 bg-gold"></div>
+            <span class="font-label text-[10px] uppercase tracking-[var(--tracking-widest)] text-gold-deep">Full Circle</span>
+          </div>
+          <h2 class="mb-7 font-display text-[42px] font-light leading-none text-ink md:text-[56px]">The Dogs Are Part of This, Too.</h2>
+          <div class="space-y-6 font-sans text-[16px] font-light leading-[1.9] text-ink-soft">
+            <p>If you know me from Along Came Polly, Rosie and Bubba, you already know these dogs are not a side note in my life. They are woven into the way I work, the way I show up, and the way people came to know the person behind the jewelry.</p>
+            <p>They have modeled pieces, kept me company through long days of sourcing and restoring, and built a community that reaches far beyond a storefront. In one year alone, their Facebook videos reached 69.3 million views - a number that still makes me stop and take it in.</p>
+            <p>For a lot of customers, trust started there: hearing my voice every day, seeing the dogs, watching the jewelry become part of real life instead of something staged for a display case. Adding them here feels right, because Rosario Leonardi has always been about more than glass. It is about what is real, what lasts, and what people feel connected to.</p>
+          </div>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="https://web.facebook.com/AlongCamePollyRosieBubba/?_rdc=1&_rdr#" class="border border-rule px-6 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink transition-colors hover:border-gold hover:text-gold-deep">Facebook</a>
+            <a href="https://www.instagram.com/alongcamepollyrosiebubba/" class="border border-rule px-6 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink transition-colors hover:border-gold hover:text-gold-deep">Instagram</a>
+            <a href="https://www.tiktok.com/@alongcamepollyrosiebubba" class="border border-rule px-6 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink transition-colors hover:border-gold hover:text-gold-deep">TikTok</a>
+            <a href="https://www.cameo.com/alongcamepollyrosieandbubba?srsltid=AfmBOooGzJ7oFjwDzdKmyEUgmKozn1kKTora2exctWvCeiaUy2dKa5Xy" class="border border-rule px-6 py-3 font-label text-[10px] uppercase tracking-[var(--tracking-wider)] text-ink transition-colors hover:border-gold hover:text-gold-deep">Cameo</a>
+          </div>
+        </div>
       </div>
     </section>
 

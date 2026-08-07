@@ -11,7 +11,8 @@ import ringsImage from '../assets/images/ring.png';
 import beadsImage from '../assets/images/model2.avif';
 import authenticityImage from '../assets/images/model8.png';
 import personalImage from '../assets/images/lisa.png';
-import giftImage from '../assets/images/gift.png';
+import giftImage from '../assets/images/ms-usa-2.png';
+import beadsEditorialImage from '../assets/images/ms-usa-3.png';
 import rosarioIcon from '../assets/images/rosario-icon.png';
 import marbleImage from '../assets/images/marble.jpg';
 import signatureImage from '../assets/images/signature.png';
@@ -214,33 +215,33 @@ const collections = [
       </div>
     </section>
 
-    <!--<section class="section section&#45;&#45;surface" data-section="meet-the-beads">-->
-    <!--  <div class="inner">-->
-    <!--    <div class="beads-editorial">-->
-    <!--      <div class="beads-editorial-head reveal">-->
-    <!--        <div class="eyebrow centered">-->
-    <!--          <span class="eyebrow-rule" aria-hidden="true"></span>-->
-    <!--          <span class="eyebrow-text">Meet the Beads</span>-->
-    <!--          <span class="eyebrow-rule" aria-hidden="true"></span>-->
-    <!--        </div>-->
-    <!--        <h2>Venetian glass with a name behind it.</h2>-->
-    <!--      </div>-->
-    <!--      <div class="beads-editorial-img reveal reveal-delay-1">-->
-    <!--        <img-->
-    <!--          src={authenticityImage.src}-->
-    <!--          alt="Colorful Murano Millefiori glass beads close-up"-->
-    <!--          class="product-img"-->
-    <!--          loading="lazy"-->
-    <!--        />-->
-    <!--      </div>-->
-    <!--      <div class="beads-editorial-copy reveal reveal-delay-2">-->
-    <!--        <p>On the island of Murano, a short boat ride from Venice, a small number of families have been making glass beads for over seven centuries. Ercole Moretti is one of the last.</p>-->
-    <!--        <p>That direct relationship matters. It is how I can tell you where the glass came from, why it is different, and why each piece deserves more than a generic "Murano-style" label.</p>-->
-    <!--        <a href="/about" class="link-arrow">Read the Story <span aria-hidden="true">→</span></a>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!--  </div>-->
-    <!--</section>-->
+    <section class="section section--surface" data-section="meet-the-beads">
+      <div class="inner">
+        <div class="beads-editorial">
+          <div class="beads-editorial-head reveal">
+            <div class="eyebrow centered">
+              <span class="eyebrow-rule" aria-hidden="true"></span>
+              <span class="eyebrow-text">Meet the Beads</span>
+              <span class="eyebrow-rule" aria-hidden="true"></span>
+            </div>
+            <h2>Venetian glass with a name behind it.</h2>
+          </div>
+          <div class="beads-editorial-img reveal reveal-delay-1">
+            <img
+              src={beadsEditorialImage.src}
+              alt="A woman wearing a Rosario Leonardi Murano glass beaded necklace"
+              class="product-img"
+              loading="lazy"
+            />
+          </div>
+          <div class="beads-editorial-copy reveal reveal-delay-2">
+            <p>On the island of Murano, a short boat ride from Venice, a small number of families have been making glass beads for over seven centuries. Ercole Moretti is one of the last.</p>
+            <p>That direct relationship matters. It is how I can tell you where the glass came from, why it is different, and why each piece deserves more than a generic "Murano-style" label.</p>
+            <a href="/about" class="link-arrow">Read the Story <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section class="section cta-strip bg-charcoal" data-section="cta">
       <div class="cta-flex">
@@ -453,13 +454,14 @@ const collections = [
     border-radius: var(--radius-sharp);
   }
   .personal-img .product-img { aspect-ratio: 4 / 5; }
-  .auth-img .product-img,
-  .beads-editorial-img .product-img { aspect-ratio: 16 / 9; }
+  .auth-img .product-img { aspect-ratio: 16 / 9; }
+  .beads-editorial-img .product-img { aspect-ratio: 3 / 4; }
+  .beads-editorial-img { max-width: 420px; margin: 0 auto; }
   .coll-img-wrap .product-img {
     aspect-ratio: 4 / 3;
     transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
   }
-  .gift-img .product-img { aspect-ratio: 4 / 3; }
+  .gift-img .product-img { aspect-ratio: 4 / 3; object-position: center 22%; }
   .auth-copy p,
   .beads-editorial-copy p,
   .personal-copy p,

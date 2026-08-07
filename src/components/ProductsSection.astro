@@ -12,11 +12,13 @@ export interface Props {
     totalPages: number;
     totalProducts: number;
   };
+  headerImage?: { src: string; alt: string };
+  headerImageSecondary?: { src: string; alt: string };
 }
 
 export const SHOP_PRODUCTS_PER_PAGE = 15;
 
-const { variant = 'featured', products: providedProducts, pagination } = Astro.props;
+const { variant = 'featured', products: providedProducts, pagination, headerImage, headerImageSecondary } = Astro.props;
 const isFeatured = variant === 'featured';
 const products = providedProducts ?? (isFeatured ? await getFeaturedProducts() : await getProducts(SHOP_PRODUCTS_PER_PAGE));
 const hasProducts = products.length > 0;
@@ -198,8 +200,8 @@ const lastVisibleIndex = firstVisibleIndex + SHOP_PRODUCTS_PER_PAGE;
   <div class="inner--wide">
 
     <!-- Header -->
-    <div class="products-header reveal">
-      <div>
+    <div class={`products-header reveal ${headerImage ? 'products-header--with-image' : ''}`}>
+      <div class="products-header-text">
         {!isFeatured && (
           <div class="eyebrow">
             <span class="eyebrow-rule" aria-hidden="true"></span>
@@ -223,6 +225,28 @@ const lastVisibleIndex = firstVisibleIndex + SHOP_PRODUCTS_PER_PAGE;
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
           </svg>
         </a>
+      )}
+      {headerImage && (
+        <div class="products-header-img-group">
+          {headerImageSecondary && (
+            <div class="products-header-img products-header-img--secondary">
+              <img
+                src={headerImageSecondary.src}
+                alt={headerImageSecondary.alt}
+                class="product-img"
+                loading="lazy"
+              />
+            </div>
+          )}
+          <div class="products-header-img">
+            <img
+              src={headerImage.src}
+              alt={headerImage.alt}
+              class="product-img"
+              loading="lazy"
+            />
+          </div>
+        </div>
       )}
     </div>
 
@@ -584,6 +608,27 @@ const lastVisibleIndex = firstVisibleIndex + SHOP_PRODUCTS_PER_PAGE;
   .products-cta {
     flex-shrink: 0;
   }
+  .products-header--with-image {
+    max-width: none;
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .products-header-img-group {
+    display: flex;
+    gap: 1rem;
+  }
+  .products-header-img {
+    overflow: hidden;
+    border-radius: var(--radius-sharp);
+  }
+  .products-header-img .product-img {
+    aspect-ratio: 4 / 5;
+    object-position: center 18%;
+  }
+  .products-header-img--secondary {
+    display: none;
+  }
   .products-section--featured .products-cta,
   .products-section--featured :global(.prod-card-action) {
     font-size: 12px;
@@ -782,6 +827,12 @@ const lastVisibleIndex = firstVisibleIndex + SHOP_PRODUCTS_PER_PAGE;
     .products-section--complete :global(.prod-card-name) {
       font-size: 25px;
     }
+    .products-header--with-image {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+    .products-header-img-group { max-width: 460px; margin-left: auto; }
+    .products-header-img { flex: 1; }
+    .products-header-img--secondary { display: block; }
   }
   @media (max-width: 767px) {
     .products-section--complete {

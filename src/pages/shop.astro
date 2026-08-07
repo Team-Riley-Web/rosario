@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import ProductsSection, { SHOP_PRODUCTS_PER_PAGE } from '../components/ProductsSection.astro';
 import { getAllProducts } from '../lib/shopify';
 import wornImage from '../assets/images/ms-usa-1.png';
+import wornImageSecondary from '../assets/images/ms-usa-3.png';
 
 const allProducts = await getAllProducts();
 const products = allProducts
@@ -18,29 +19,6 @@ const totalPages = Math.max(1, Math.ceil(products.length / SHOP_PRODUCTS_PER_PAG
 >
   <Nav />
   <main>
-    <section class="section section--white shop-intro" data-section="shop-intro">
-      <div class="inner">
-        <div class="shop-intro-grid">
-          <div class="shop-intro-img reveal">
-            <img
-              src={wornImage.src}
-              alt="A woman wearing a Rosario Leonardi Murano glass necklace"
-              class="product-img"
-              loading="lazy"
-            />
-          </div>
-          <div class="shop-intro-copy reveal reveal-delay-1">
-            <div class="eyebrow">
-              <span class="eyebrow-rule" aria-hidden="true"></span>
-              <span class="eyebrow-text">Real Pieces, Really Worn</span>
-            </div>
-            <h2>Every Piece Below Is One-of-a-Kind.</h2>
-            <p>No two beads are ever quite alike, and once a piece sells, it's gone for good. Browse knowing that if something speaks to you, it's worth not waiting.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <ProductsSection
       variant="complete"
       products={products}
@@ -49,41 +27,14 @@ const totalPages = Math.max(1, Math.ceil(products.length / SHOP_PRODUCTS_PER_PAG
         totalPages,
         totalProducts: products.length,
       }}
+      headerImage={{
+        src: wornImage.src,
+        alt: 'A woman wearing a Rosario Leonardi Murano glass necklace',
+      }}
+      headerImageSecondary={{
+        src: wornImageSecondary.src,
+        alt: 'A woman wearing a blue Rosario Leonardi Murano glass necklace',
+      }}
     />
   </main>
 </Layout>
-
-<style>
-  .shop-intro { padding-bottom: 0; }
-  .shop-intro-grid {
-    display: grid;
-    gap: 2.5rem;
-    align-items: center;
-  }
-  .shop-intro-img .product-img {
-    aspect-ratio: 4 / 5;
-    object-position: center 18%;
-  }
-  .shop-intro-copy h2 {
-    font-family: var(--font-display);
-    font-weight: 300;
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-normal);
-    font-size: var(--text-h2);
-    color: var(--light-fg);
-    margin-bottom: 1.25rem;
-    text-wrap: balance;
-  }
-  .shop-intro-copy p {
-    font-size: 16px;
-    font-weight: 300;
-    line-height: var(--leading-loose);
-    color: var(--light-sub);
-    max-width: 480px;
-  }
-  @media (min-width: 1024px) {
-    .shop-intro-grid { grid-template-columns: 0.85fr 1.15fr; }
-    .shop-intro-img { order: 1; }
-    .shop-intro-copy { order: 2; }
-  }
-</style>

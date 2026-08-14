@@ -37,3 +37,12 @@ unchecked task unless you are starting it.
   an older-age 1950s reunion, so I didn't assume they were the same photo and
   left them out rather than mislabel. Send over the actual reunion photo (or
   confirm one of those two is it) and I'll drop it in.
+- [ ] Lisa Leonardi says https://rosarioleonardi.myshopify.com/ is popping up.
+  Make that screen redirect to the main site.
+  Blocked 2026-08-12: `curl -I https://rosarioleonardi.myshopify.com/`
+  returns `200 OK` from Shopify, so this request never reaches the Netlify/Astro
+  site. A Netlify redirect in this repo cannot affect the `.myshopify.com`
+  storefront. Fix needs Shopify admin/theme access: either set the public custom
+  domain as Shopify's primary/redirect domain if it is connected there, or edit
+  the active Shopify theme to immediately redirect visitors to
+  `https://rosarioleonardi.shop/`.

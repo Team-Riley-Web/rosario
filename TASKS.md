@@ -46,3 +46,12 @@ unchecked task unless you are starting it.
   domain as Shopify's primary/redirect domain if it is connected there, or edit
   the active Shopify theme to immediately redirect visitors to
   `https://rosarioleonardi.shop/`.
+- [x] Replace the 24-hour scheduled GitHub product-change check with an
+  event-driven redeploy for every new Shopify product launch, so newly launched
+  products appear on the main site promptly.
+  Done 2026-08-19: Removed the daily catalog-polling job. Shopify Product
+  creation webhooks now call the Netlify build hook directly for immediate
+  deploys; GitHub retains a manual rebuild workflow as a fallback. Updated
+  `docs/shopify-auto-rebuild-setup.md` with the Shopify/Netlify setup and
+  verification steps. Remaining external step: register the webhook in Shopify
+  admin using the build-hook URL.

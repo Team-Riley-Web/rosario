@@ -57,8 +57,14 @@ unchecked task unless you are starting it.
   Shopify webhook was never registered. Restored the daily scheduled check as a
   safety net for dropped webhooks, and narrowed its fingerprint from
   `handle + updatedAt` to handles only, so product edits no longer cost a build.
-- [ ] **External step, blocks immediate launches:** register the Product
-  creation webhook in Shopify admin (Settings -> Notifications -> Webhooks),
-  format JSON, URL = the `NETLIFY_BUILD_HOOK_URL` secret. Until this is done,
-  new products go live via the daily 5:00 AM Central check instead of in
-  minutes. Do NOT add a Product update webhook - it rebuilds on every edit.
+- [x] Register the Product creation webhook in Shopify admin
+  (Settings -> Notifications -> Webhooks), format JSON, URL = the
+  `NETLIFY_BUILD_HOOK_URL` secret.
+  Done 2026-08-19: registered, event `Product creation`, format JSON, pointed at
+  build hook `6a57f6c32038cd0099b9b9fa`. Fast path is now live, so new products
+  should appear in ~2-4 min; the daily 5:00 AM Central check remains as the
+  backstop for dropped webhooks.
+  Not yet confirmed by a real launch - the first product created will prove it.
+  A webhook-fired deploy is distinguishable only by timestamp, not title: it
+  reuses the build hook's name, "Shopify product changes (daily auto-rebuild)".
+  Do NOT add a Product update webhook - it rebuilds on every edit.

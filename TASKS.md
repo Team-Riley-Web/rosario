@@ -49,9 +49,16 @@ unchecked task unless you are starting it.
 - [x] Replace the 24-hour scheduled GitHub product-change check with an
   event-driven redeploy for every new Shopify product launch, so newly launched
   products appear on the main site promptly.
-  Done 2026-08-19: Removed the daily catalog-polling job. Shopify Product
-  creation webhooks now call the Netlify build hook directly for immediate
-  deploys; GitHub retains a manual rebuild workflow as a fallback. Updated
-  `docs/shopify-auto-rebuild-setup.md` with the Shopify/Netlify setup and
-  verification steps. Remaining external step: register the webhook in Shopify
-  admin using the build-hook URL.
+  Done 2026-08-19: Shopify Product creation webhooks call the Netlify build hook
+  directly for immediate deploys (~2-4 min); GitHub retains a manual rebuild
+  workflow. Updated `docs/shopify-auto-rebuild-setup.md` with the
+  Shopify/Netlify setup and verification steps.
+  Corrected same day: deleting the daily job left NO trigger at all, because the
+  Shopify webhook was never registered. Restored the daily scheduled check as a
+  safety net for dropped webhooks, and narrowed its fingerprint from
+  `handle + updatedAt` to handles only, so product edits no longer cost a build.
+- [ ] **External step, blocks immediate launches:** register the Product
+  creation webhook in Shopify admin (Settings -> Notifications -> Webhooks),
+  format JSON, URL = the `NETLIFY_BUILD_HOOK_URL` secret. Until this is done,
+  new products go live via the daily 5:00 AM Central check instead of in
+  minutes. Do NOT add a Product update webhook - it rebuilds on every edit.

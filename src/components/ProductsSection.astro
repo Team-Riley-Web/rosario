@@ -1,5 +1,5 @@
 ---
-import { getFeaturedProducts, getProducts } from '../lib/shopify';
+import { getFeaturedProducts, getProducts, getShopProductPriority } from '../lib/shopify';
 import type { ShopifyProduct } from '../lib/shopify';
 import ProductCard from './ProductCard.astro';
 import { ArrowLeft, ArrowRight } from '@lucide/astro';
@@ -25,6 +25,7 @@ const hasProducts = products.length > 0;
 
 const displayProducts = products;
 const defaultFilter = 'all';
+const defaultSort = 'featured';
 const defaultGroup = isFeatured ? 'all' : 'murano';
 const primaryFilters = [
   { label: 'Murano', value: 'murano' },
@@ -184,6 +185,7 @@ const productState = displayProducts.map((product, index) => {
     available: product.availableForSale,
     price: Number(product.priceRange.minVariantPrice.amount),
     bestSellingRank,
+    merchandisingPriority: getShopProductPriority(product),
   };
 });
 
@@ -256,7 +258,7 @@ const lastVisibleIndex = firstVisibleIndex + SHOP_PRODUCTS_PER_PAGE;
         activeGroup: ${JSON.stringify(defaultGroup)},
         active: ${JSON.stringify(defaultFilter)},
         searchQuery: '',
-        sortBy: 'alpha',
+        sortBy: ${JSON.stringify(defaultSort)},
         page: ${initialPage},
         perPage: ${SHOP_PRODUCTS_PER_PAGE},
         products: ${JSON.stringify(productState)},
@@ -290,7 +292,7 @@ const lastVisibleIndex = firstVisibleIndex + SHOP_PRODUCTS_PER_PAGE;
           this.activeGroup = ${JSON.stringify(defaultGroup)};
           this.active = ${JSON.stringify(defaultFilter)};
           this.searchQuery = '';
-          this.sortBy = 'alpha';
+          this.sortBy = ${JSON.stringify(defaultSort)};
           this.page = 1;
         },
         filteredProducts() {
@@ -304,6 +306,7 @@ const lastVisibleIndex = firstVisibleIndex + SHOP_PRODUCTS_PER_PAGE;
         },
         sortedProducts() {
           return [...this.filteredProducts()].sort((a, b) => {
+            if (this.sortBy === 'featured') return a.merchandisingPriority - b.merchandisingPriority || a.title.localeCompare(b.title);
             if (this.sortBy === 'best-selling') return a.bestSellingRank - b.bestSellingRank;
             if (this.sortBy === 'reverse-alpha') return b.title.localeCompare(a.title);
             if (this.sortBy === 'price-low-high') return a.price - b.price || a.title.localeCompare(b.title);
@@ -410,6 +413,7 @@ const lastVisibleIndex = firstVisibleIndex + SHOP_PRODUCTS_PER_PAGE;
                   @change="page = 1"
                   class="sort-select"
                 >
+                  <option value="featured">Featured</option>
                   <option value="alpha">Alphabetical</option>
                   <option value="best-selling">Best-selling</option>
                   <option value="reverse-alpha">Reverse alphabetical</option>

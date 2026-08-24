@@ -2,14 +2,14 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import ProductsSection, { SHOP_PRODUCTS_PER_PAGE } from '../components/ProductsSection.astro';
-import { getAllProducts } from '../lib/shopify';
+import { getAllProducts, sortShopProductsForDisplay } from '../lib/shopify';
 import wornImage from '../assets/images/ms-usa-1.png';
 import wornImageSecondary from '../assets/images/ms-usa-3.png';
 
 const allProducts = await getAllProducts();
-const products = allProducts
-  .map((product, bestSellingRank) => ({ ...product, bestSellingRank }))
-  .sort((a, b) => a.title.localeCompare(b.title));
+const products = sortShopProductsForDisplay(
+  allProducts.map((product, bestSellingRank) => ({ ...product, bestSellingRank }))
+);
 const totalPages = Math.max(1, Math.ceil(products.length / SHOP_PRODUCTS_PER_PAGE));
 ---
 

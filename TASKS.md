@@ -88,3 +88,15 @@ unchecked task unless you are starting it.
   old `Vintage` image badge and now verifies no tag is shown over the image and
   `Necklaces` appears as the product eyebrow. Verified with `npm run test:ci`:
   33 unit tests and 7 browser tests passed.
+- [x] Reorder the shop so Lisa's pieces made with Moretti beads appear first,
+  while the pictured iridescent/lampworked pieces populate last instead of
+  appearing together at the top of the product listing.
+  Done 2026-08-24: Replaced the shop's alphabetical default with a Featured
+  merchandising order: finished Moretti jewelry first, standard products in
+  the middle, and the 45-product non-Moretti Murano pendant family represented
+  in the screenshot last. Kept alphabetical, best-selling, and price sorts as
+  shopper-selectable options. Applied the same order to static pagination and
+  client-side filtering, and added regression coverage for Moretti jewelry,
+  ordinary products, the pictured pendant family, and loose Moretti beads.
+  Verified against the live 328-product Shopify catalog and with
+  `npm run test:ci`: 35 unit tests and 7 browser tests passed.

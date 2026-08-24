@@ -1,8 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
   getFeaturedProducts,
+  getShopProductPriority,
   getProducts,
   shopifyFetch,
+  sortShopProductsForDisplay,
 } from '../../src/lib/shopify';
 import { productFixture, variantId } from '../fixtures/shopify';
 
@@ -15,6 +17,57 @@ function mockFetch(body: unknown, ok = true, status = 200) {
 }
 
 describe('Shopify product utilities', () => {
+  it('orders Moretti jewelry first and the requested Murano pendant family last', () => {
+    const morettiNecklace = {
+      ...productFixture,
+      id: 'gid://shopify/Product/moretti-necklace',
+      title: 'Zinnia Moretti Necklace',
+      handle: 'zinnia-moretti-necklace',
+      tags: ['Ercole Moretti'],
+    };
+    const standardProduct = {
+      ...productFixture,
+      id: 'gid://shopify/Product/standard',
+      title: 'Amber Pearl Bracelet',
+      handle: 'amber-pearl-bracelet',
+      category: { id: 'gid://shopify/TaxonomyCategory/bracelets', name: 'Bracelets' },
+      tags: ['Pearls'],
+    };
+    const picturedPendant = {
+      ...productFixture,
+      id: 'gid://shopify/Product/pictured-pendant',
+      title: 'Aardvark Handmade Iridescent Murano Pendant',
+      handle: 'aardvark-handmade-iridescent-murano-pendant',
+      tags: ['Fine Murano', 'Sterling Silver Box', 'Venetian Jewelry'],
+    };
+
+    const original = [picturedPendant, standardProduct, morettiNecklace];
+    const sorted = sortShopProductsForDisplay(original);
+
+    expect(sorted.map(product => product.id)).toEqual([
+      morettiNecklace.id,
+      standardProduct.id,
+      picturedPendant.id,
+    ]);
+    expect(original[0].id).toBe(picturedPendant.id);
+    expect(getShopProductPriority(morettiNecklace)).toBe(0);
+    expect(getShopProductPriority(standardProduct)).toBe(1);
+    expect(getShopProductPriority(picturedPendant)).toBe(2);
+  });
+
+  it('does not treat a loose Moretti bead as a finished Moretti jewelry piece', () => {
+    const looseBead = {
+      ...productFixture,
+      title: 'Rare Ercole Moretti Pointed Oval Bead',
+      handle: 'rare-ercole-moretti-pointed-oval-bead',
+      category: { id: 'gid://shopify/TaxonomyCategory/jewelry', name: 'Jewelry' },
+      tags: ['Ercole Moretti', 'Loose Murano Beads'],
+      description: 'This listing is for one bead.',
+    };
+
+    expect(getShopProductPriority(looseBead)).toBe(1);
+  });
+
   it('returns expected product fields from a product fetch', async () => {
     mockFetch({ data: { products: { edges: [{ node: productFixture }] } } });
 

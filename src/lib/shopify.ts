@@ -130,6 +130,50 @@ export interface ShopifyProductDetail extends Omit<ShopifyProduct, 'priceRange' 
   relatedProducts?: ShopifyProduct[];
 }
 
+const DEPRIORITIZED_MURANO_PENDANT_TAGS = [
+  'fine murano',
+  'sterling silver box',
+  'venetian jewelry',
+];
+
+function normalizedProductMetadata(product: ShopifyProduct): string {
+  return [
+    product.title,
+    product.handle,
+    product.description,
+    ...product.tags,
+    ...product.collections.edges.flatMap(({ node }) => [node.title, node.handle]),
+  ].join(' ').toLowerCase();
+}
+
+function isMorettiJewelryPiece(product: ShopifyProduct): boolean {
+  if (!/\bmoretti\b/.test(normalizedProductMetadata(product))) return false;
+
+  const productKind = `${product.category?.name ?? ''} ${product.title}`.toLowerCase();
+  return /\b(necklaces?|bracelets?|earrings?|rings?|pendants?|chokers?|lariat|jewelry sets?)\b/.test(productKind);
+}
+
+function isDeprioritizedMuranoPendant(product: ShopifyProduct): boolean {
+  const description = product.description.trim().toLowerCase();
+  if (description.startsWith('murano glass beads are just breathtaking')) return true;
+
+  const tags = new Set(product.tags.map(tag => tag.trim().toLowerCase()));
+  return DEPRIORITIZED_MURANO_PENDANT_TAGS.every(tag => tags.has(tag));
+}
+
+export function getShopProductPriority(product: ShopifyProduct): number {
+  if (isDeprioritizedMuranoPendant(product)) return 2;
+  if (isMorettiJewelryPiece(product)) return 0;
+  return 1;
+}
+
+export function sortShopProductsForDisplay<T extends ShopifyProduct>(products: readonly T[]): T[] {
+  return [...products].sort((a, b) => (
+    getShopProductPriority(a) - getShopProductPriority(b)
+    || a.title.localeCompare(b.title)
+  ));
+}
+
 function isRetailProduct(product: ShopifyProduct): boolean {
   const productText = [product.title, product.handle, product.description, ...product.tags]
     .join(' ')

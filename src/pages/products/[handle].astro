@@ -30,11 +30,7 @@ const firstAvailableVariant = variants.find(v => v.id === firstAvailableId) ?? v
 const firstAvailablePrice = firstAvailableVariant?.price.amount ? formatPrice(firstAvailableVariant.price.amount) : priceDisplay;
 const hasSellingPlans = variants.some((variant) => (variant.sellingPlanAllocations?.edges.length ?? 0) > 0);
 
-function getStep(p: ShopifyProductDetail): { label: string; num: string } | null {
-  const label = p.tags[0] || p.collections.edges[0]?.node.title;
-  return label ? { label, num: '01' } : null;
-}
-const step = getStep(product);
+const productLabel = product.category?.name ?? product.collections.edges[0]?.node.title ?? null;
 const productSellingPlans = product.sellingPlanGroups?.edges.flatMap(({ node: group }) => (
   group.sellingPlans.edges.map(({ node: sellingPlan }) => {
     const deliveryOption = sellingPlan.options.find(option => /deliver|frequency|every/i.test(option.name))?.value
@@ -205,11 +201,6 @@ const variantsJson = JSON.stringify(variants.map(v => ({
                 </div>
               )}
 
-              {step && (
-                <span class="absolute top-4 left-4 bg-white text-gold-deep font-label text-[9px] tracking-[var(--tracking-wide)] uppercase px-2 py-1">
-                  {step.label}
-                </span>
-              )}
               {!product.availableForSale && (
                 <span class="absolute top-4 right-4 bg-ink text-white font-label text-[9px] tracking-[var(--tracking-wide)] uppercase px-2 py-1">
                   Sold Out
@@ -370,12 +361,12 @@ const variantsJson = JSON.stringify(variants.map(v => ({
             }`}
           >
 
-            <!-- Step / category -->
-            {step && (
+            <!-- Product category -->
+            {productLabel && (
               <div class="flex items-center gap-3 mb-5">
                 <div class="h-px bg-gold w-6"></div>
                 <span class="font-label text-[9px] tracking-[var(--tracking-widest)] uppercase text-gold">
-                  {step.label}
+                  {productLabel}
                 </span>
               </div>
             )}

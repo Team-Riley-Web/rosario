@@ -125,6 +125,14 @@ test('product buy now goes to Shopify checkout in the same tab', async ({ page }
   expect(await popupPromise).toBeNull();
 });
 
+test('product tags are not displayed over the main product image', async ({ page }) => {
+  await page.goto('/products/cobalt-millefiori-statement-necklace');
+
+  const mainImage = page.getByRole('button', { name: /Open larger product image gallery/i }).locator('..');
+  await expect(mainImage.getByText('Vintage', { exact: true })).toHaveCount(0);
+  await expect(page.getByText('Necklaces', { exact: true })).toBeVisible();
+});
+
 test('Discount links store discount and preserve tracking params', async ({ page }) => {
   let appliedDiscountCodes: string[] = [];
 

@@ -68,3 +68,23 @@ unchecked task unless you are starting it.
   A webhook-fired deploy is distinguishable only by timestamp, not title: it
   reuses the build hook's name, "Shopify product changes (daily auto-rebuild)".
   Do NOT add a Product update webhook - it rebuilds on every edit.
+- [x] Diagnose why the product listing opens with the "18 INCH NECKLACE" label
+  over the top of the main product photo, especially on newly added listings,
+  and provide a client-ready explanation.
+  Done 2026-08-24: Confirmed on the live Green & Navy product page and in a
+  clean mock-data build. The product template's `getStep()` helper selects the
+  first Shopify tag (`product.tags[0]`) and renders it as an absolutely
+  positioned badge over the main image, as well as above the product title.
+  The affected listing's first tag is `18 inch necklace`; the text is not part
+  of the uploaded photo. This behavior was inherited from an older skincare
+  "step" badge and generalized during the storefront conversion.
+- [x] Remove the automatic Shopify-tag badge from product photos and ensure
+  the product-page eyebrow uses the actual Shopify category instead of an
+  arbitrary tag such as necklace length.
+  Done 2026-08-24: Removed the top-left tag overlay from every product image.
+  Replaced the inherited `product.tags[0]` display rule with the Shopify
+  product category, falling back to the first collection only when a category
+  is unavailable. Added a Playwright regression test that failed against the
+  old `Vintage` image badge and now verifies no tag is shown over the image and
+  `Necklaces` appears as the product eyebrow. Verified with `npm run test:ci`:
+  33 unit tests and 7 browser tests passed.

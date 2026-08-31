@@ -500,7 +500,7 @@ const PRODUCT_DETAIL_QUERY = `
         name
         values
       }
-      images(first: 8) {
+      images(first: 25) {
         edges { node { url altText } }
       }
       variants(first: 20) {

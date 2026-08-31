@@ -1,24 +1,36 @@
 name: Rebuild site when products change
 
 # Product pages are baked at build time from Shopify, so a newly launched
-# product is searchable (live Storefront API) before its page exists.
+# product is searchable (live Storefront API) before its page exists. This job
+# is the ONLY trigger: it fingerprints the catalog's product HANDLES hourly and
+# calls the Netlify build hook when that set changes.
 #
-# Two triggers, deliberately:
-#   1. A Shopify "Product creation" webhook calls the Netlify build hook
-#      directly — that's the fast path, live in ~2-4 minutes.
-#   2. This daily job is the safety net. Webhook delivery is best-effort; if
-#      one is dropped, a product would otherwise never publish. It fingerprints
-#      the catalog's product HANDLES and builds only when that set changes.
+# There is deliberately NO Shopify "Product creation" webhook.
+# It used to be the fast path (~2-4 min), but it fired the instant a product
+# was published — and the shop's actual workflow is to DUPLICATE an existing
+# product, publish it, and only then spend several minutes replacing the
+# photos and title. So the webhook build reliably baked the *source* product's
+# images into the new page, and nothing ever corrected it: the handle already
+# existed, so this job's fingerprint was unchanged and it skipped the rebuild.
+# That is exactly what happened to the silver-foil-ribbon-beads necklace on
+# 2026-08-30 (published 17:48Z, photos uploaded 17:49-17:55Z, page shipped with
+# a pink necklace's photos and stayed wrong for ~22h).
+#
+# Building on a delay instead of on the webhook is both more correct and
+# cheaper: by the time the hourly check runs, the photos are done, so a listing
+# goes live once, with the right images, in one build instead of two.
 #
 # Hashing handles (not updatedAt) is what keeps this cheap: a new product adds
 # a handle and a removed one drops it, but editing a price, description, or
-# image changes nothing here — so routine edits cost zero build minutes.
-# The last fingerprint lives in the Actions cache, never in a commit, so it
-# can't itself trigger a deploy.
+# image changes nothing here — so routine edits cost zero build minutes. Any
+# build that does run rebuilds every page, so content edits ride along with the
+# next launch. The last fingerprint lives in the Actions cache, never in a
+# commit, so it can't itself trigger a deploy. This repo is public, so the
+# hourly Actions run is free.
 
 on:
   schedule:
-    - cron: '0 10 * * *' # daily at 5:00 AM Central (10:00 UTC)
+    - cron: '0 * * * *' # hourly; GitHub delays scheduled runs under load
   workflow_dispatch: {}
 
 jobs:

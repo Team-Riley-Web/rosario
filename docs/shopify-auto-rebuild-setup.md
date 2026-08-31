@@ -1,11 +1,12 @@
 # Auto-rebuild a static Shopify site when products launch
 
-Sets up a Shopify product-creation webhook that calls a Netlify build hook
-immediately when a product is created, a daily catalog check as a safety net, a
-manual GitHub rebuild action, and a redirect so brand-new product URLs degrade
-gracefully while the build runs.
+Sets up an hourly catalog check that calls a Netlify build hook when a product
+is added or removed, a manual GitHub rebuild action, and a redirect so
+brand-new product URLs degrade gracefully while the build runs.
 
 Reference implementation: this repo (rosario). Set up 2026-07-15.
+Revised 2026-08-31 — the product-creation webhook was removed; see
+"Why there is no webhook" below.
 
 ## Why this exists
 
@@ -15,26 +16,61 @@ after the last deploy shows up in search but its page doesn't exist — and a
 Netlify catch-all rewrite (`/* /index.html 200`) will silently serve the
 homepage instead of a 404.
 
-## The two triggers
-
-Both exist on purpose, and neither is redundant:
+## The trigger
 
 | Trigger | Latency | Role |
 |---|---|---|
-| Shopify **Product creation** webhook → Netlify build hook | ~2-4 min | The fast path for launches |
-| Daily scheduled catalog fingerprint (GitHub Actions) | up to 24h | Safety net for dropped webhooks |
+| Hourly scheduled catalog fingerprint (GitHub Actions) | up to ~1h | The only trigger |
 
-Webhook delivery is best-effort. Shopify retries, but if a webhook is ultimately
-dropped the product would never publish — so the daily job stays as a backstop.
-
-**Cost control is in the fingerprint.** The daily job hashes the sorted set of
+**Cost control is in the fingerprint.** The job hashes the sorted set of
 product **handles** only. A launch adds a handle and a deletion removes one, so
 either triggers a build; editing a price, description, or image changes no
 handle and therefore costs **zero build minutes**. Do not switch the
-fingerprint back to `handle + updatedAt` — that rebuilds on every product edit.
+fingerprint to `handle + updatedAt` — that rebuilds on every product edit.
+
+Content edits are not stranded by this: any build that runs rebuilds *every*
+page, so price/photo/copy edits ship with the next launch. If a content edit
+must go out immediately, run the workflow manually (Step 6) — a
+`workflow_dispatch` run always builds.
 
 The fingerprint is stored in the Actions cache, never in a commit, so it can't
 itself trigger a deploy.
+
+This repo is public, so the hourly Actions run costs nothing. On a **private**
+repo, GitHub bills Actions in 1-minute increments — hourly is ~720 min/month
+against a 2,000-minute free tier. Drop to every 2-4 hours there if that matters.
+
+## Why there is no webhook
+
+Earlier versions of this setup added a Shopify **Product creation** webhook
+pointed at the Netlify build hook, as a ~2-4 minute fast path for launches.
+**Do not do this.** It fires the instant the product is published, and the
+real-world authoring workflow is:
+
+1. Duplicate an existing product in Shopify (18 products in this catalog still
+   carry `-copy` handles from this habit).
+2. Publish it, and set the new title.
+3. *Then* spend the next 5-10 minutes deleting the source product's photos and
+   uploading the real ones.
+
+The webhook builds at step 2. The page therefore ships with the **source
+product's images**, and nothing ever corrects it — the handle already exists,
+so the fingerprint is unchanged and the scheduled job skips the rebuild. The
+page stays wrong until someone notices and rebuilds by hand.
+
+That is exactly what happened to `rosario-leonardi-rare-vintage-silver-foil-ribbon-beads-...`:
+published 2026-08-30 17:48:07Z, photos uploaded 17:49:29-17:55:34Z, and the
+live page carried a pink necklace's 8 photos for ~22 hours until a manual
+rebuild on 2026-08-31 15:40Z.
+
+Building on a delay is both more correct and cheaper: by the time the hourly
+check runs the photos are done, so a listing goes live once, with the right
+images, in **one** build instead of two.
+
+Also note **`images(first: N)`** in the product-detail query is a hard cap on
+how many photos a product page can ever show. It was 8 here while 142 of 332
+products had more than 8 photos; raised to 25 on 2026-08-31. Set it above the
+largest photo set in the catalog.
 
 ## Prerequisites
 
@@ -48,33 +84,26 @@ itself trigger a deploy.
 ## Step 1 — Add the workflow
 
 Copy `.github/workflows/rebuild-on-product-changes.yml` from this repo into the
-target repo. It carries both the daily `schedule:` safety net and a
-`workflow_dispatch` manual rebuild button. A manual run always builds,
-regardless of the fingerprint.
+target repo. It carries the hourly `schedule:` and a `workflow_dispatch` manual
+rebuild button. A manual run always builds, regardless of the fingerprint.
 
 Note: a scheduled workflow only runs from the repo's **default branch**. It has
 no effect until merged there.
 
-## Step 2 — Create the Shopify product-created webhook
+## Step 2 — Make sure no product webhook exists
 
-In Shopify admin, go to **Settings → Notifications → Webhooks → Create
-webhook** (the exact menu label can vary by admin version):
+In Shopify admin, **Settings → Notifications → Webhooks**, delete any
+**Product creation** or **Product update** webhook pointing at the Netlify
+build hook. See "Why there is no webhook" above.
 
-- Event: **Product creation**
-- Format: **JSON**
-- URL: the Netlify build hook URL created in Step 4
-
-Shopify POSTs the product event to Netlify, and Netlify immediately starts the
-branch build.
-
-**Do not add a "Product update" webhook.** It fires on every price, inventory,
-and copy edit, and each one costs a full Netlify build — this is the per-change
-pattern that blows the build budget. Product-creation only.
+A leftover creation webhook is not just redundant — it actively publishes pages
+with the wrong photos.
 
 ## Step 3 — Add the fallback redirect
 
 So unknown product URLs land on the shop page instead of the homepage during
-the gap while the build is running. In `netlify.toml`, **above** any catch-all:
+the gap before the next hourly build. In `netlify.toml`, **above** any
+catch-all:
 
 ```toml
 [[redirects]]
@@ -92,7 +121,7 @@ And the same line in `public/_redirects` if the project has one:
 Adjust `/products/*` and `/shop` to the project's actual routes. Netlify skips
 the rule when a real static page exists at the path, so existing products are
 unaffected. Use 302 (not 301) so browsers don't cache it — the page will exist
-tomorrow.
+within the hour.
 
 ## Step 4 — Create the Netlify build hook and set the GitHub secret
 
@@ -108,9 +137,7 @@ printf '%s' "$NETLIFY_BUILD_HOOK_URL" \
   | gh secret set NETLIFY_BUILD_HOOK_URL --repo "$REPO"
 ```
 
-Use the resulting `NETLIFY_BUILD_HOOK_URL` as both the GitHub secret and the
-Shopify webhook URL in Step 2. (`branch` = the branch Netlify deploys; often
-`main`.) Dashboard alternative:
+(`branch` = the branch Netlify deploys; often `main`.) Dashboard alternative:
 Site configuration → Build & deploy → Build hooks → Add build hook.
 
 To recover the URL later without creating a second hook:
@@ -124,7 +151,7 @@ netlify api listSiteBuildHooks --data "{\"site_id\":\"$SITE_ID\"}" \
 
 ```bash
 git add .github/workflows/rebuild-on-product-changes.yml netlify.toml public/_redirects
-git commit -m "Deploy immediately when Shopify products launch"
+git commit -m "Deploy when Shopify products launch"
 git push git@github.com:$REPO.git <branch>
 ```
 
@@ -138,7 +165,6 @@ create or update workflow`). Push over SSH as shown, or run
 ```bash
 gh workflow run rebuild-on-product-changes.yml --repo "$REPO"
 gh run list --repo "$REPO" --workflow=rebuild-on-product-changes.yml --limit 1
-# Then create a test product in Shopify and confirm a new Netlify deploy starts.
 ```
 
 Confirm the schedule is actually registered (a workflow with no `schedule:` on
@@ -151,18 +177,31 @@ gh api "repos/$REPO/actions/runs?per_page=5" \
 
 Look for rows with event `schedule`. Their absence means the cron is not live.
 
+To audit whether the live site's images match Shopify, compare each shop card's
+primary image to the product's current first image via the Storefront API —
+that check is what found the stale page on 2026-08-31.
+
 ## Design notes / gotchas learned the hard way
 
 - **Keep the docs and the workflow in sync.** On 2026-08-19 the daily job was
   deleted in favour of the webhook, but the webhook was never registered in
   Shopify admin — leaving no trigger at all. The docs described a system that
   wasn't running. Verify with the `event: schedule` check above.
-- On a day when a launch webhook already fired, the next scheduled run sees a
-  changed handle set and builds once more (~2 min). That duplicate is the price
-  of the safety net; it happens at most once per launch day.
-- Shopify may retry a webhook if Netlify is unavailable. Netlify builds are safe
-  to repeat; use Netlify's deploy queue to avoid overlap.
+- **A build that fires too early is worse than a build that fires late.** The
+  removed creation webhook shipped a page with another product's photos and
+  left no mechanism to correct it. Latency is recoverable; wrong content that
+  nothing re-checks is not.
+- **GitHub delays scheduled runs, sometimes by hours.** Against a `0 10 * * *`
+  cron, real runs landed at 10:36, 10:38, 20:13, 21:08, 14:57 and 14:44 UTC on
+  consecutive days, and the 2026-08-31 run had still not fired by 15:40Z. Never
+  promise a customer a time window tighter than the cadence plus several hours;
+  hourly makes the drift irrelevant.
+- Shopify may retry a build-hook POST if Netlify is unavailable. Netlify builds
+  are safe to repeat; use Netlify's deploy queue to avoid overlap.
 - A build hook URL is a credential. Keep it out of source control and rotate it
   in Netlify if it is exposed.
 - The fingerprint step fails loudly if Shopify returns zero products, rather
   than recording an empty catalog and triggering a spurious rebuild.
+- A full build here is ~1m35s locally / ~2-3 min on Netlify for 363 pages, so
+  the 300 min/month Netlify free tier is ~100 builds. Handle-only
+  fingerprinting keeps actual usage near one build per launch.

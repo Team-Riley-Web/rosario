@@ -33,10 +33,24 @@ name: Rebuild site when products change
 # the lag is unpredictable, not a fixed offset.) The Admin API reports a product
 # as soon as it exists, so the only delay left is this job's own hourly cadence.
 #
-# `status:active AND published_status:published` keeps the Admin API's view
-# equivalent to what the site can actually build: drafts and channel-unpublished
-# products are excluded, so the fingerprint still changes at PUBLISH time, which
-# is what preserves the photos-are-done-by-then property described above.
+# The filter is scoped to the HEADLESS publication, not `published_status:published`.
+# The site's Storefront token reads the "Rosario Leonardi Murano Glass Headless"
+# channel, and `published_status:published` means published to the ONLINE STORE
+# — a different set. On 2026-09-07 that gap was 32 products: active, live-looking
+# in Shopify admin, published to Online Store / Meta / Copilot, but absent from
+# Headless and therefore invisible to the build (27 of them from a single
+# 2026-06-25 batch). Fingerprinting the online-store set would track 32 handles
+# the build cannot render, so publishing a product to Online Store alone would
+# change the hash, spend a build, and still produce no page.
+#
+# Scoped to Headless the Admin API and Storefront API agree exactly — same 336
+# handles, same hash — so the fingerprint means "what the site can build," while
+# still being read from the API that has no index lag. Re-derive the ID with:
+#   { publications(first: 20) { edges { node { id name } } } }
+#
+# `status:active` additionally excludes drafts, so the fingerprint still changes
+# at PUBLISH time, which is what preserves the photos-are-done-by-then property
+# described above.
 #
 # Auth is the client credentials grant, not a permanent token. Admin-created
 # custom apps (the old Settings > Apps > Develop apps flow that handed out a
@@ -79,6 +93,9 @@ jobs:
           SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
           SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
           SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+          # Publication id of the headless channel the site's Storefront token reads.
+          # Store-internal, not a credential. See the note above to re-derive it.
+          HEADLESS_PUBLICATION_ID: '167856570555'
         run: |
           set -euo pipefail
 
@@ -127,7 +144,7 @@ jobs:
             resp=$(curl -sf "https://${SHOPIFY_STORE_DOMAIN}/admin/api/2026-01/graphql.json" \
               -H "Content-Type: application/json" \
               -H "X-Shopify-Access-Token: ${admin_token}" \
-              -d "{\"query\":\"query { products(first: 250, query: \\\"status:active AND published_status:published\\\"${after}) { pageInfo { hasNextPage endCursor } edges { node { handle } } } }\"}")
+              -d "{\"query\":\"query { products(first: 250, query: \\\"status:active AND published_status:${HEADLESS_PUBLICATION_ID}-published\\\"${after}) { pageInfo { hasNextPage endCursor } edges { node { handle } } } }\"}")
 
             # A bad token or a missing read_products scope still answers 200 with
             # an `errors` array. Left unchecked that yields an empty-but-stable

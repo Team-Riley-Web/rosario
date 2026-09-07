@@ -82,7 +82,9 @@ jobs:
       - name: Restore previous catalog fingerprint
         uses: actions/cache/restore@v4
         with:
-          path: fingerprint.txt
+          path: |
+            fingerprint.txt
+            content-fingerprint.txt
           key: products-fingerprint-${{ github.run_id }}
           restore-keys: |
             products-fingerprint-
@@ -144,7 +146,7 @@ jobs:
             resp=$(curl -sf "https://${SHOPIFY_STORE_DOMAIN}/admin/api/2026-01/graphql.json" \
               -H "Content-Type: application/json" \
               -H "X-Shopify-Access-Token: ${admin_token}" \
-              -d "{\"query\":\"query { products(first: 250, query: \\\"status:active AND published_status:${HEADLESS_PUBLICATION_ID}-published\\\"${after}) { pageInfo { hasNextPage endCursor } edges { node { handle } } } }\"}")
+              -d "{\"query\":\"query { products(first: 250, query: \\\"status:active AND published_status:${HEADLESS_PUBLICATION_ID}-published\\\"${after}) { pageInfo { hasNextPage endCursor } edges { node { handle updatedAt } } } }\"}")
 
             # A bad token or a missing read_products scope still answers 200 with
             # an `errors` array. Left unchecked that yields an empty-but-stable
@@ -155,7 +157,7 @@ jobs:
               exit 1
             fi
 
-            page=$(echo "$resp" | jq -r '.data.products.edges[].node.handle')
+            page=$(echo "$resp" | jq -r '.data.products.edges[] | "\(.node.handle)\t\(.node.updatedAt)"')
             catalog="${catalog}${page}"$'\n'
             if [ "$(echo "$resp" | jq -r '.data.products.pageInfo.hasNextPage')" = "true" ]; then
               cursor=$(echo "$resp" | jq -r '.data.products.pageInfo.endCursor')
@@ -164,13 +166,18 @@ jobs:
             fi
           done
 
-          count=$(echo "$catalog" | grep -c . || true)
+          # `catalog` is now handle<TAB>updatedAt; piping through cut -f1 reproduces
+          # the old handle-only byte stream exactly, so the stored fingerprint stays
+          # continuous and adding the content watch below cannot trigger a spurious
+          # build. Do NOT hoist this into a variable: $(...) strips the trailing
+          # newlines the old stream carried, which silently changes the hash.
+          count=$(echo "$catalog" | cut -f1 | grep -c . || true)
           if [ "$count" -eq 0 ]; then
             echo "Shopify returned zero products — refusing to fingerprint (likely an API problem)" >&2
             exit 1
           fi
 
-          fingerprint=$(echo "$catalog" | sort | sha256sum | cut -d' ' -f1)
+          fingerprint=$(echo "$catalog" | cut -f1 | sort | sha256sum | cut -d' ' -f1)
           previous=$(cat fingerprint.txt 2>/dev/null || echo "none")
           echo "Products: $count | fingerprint: $fingerprint | previous: $previous"
 
@@ -182,6 +189,41 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
           printf '%s' "$fingerprint" > fingerprint.txt
+
+          # ---- content watch: MEASUREMENT ONLY, never triggers a build ----
+          # Hashing handles alone means no content edit (price, photo, title,
+          # description) ever reaches the site until an unrelated launch forces a
+          # full rebuild — the failure behind the 2026-08-30 silver-foil-ribbon
+          # incident. Hashing updatedAt instead would fix that, but nobody knows
+          # what it costs in Netlify build minutes against a 300 min/month budget,
+          # so this measures the answer before anything changes.
+          #
+          # Products touched inside the quiet period are excluded: a listing being
+          # actively edited must not count as settled, or the rebuild it implies
+          # would bake a half-finished page. Once it goes quiet it enters the hash
+          # on its own and self-heals, with no human pinged.
+          #
+          # Read a week of these with:
+          #   gh run list --workflow=rebuild-on-product-changes.yml --limit 200 \
+          #     --json databaseId -q '.[].databaseId' \
+          #   | xargs -I{} gh run view {} --log \
+          #   | grep -o 'CONTENT-WATCH: [a-zA-Z ]*'
+          # WOULD-REBUILD count x ~2-3 min = the monthly cost of switching.
+          QUIET_MINUTES=20
+          cutoff=$(date -u -d "$QUIET_MINUTES minutes ago" '+%Y-%m-%dT%H:%M:%SZ')
+          settling=$(echo "$catalog" | awk -F'\t' -v c="$cutoff" 'NF==2 && $2 >= c' | grep -c . || true)
+          content_fp=$(echo "$catalog" \
+            | awk -F'\t' -v c="$cutoff" 'NF==2 && $2 < c { print $1 ":" $2 }' \
+            | sort | sha256sum | cut -d' ' -f1)
+          prev_content=$(cat content-fingerprint.txt 2>/dev/null || echo "none")
+          if [ "$prev_content" = "none" ]; then
+            echo "CONTENT-WATCH: baseline (first run, nothing to compare) | settling: $settling"
+          elif [ "$content_fp" != "$prev_content" ]; then
+            echo "CONTENT-WATCH: WOULD-REBUILD | settling: $settling | $content_fp"
+          else
+            echo "CONTENT-WATCH: would-skip | settling: $settling"
+          fi
+          printf '%s' "$content_fp" > content-fingerprint.txt
 
       - name: Trigger Netlify build
         if: steps.check.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
@@ -195,5 +237,7 @@ jobs:
       - name: Remember catalog fingerprint
         uses: actions/cache/save@v4
         with:
-          path: fingerprint.txt
+          path: |
+            fingerprint.txt
+            content-fingerprint.txt
           key: products-fingerprint-${{ github.run_id }}

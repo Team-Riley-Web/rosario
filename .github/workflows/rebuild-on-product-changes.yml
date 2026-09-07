@@ -82,6 +82,16 @@ jobs:
         run: |
           set -euo pipefail
 
+          # An empty secret reads as a valid-looking request that fails obscurely
+          # downstream (a blank one got stored once because `gh secret set`
+          # prompts interactively and had no tty). Name it here instead.
+          for v in SHOPIFY_STORE_DOMAIN SHOPIFY_CLIENT_ID SHOPIFY_CLIENT_SECRET; do
+            if [ -z "${!v:-}" ]; then
+              echo "Secret $v is unset or empty." >&2
+              exit 1
+            fi
+          done
+
           # No -f: a 401 here should print Shopify's error body, not die silently.
           token_resp=$(curl -s -X POST \
             "https://${SHOPIFY_STORE_DOMAIN}/admin/oauth/access_token" \
@@ -90,10 +100,13 @@ jobs:
             --data-urlencode "client_id=${SHOPIFY_CLIENT_ID}" \
             --data-urlencode "client_secret=${SHOPIFY_CLIENT_SECRET}")
 
-          admin_token=$(echo "$token_resp" | jq -r '.access_token // empty')
+          # The endpoint does not always answer JSON on failure, so jq must not be
+          # the thing that reports the error — piping a plain-text 401 into it
+          # aborts the step under `set -e` before any diagnosis is printed.
+          admin_token=$(echo "$token_resp" | jq -r '.access_token // empty' 2>/dev/null || true)
           if [ -z "$admin_token" ]; then
-            echo "Client credentials exchange returned no access_token." >&2
-            echo "$token_resp" | jq -r 'del(.access_token)' >&2
+            echo "Client credentials exchange returned no access_token. Response:" >&2
+            echo "$token_resp" | head -c 500 | sed -E 's/shp[a-z]{2}_[A-Za-z0-9]+/<redacted>/g' >&2
             exit 1
           fi
           echo "::add-mask::$admin_token"

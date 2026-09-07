@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import heroImage from '../assets/images/beader-header-1.png';
+
+// Served by Netlify (see netlify.toml) at /products/<handle> for any handle that
+// has no baked page yet — a listing published to Shopify since the last build.
+// The rebuild-on-product-changes workflow picks those up within the hour, so
+// this is a short-lived state, not a dead end.
+//
+// It answers with 404, not 200, on purpose: the page genuinely does not exist
+// yet, and a 200 would let Facebook cache THIS card for a product link and keep
+// serving it after the real page ships. Netlify still renders this body, so a
+// visitor who clicks gets the explanation either way.
+---
+
+<Layout
+  title="This Listing Is Going Live Shortly — Rosario Leonardi Murano Glass"
+  description="This piece was just added to the shop and its page is still publishing. It will be ready within the hour."
+  noindex
+>
+  <Nav />
+  <main>
+    <section class="relative overflow-hidden bg-ink px-6 pb-24 pt-40 text-white sm:px-10">
+      <img
+        src={heroImage.src}
+        alt=""
+        class="absolute inset-0 h-full w-full object-cover object-[20%_center] sm:object-center"
+        aria-hidden="true"
+      />
+      <div class="absolute inset-0 bg-ink/75" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-[1040px] text-center">
+        <div class="mb-8 flex items-center justify-center gap-4">
+          <div class="h-px w-6 bg-gold"></div>
+          <span class="font-label text-[10px] uppercase tracking-[var(--tracking-widest)] text-gold">Almost Ready</span>
+          <div class="h-px w-6 bg-gold"></div>
+        </div>
+        <h1 class="mb-7 font-display text-[40px] font-light leading-[1.1] tracking-normal md:text-[68px]">
+          This Listing Is Going Live Shortly
+        </h1>
+        <p class="mx-auto max-w-[660px] font-sans text-[16px] font-light leading-[1.85] text-white/68">
+          This piece was just added to the shop and its page is still publishing — usually ready
+          within the hour. Nothing is wrong with your link, and the piece has not sold.
+        </p>
+        <div class="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a href="/shop" class="btn-primary btn-primary--accent">Browse the Shop</a>
+          <a href="/contact" class="btn-ghost">Ask About This Piece</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

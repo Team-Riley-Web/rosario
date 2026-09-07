@@ -18,7 +18,35 @@ name: Rebuild site when products change
 #
 # Building on a delay instead of on the webhook is both more correct and
 # cheaper: by the time the hourly check runs, the photos are done, so a listing
-# goes live once, with the right images, in one build instead of two.
+# goes live once, with the right images, in one build instead of two. The DELAY
+# is what this job's hourly cadence buys us — it must not also come from the
+# API being slow to admit the product exists (see below).
+#
+# The catalog is read from the ADMIN API, not the Storefront API.
+# The Storefront `products` connection is backed by an index that can lag badly
+# behind reality: untitled-sep6_16-53-20 was created 2026-09-06T21:53Z and did
+# not appear in that list until somewhere between 2026-09-07T15:38Z and 19:24Z
+# — ~21h. Six consecutive hourly runs fingerprinted an identical 335 handles,
+# saw no change, and skipped the build, so the product had no page and Netlify
+# served the pending placeholder for links the shop owner had already posted to
+# Facebook. (A sibling product, untitled-sep4_22-08-26, showed up in 2.3h, so
+# the lag is unpredictable, not a fixed offset.) The Admin API reports a product
+# as soon as it exists, so the only delay left is this job's own hourly cadence.
+#
+# `status:active AND published_status:published` keeps the Admin API's view
+# equivalent to what the site can actually build: drafts and channel-unpublished
+# products are excluded, so the fingerprint still changes at PUBLISH time, which
+# is what preserves the photos-are-done-by-then property described above.
+#
+# Auth is the client credentials grant, not a permanent token. Admin-created
+# custom apps (the old Settings > Apps > Develop apps flow that handed out a
+# permanent shpat_...) were discontinued 2026-01-01, and Dev Dashboard apps
+# expose only a client ID and secret. Those exchange for an access token that
+# lives 24h, so this job mints a fresh one per run and never stores or refreshes
+# anything. Requirements: the app must be installed on the store, the store and
+# app must sit in the same Shopify organization, and the app version must carry
+# read_products (the grant has no scope parameter — scopes are a readback of the
+# Dev Dashboard version, which is why the scope is asserted below).
 #
 # Hashing handles (not updatedAt) is what keeps this cheap: a new product adds
 # a handle and a removed one drops it, but editing a price, description, or
@@ -49,18 +77,54 @@ jobs:
         id: check
         env:
           SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
-          SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.SHOPIFY_STOREFRONT_TOKEN }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
         run: |
           set -euo pipefail
+
+          # No -f: a 401 here should print Shopify's error body, not die silently.
+          token_resp=$(curl -s -X POST \
+            "https://${SHOPIFY_STORE_DOMAIN}/admin/oauth/access_token" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            --data-urlencode "grant_type=client_credentials" \
+            --data-urlencode "client_id=${SHOPIFY_CLIENT_ID}" \
+            --data-urlencode "client_secret=${SHOPIFY_CLIENT_SECRET}")
+
+          admin_token=$(echo "$token_resp" | jq -r '.access_token // empty')
+          if [ -z "$admin_token" ]; then
+            echo "Client credentials exchange returned no access_token." >&2
+            echo "$token_resp" | jq -r 'del(.access_token)' >&2
+            exit 1
+          fi
+          echo "::add-mask::$admin_token"
+
+          # The grant can't request scopes, so a Dev Dashboard version missing
+          # read_products yields a valid token that returns an empty catalog.
+          # Assert instead, or we're back to a silently wrong fingerprint.
+          granted=$(echo "$token_resp" | jq -r '.scope // ""')
+          case " ${granted//,/ } " in
+            *" read_products "*) ;;
+            *) echo "App version lacks read_products (granted: '$granted')" >&2; exit 1 ;;
+          esac
 
           catalog=""
           cursor=""
           while :; do
             if [ -z "$cursor" ]; then after=""; else after=", after: \\\"$cursor\\\""; fi
-            resp=$(curl -sf "https://${SHOPIFY_STORE_DOMAIN}/api/2026-01/graphql.json" \
+            resp=$(curl -sf "https://${SHOPIFY_STORE_DOMAIN}/admin/api/2026-01/graphql.json" \
               -H "Content-Type: application/json" \
-              -H "X-Shopify-Storefront-Access-Token: ${SHOPIFY_STOREFRONT_TOKEN}" \
-              -d "{\"query\":\"query { products(first: 250${after}) { pageInfo { hasNextPage endCursor } edges { node { handle } } } }\"}")
+              -H "X-Shopify-Access-Token: ${admin_token}" \
+              -d "{\"query\":\"query { products(first: 250, query: \\\"status:active AND published_status:published\\\"${after}) { pageInfo { hasNextPage endCursor } edges { node { handle } } } }\"}")
+
+            # A bad token or a missing read_products scope still answers 200 with
+            # an `errors` array. Left unchecked that yields an empty-but-stable
+            # catalog, i.e. a silently wrong fingerprint — fail loudly instead.
+            if [ "$(echo "$resp" | jq -r 'has("errors")')" = "true" ]; then
+              echo "Shopify Admin API returned errors:" >&2
+              echo "$resp" | jq -r '.errors' >&2
+              exit 1
+            fi
+
             page=$(echo "$resp" | jq -r '.data.products.edges[].node.handle')
             catalog="${catalog}${page}"$'\n'
             if [ "$(echo "$resp" | jq -r '.data.products.pageInfo.hasNextPage')" = "true" ]; then

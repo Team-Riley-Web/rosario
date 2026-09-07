@@ -5,14 +5,19 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# Products added in Shopify after the last build have no static page yet
-# (rebuilt daily by the rebuild-on-product-changes workflow). Send those to
-# the shop page instead of letting the catch-all serve the homepage.
-# Netlify skips this rule when a real /products/<handle> page exists.
+# Products published in Shopify since the last build have no static page yet
+# (rebuild-on-product-changes picks them up within the hour). Serve the
+# "going live shortly" page instead of letting the catch-all render the
+# homepage. Netlify skips this rule once a real /products/<handle> page exists.
+#
+# 404, not 200: the page truly does not exist yet, and a 200 would let Facebook
+# cache the pending card against the product's URL and keep showing it after
+# the real page ships. Netlify still serves this body, so a visitor who clicks
+# gets the explanation.
 [[redirects]]
   from = "/products/*"
-  to = "/shop"
-  status = "302"
+  to = "/listing-pending/index.html"
+  status = "404"
 
 [[redirects]]
   from = "/discount/*"

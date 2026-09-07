@@ -11,12 +11,14 @@ export interface Props {
   title?: string;
   description?: string;
   image?: string;
+  noindex?: boolean;
 }
 
 const {
   title = 'Rosario Leonardi Murano Glass',
   description = 'One-of-a-kind Murano glass jewelry and beads with verified Venetian and European sourcing.',
   image = '/Rosario-Leonardi-Social-Share-Black-v2.png',
+  noindex = false,
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL('https://rosarioleonardi.shop');
@@ -36,6 +38,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, siteUrl).href;
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
 
     <!-- Open Graph -->
     <meta property="og:site_name" content="Rosario Leonardi Murano Glass" />

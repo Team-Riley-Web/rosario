@@ -32,6 +32,21 @@ function handleShopifyError(context: string, error: unknown): void {
   console.warn(`${context}:`, message);
 }
 
+// A production build makes one of these calls per product (~370 and climbing),
+// and on Netlify SHOULD_THROW_SHOPIFY_ERRORS is set, so a single transient
+// hiccup used to fail the whole deploy. Worse, the rebuild workflow saves its
+// catalog fingerprint whether or not Netlify's build succeeded, so a deploy lost
+// to one 503 is not retried until the catalog next changes. Retrying transient
+// statuses here is what keeps that from being a coin flip on every build.
+//
+// Only genuinely transient failures are retried. A GraphQL error or a 4xx is
+// deterministic — repeating it just delays a build that was always going to
+// fail, and hides the real cause behind a timeout.
+const RETRYABLE_STATUSES = new Set([429, 500, 502, 503, 504]);
+const FETCH_ATTEMPTS = 3;
+
+const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
+
 export async function shopifyFetch<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
   if (SHOPIFY_DOMAIN === 'your-store.myshopify.com' && !USE_MOCKS) {
     throw new Error('Missing Shopify store domain');
@@ -41,19 +56,44 @@ export async function shopifyFetch<T>(query: string, variables: Record<string, u
     throw new Error('Missing Shopify Storefront API token');
   }
 
-  const res = await fetch(STOREFRONT_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN,
-    },
-    body: JSON.stringify({ query, variables }),
-  });
+  let lastTransient: Error | undefined;
 
-  if (!res.ok) throw new Error(`Shopify API error: ${res.status}`);
-  const json = await res.json();
-  if (json.errors) throw new Error(json.errors[0].message);
-  return json.data as T;
+  for (let attempt = 1; attempt <= FETCH_ATTEMPTS; attempt += 1) {
+    const isLastAttempt = attempt === FETCH_ATTEMPTS;
+    let res: Response;
+
+    try {
+      res = await fetch(STOREFRONT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN,
+        },
+        body: JSON.stringify({ query, variables }),
+      });
+    } catch (error) {
+      // fetch() itself rejecting means DNS/TLS/socket — always worth another go.
+      lastTransient = error instanceof Error ? error : new Error(String(error));
+      if (isLastAttempt) throw lastTransient;
+      await sleep(500 * 2 ** (attempt - 1));
+      continue;
+    }
+
+    if (!res.ok) {
+      const error = new Error(`Shopify API error: ${res.status}`);
+      if (!RETRYABLE_STATUSES.has(res.status) || isLastAttempt) throw error;
+      lastTransient = error;
+      await sleep(500 * 2 ** (attempt - 1));
+      continue;
+    }
+
+    const json = await res.json();
+    if (json.errors) throw new Error(json.errors[0].message);
+    return json.data as T;
+  }
+
+  // Unreachable: the final attempt either returns or throws.
+  throw lastTransient ?? new Error('Shopify fetch failed');
 }
 
 export interface ShopifyProduct {

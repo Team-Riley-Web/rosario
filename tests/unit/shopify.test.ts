@@ -150,4 +150,59 @@ describe('Shopify product utilities', () => {
 
     await expect(shopifyFetch('query Test')).rejects.toThrow('Access denied');
   });
+
+  // A build issues one call per product, so a lone transient 503 used to take
+  // the whole deploy with it. Retry the transient cases and only those.
+  it('retries a transient 503 and succeeds', async () => {
+    const responses = [
+      { ok: false, status: 503, json: async () => ({}) },
+      { ok: true, status: 200, json: async () => ({ data: { ok: true } }) },
+    ];
+    const fetchMock = vi.fn(async () => responses.shift());
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(shopifyFetch('query Test')).resolves.toEqual({ ok: true });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('gives up after exhausting attempts on a persistent 503', async () => {
+    const fetchMock = vi.fn(async () => ({ ok: false, status: 503, json: async () => ({}) }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(shopifyFetch('query Test')).rejects.toThrow('Shopify API error: 503');
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it('does not retry a deterministic 400', async () => {
+    const fetchMock = vi.fn(async () => ({ ok: false, status: 400, json: async () => ({}) }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(shopifyFetch('query Test')).rejects.toThrow('Shopify API error: 400');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not retry a GraphQL error', async () => {
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      json: async () => ({ errors: [{ message: 'Field does not exist' }] }),
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(shopifyFetch('query Test')).rejects.toThrow('Field does not exist');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('retries when fetch itself rejects', async () => {
+    let calls = 0;
+    const fetchMock = vi.fn(async () => {
+      calls += 1;
+      if (calls === 1) throw new TypeError('network error');
+      return { ok: true, status: 200, json: async () => ({ data: { ok: true } }) };
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(shopifyFetch('query Test')).resolves.toEqual({ ok: true });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
 });

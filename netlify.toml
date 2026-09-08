@@ -6,7 +6,7 @@
   NODE_VERSION = "22"
 
 # Products published in Shopify since the last build have no static page yet
-# (rebuild-on-product-changes picks them up within the hour). Serve the
+# (rebuild-on-product-changes picks them up on its next scheduled run). Serve the
 # "going live shortly" page instead of letting the catch-all render the
 # homepage. Netlify skips this rule once a real /products/<handle> page exists.
 #

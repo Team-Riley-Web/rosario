@@ -2,7 +2,7 @@ name: Rebuild site when products change
 
 # Product pages are baked at build time from Shopify, so a newly launched
 # product is searchable (live Storefront API) before its page exists. This job
-# is the ONLY trigger: it fingerprints the catalog's product HANDLES hourly and
+# is the ONLY trigger: it fingerprints the catalog's product HANDLES on a schedule
 # calls the Netlify build hook when that set changes.
 #
 # There is deliberately NO Shopify "Product creation" webhook.
@@ -17,21 +17,21 @@ name: Rebuild site when products change
 # a pink necklace's photos and stayed wrong for ~22h).
 #
 # Building on a delay instead of on the webhook is both more correct and
-# cheaper: by the time the hourly check runs, the photos are done, so a listing
+# cheaper: by the time the next check runs, the photos are done, so a listing
 # goes live once, with the right images, in one build instead of two. The DELAY
-# is what this job's hourly cadence buys us — it must not also come from the
+# is what this job's scheduled cadence buys us — it must not also come from the
 # API being slow to admit the product exists (see below).
 #
 # The catalog is read from the ADMIN API, not the Storefront API.
 # The Storefront `products` connection is backed by an index that can lag badly
 # behind reality: untitled-sep6_16-53-20 was created 2026-09-06T21:53Z and did
 # not appear in that list until somewhere between 2026-09-07T15:38Z and 19:24Z
-# — ~21h. Six consecutive hourly runs fingerprinted an identical 335 handles,
+# — ~21h. Six consecutive runs fingerprinted an identical 335 handles,
 # saw no change, and skipped the build, so the product had no page and Netlify
 # served the pending placeholder for links the shop owner had already posted to
 # Facebook. (A sibling product, untitled-sep4_22-08-26, showed up in 2.3h, so
 # the lag is unpredictable, not a fixed offset.) The Admin API reports a product
-# as soon as it exists, so the only delay left is this job's own hourly cadence.
+# as soon as it exists, so the only delay left is this job's own cadence.
 #
 # The filter is scoped to the HEADLESS publication, not `published_status:published`.
 # The site's Storefront token reads the "Rosario Leonardi Murano Glass Headless"
@@ -62,17 +62,31 @@ name: Rebuild site when products change
 # read_products (the grant has no scope parameter — scopes are a readback of the
 # Dev Dashboard version, which is why the scope is asserted below).
 #
+# CADENCE: this asks for hourly and does NOT get it. Measured over 90 scheduled
+# runs to 2026-09-07, GitHub delivered ~26% of an hourly schedule: median gap
+# 4.2h over the last week, 6.5h worst, and a 33.6h gap inside the last 30 days.
+# Not one of 89 gaps was under 1.5h. GitHub's own docs name the cause — the
+# schedule event is delayed under load, "high load times include the start of
+# every hour", and queued jobs "may be dropped" — with the documented fix being
+# to run at a different minute. Hence :37, not :00.
+#
+# So treat the delay this job introduces as "a few hours", not "an hour", and
+# don't promise customers otherwise (src/pages/listing-pending.astro says a few
+# hours for exactly this reason). Re-measure with:
+#   gh run list --workflow=rebuild-on-product-changes.yml --limit 100 \
+#     --json createdAt,event -q '.[] | select(.event=="schedule") | .createdAt'
+#
 # Hashing handles (not updatedAt) is what keeps this cheap: a new product adds
 # a handle and a removed one drops it, but editing a price, description, or
 # image changes nothing here — so routine edits cost zero build minutes. Any
 # build that does run rebuilds every page, so content edits ride along with the
 # next launch. The last fingerprint lives in the Actions cache, never in a
 # commit, so it can't itself trigger a deploy. This repo is public, so the
-# hourly Actions run is free.
+# scheduled Actions run is free.
 
 on:
   schedule:
-    - cron: '0 * * * *' # hourly; GitHub delays scheduled runs under load
+    - cron: '37 * * * *' # see the cadence note above; never use :00
   workflow_dispatch: {}
 
 jobs:

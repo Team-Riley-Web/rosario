@@ -5,8 +5,10 @@ import heroImage from '../assets/images/beader-header-1.png';
 
 // Served by Netlify (see netlify.toml) at /products/<handle> for any handle that
 // has no baked page yet — a listing published to Shopify since the last build.
-// The rebuild-on-product-changes workflow picks those up within the hour, so
-// this is a short-lived state, not a dead end.
+// The rebuild-on-product-changes workflow picks those up on its next run, so
+// this is a transient state, not a dead end. Do NOT promise "within the hour"
+// here: that cron asks for hourly and measurably gets ~4h (see the cadence note
+// in the workflow), so an hour is a promise the infrastructure does not keep.
 //
 // It answers with 404, not 200, on purpose: the page genuinely does not exist
 // yet, and a 200 would let Facebook cache THIS card for a product link and keep
@@ -16,7 +18,7 @@ import heroImage from '../assets/images/beader-header-1.png';
 
 <Layout
   title="This Listing Is Going Live Shortly — Rosario Leonardi Murano Glass"
-  description="This piece was just added to the shop and its page is still publishing. It will be ready within the hour."
+  description="This piece was just added to the shop and its page is still publishing. It will be ready shortly."
   noindex
 >
   <Nav />
@@ -40,7 +42,7 @@ import heroImage from '../assets/images/beader-header-1.png';
         </h1>
         <p class="mx-auto max-w-[660px] font-sans text-[16px] font-light leading-[1.85] text-white/68">
           This piece was just added to the shop and its page is still publishing — usually ready
-          within the hour. Nothing is wrong with your link, and the piece has not sold.
+          within a few hours. Nothing is wrong with your link, and the piece has not sold.
         </p>
         <div class="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a href="/shop" class="btn-primary btn-primary--accent">Browse the Shop</a>

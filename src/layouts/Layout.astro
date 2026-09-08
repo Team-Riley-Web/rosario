@@ -21,7 +21,7 @@ const {
   noindex = false,
 } = Astro.props;
 
-const siteUrl = Astro.site ?? new URL('https://rosarioleonardi.shop');
+const siteUrl = Astro.site ?? new URL('https://www.rosarioleonardi.shop');
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const ogImage = image.startsWith('http') ? image : new URL(image, siteUrl).href;
 ---

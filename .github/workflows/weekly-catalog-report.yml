@@ -46,12 +46,18 @@ jobs:
           # Grepping the log for CONTENT-WATCH also matches the job's echoed
           # source, including the comment that documents the pattern. Echoed lines
           # carry an ANSI 36;1m prefix; real output does not.
+          # Pair each verdict with its run's timestamp. The rate must be measured
+          # over the window that produced verdicts, not over all run history — the
+          # content watch started long after this job did, and dividing by the
+          # longer window understated the cost by ~50x on the first report.
           : > verdicts.txt
-          for id in $(jq -r '.[].databaseId' runs.json); do
-            gh run view "$id" --log 2>/dev/null \
-              | grep 'CONTENT-WATCH' | grep -v '36;1m' \
-              | sed -E 's/.*(CONTENT-WATCH: [A-Za-z-]+).*/\1/' | head -1 >> verdicts.txt || true
-          done
+          jq -r '.[] | "\(.databaseId)\t\(.createdAt)"' runs.json \
+          | while IFS="$(printf '\t')" read -r id created; do
+              verdict=$(gh run view "$id" --log 2>/dev/null \
+                | grep 'CONTENT-WATCH' | grep -v '36;1m' \
+                | sed -E 's/.*(CONTENT-WATCH: [A-Za-z-]+).*/\1/' | head -1)
+              [ -n "$verdict" ] && printf '%s\t%s\n' "$created" "$verdict" >> verdicts.txt
+            done
 
           python3 - <<'PY' > report.md
           import json, collections, statistics
@@ -84,24 +90,31 @@ jobs:
                     f"({(now - sched[-1]).total_seconds() / 3600:.1f}h ago).")
 
           print("\n### Content watch — would content-aware rebuilds fit the budget?\n")
-          tally = collections.Counter(
-              l.strip().replace('CONTENT-WATCH: ', '')
-              for l in open('verdicts.txt') if l.strip()
-          )
+          rows = []
+          for line in open('verdicts.txt'):
+              line = line.strip()
+              if not line or '\t' not in line:
+                  continue
+              when, verdict = line.split('\t', 1)
+              rows.append((parse(when), verdict.replace('CONTENT-WATCH: ', '')))
+
+          tally = collections.Counter(v for _, v in rows)
           would = tally.get('WOULD-REBUILD', 0)
-          total = sum(tally.values())
+          total = len(rows)
           if not total:
               print("No verdicts found — the extraction may have broken again. Check a run log by hand.")
           else:
               for k, v in tally.most_common():
                   print(f"- `{k}`: **{v}**")
-              days_covered = (sched[-1] - sched[0]).days if len(sched) > 1 else 0
-              if days_covered >= 3:
-                  per_month = would * 30 / days_covered
-                  print(f"\nThat is ~**{per_month:.0f} extra builds/month** at the current rate.")
-                  if total < 20:
-                      print(f"\n> Only {total} verdicts so far — treat this as a smoke test, "
-                            "not a number to decide on. Give it a couple more weeks.")
+              # Window = first to last run that actually reported a verdict.
+              stamps = [t for t, _ in rows]
+              hours = (max(stamps) - min(stamps)).total_seconds() / 3600
+              print(f"\nMeasured over {hours:.0f}h of watch history "
+                    f"({min(stamps):%Y-%m-%d %H:%M} to {max(stamps):%Y-%m-%d %H:%M} UTC).")
+              if hours >= 48:
+                  per_month = would * (24 * 30) / hours
+                  builds = 'build' if round(per_month) == 1 else 'builds'
+                  print(f"\nThat is ~**{per_month:.0f} extra {builds}/month** at the current rate.\n")
                   for mins in (2.0, 3.0):
                       print(f"- at {mins:g} min/build: **{per_month * mins:.0f} min/month** "
                             f"of a 300 min budget ({100 * per_month * mins / 300:.0f}%)")
@@ -109,7 +122,8 @@ jobs:
                         "instead of handles alone and the content-staleness class disappears. "
                         "Over budget means keep handle-only, or rebuild content changes every Nth run.")
               else:
-                  print(f"\nOnly {days_covered} days of history — too early to extrapolate.")
+                  print(f"\n> Only {hours:.0f}h of watch history and {total} verdicts — too early to "
+                        "extrapolate a monthly cost. Give it a couple more weeks.")
 
           if fails:
               print(f"\n### Failed runs ({len(fails)})\n")

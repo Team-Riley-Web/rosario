@@ -23,32 +23,38 @@ const trustItems = [
   'Personally Sourced From Venice',
 ];
 
+// group=all is load-bearing. /shop defaults its primary filter to the Murano
+// group, so a bare ?filter=<category> lands on Murano-only and silently hides
+// everything pearl or mixed-material: rings showed 1 of 17, bracelets 17 of 38.
+// These tiles browse a CATEGORY, not a material, so they must say so.
+// Fixed by setting the group here rather than changing /shop's default, which
+// is deliberately Murano-first.
 const collections = [
   {
     title: 'Necklaces',
     body: 'Statement necklaces hand-strung with authentic Murano glass beads. Each piece, an unrepeatable arrangement of color and light.',
-    href: '/shop?filter=necklaces',
+    href: '/shop?filter=necklaces&group=all',
     image: necklacesImage,
     alt: 'Model wearing a bold Murano glass necklace',
   },
   {
     title: 'Earrings',
     body: 'Drop earrings and studs set with Millefiori beads and lampwork glass. Weightless, vivid, impossible to ignore.',
-    href: '/shop?filter=earrings',
+    href: '/shop?filter=earrings&group=all',
     image: earringsImage,
     alt: 'Murano glass earrings styled in warm natural light',
   },
   {
     title: 'Bracelets',
     body: 'Wrist pieces in vintage Millefiori, signature beads, and freshwater pearl. Worn alone or layered.',
-    href: '/shop?filter=bracelets',
+    href: '/shop?filter=bracelets&group=all',
     image: braceletsImage,
     alt: 'Murano glass bracelet and jewelry styling',
   },
   {
     title: 'Rings',
     body: 'Adjustable rings set with single signature beads: cobalt, amber, teal. Understated or bold, depending on the glass.',
-    href: '/shop?filter=rings',
+    href: '/shop?filter=rings&group=all',
     image: ringsImage,
     alt: 'Murano glass ring styling',
   },
@@ -147,14 +153,14 @@ const collections = [
         <div class="coll-grid">
           {collections.map((collection, index) => (
             <article class={`coll-card reveal reveal-delay-${Math.min(index, 3)}`}>
-              <a href={collection.href} class="coll-img-wrap" aria-label={`Shop ${collection.title}`}>
+              <div class="coll-img-wrap">
                 <img
                   src={collection.image.src}
                   alt={collection.alt}
                   class="product-img"
                   loading="lazy"
                 />
-              </a>
+              </div>
               <div class="coll-body">
                 <h3 class="coll-title">{collection.title}</h3>
                 <p class="coll-desc">{collection.body}</p>
@@ -508,11 +514,33 @@ const collections = [
     background: var(--border);
     gap: 1px;
   }
+  /* The whole card is the click target, not just the image and the gold link.
+     One anchor stretched over the card rather than an <a> wrapping the whole
+     <article>: nesting the image link inside a card-wide link is invalid HTML,
+     and the two separate links this replaces announced as two identical entries
+     to a screen reader. The CTA keeps the accessible name ("Shop Rings").
+     Trade-off: the overlay sits above the text, so the title and description
+     can no longer be selected with the mouse. That is inherent to the pattern
+     (the pointer hit-tests to the anchor, never to the h3) and is the accepted
+     cost for a marketing tile whose whole job is to be clicked. */
   .coll-card {
     background: var(--surface);
     display: flex;
     flex-direction: column;
     transition: background 0.3s ease;
+    position: relative;
+  }
+  .coll-card .link-arrow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  /* Keep the focus ring on the visible link rather than the whole card, so
+     keyboard users see what they are activating. */
+  .coll-card .link-arrow:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
   }
   .coll-card:hover { background: var(--surface-lift); }
   .coll-card:hover .product-img { transform: scale(1.04); }

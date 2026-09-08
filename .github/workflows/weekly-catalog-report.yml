@@ -1,0 +1,143 @@
+name: Weekly catalog report
+
+# The rebuild job's own numbers are only visible if someone goes looking, and the
+# two questions worth watching both need history rather than a single run:
+#
+#   1. Is GitHub actually delivering the schedule? It asks hourly and measurably
+#      does not get it (see the cadence note in rebuild-on-product-changes.yml).
+#   2. Would content-aware rebuilds fit the 300 min/month Netlify budget? The
+#      CONTENT-WATCH lines answer that, but only in aggregate.
+#
+# So this tallies both weekly and comments on a long-lived issue, which GitHub
+# emails to anyone watching the repo. Nobody has to remember to check.
+#
+# It reads run history only — it never triggers a build and never touches Shopify.
+
+on:
+  schedule:
+    - cron: '19 14 * * 1' # Mondays; :19 because :00 is the most contended minute
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  TRACKED_WORKFLOW: rebuild-on-product-changes.yml
+  ISSUE_TITLE: 'Catalog rebuild — weekly report'
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build the report
+        id: report
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          # 120 runs is roughly three weeks at the observed delivery rate — enough
+          # for a stable median without paying for a huge log download.
+          gh run list --workflow="$TRACKED_WORKFLOW" --limit 120 \
+            --json databaseId,createdAt,event,conclusion > runs.json
+
+          # Grepping the log for CONTENT-WATCH also matches the job's echoed
+          # source, including the comment that documents the pattern. Echoed lines
+          # carry an ANSI 36;1m prefix; real output does not.
+          : > verdicts.txt
+          for id in $(jq -r '.[].databaseId' runs.json); do
+            gh run view "$id" --log 2>/dev/null \
+              | grep 'CONTENT-WATCH' | grep -v '36;1m' \
+              | sed -E 's/.*(CONTENT-WATCH: [A-Za-z-]+).*/\1/' | head -1 >> verdicts.txt || true
+          done
+
+          python3 - <<'PY' > report.md
+          import json, collections, statistics
+          from datetime import datetime, timedelta, timezone
+
+          runs = json.load(open('runs.json'))
+          now = datetime.now(timezone.utc).replace(tzinfo=None)
+          parse = lambda s: datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ")
+
+          sched = sorted(parse(r['createdAt']) for r in runs if r['event'] == 'schedule')
+          fails = [r for r in runs if r['conclusion'] not in ('success', None)]
+
+          print(f"_Generated {now:%Y-%m-%d %H:%M} UTC from the last {len(runs)} runs._\n")
+
+          print("### Schedule delivery\n")
+          print("The cron asks for hourly. This is what arrives.\n")
+          print("| Window | Runs | Median gap | Worst gap | Delivery |")
+          print("|---|---|---|---|---|")
+          for days, label in ((7, 'Last 7 days'), (30, 'Last 30 days')):
+              sub = [t for t in sched if t > now - timedelta(days=days)]
+              if len(sub) < 2:
+                  print(f"| {label} | {len(sub)} | – | – | – |")
+                  continue
+              gaps = sorted((b - a).total_seconds() / 3600 for a, b in zip(sub, sub[1:]))
+              span = (sub[-1] - sub[0]).total_seconds() / 3600
+              pct = 100 * len(sub) / span if span else 0
+              print(f"| {label} | {len(sub)} | {statistics.median(gaps):.1f}h | {max(gaps):.1f}h | {pct:.0f}% of hourly |")
+          if sched:
+              print(f"\nLast scheduled run: {sched[-1]:%Y-%m-%d %H:%M} UTC "
+                    f"({(now - sched[-1]).total_seconds() / 3600:.1f}h ago).")
+
+          print("\n### Content watch — would content-aware rebuilds fit the budget?\n")
+          tally = collections.Counter(
+              l.strip().replace('CONTENT-WATCH: ', '')
+              for l in open('verdicts.txt') if l.strip()
+          )
+          would = tally.get('WOULD-REBUILD', 0)
+          total = sum(tally.values())
+          if not total:
+              print("No verdicts found — the extraction may have broken again. Check a run log by hand.")
+          else:
+              for k, v in tally.most_common():
+                  print(f"- `{k}`: **{v}**")
+              days_covered = (sched[-1] - sched[0]).days if len(sched) > 1 else 0
+              if days_covered >= 3:
+                  per_month = would * 30 / days_covered
+                  print(f"\nThat is ~**{per_month:.0f} extra builds/month** at the current rate.")
+                  if total < 20:
+                      print(f"\n> Only {total} verdicts so far — treat this as a smoke test, "
+                            "not a number to decide on. Give it a couple more weeks.")
+                  for mins in (2.0, 3.0):
+                      print(f"- at {mins:g} min/build: **{per_month * mins:.0f} min/month** "
+                            f"of a 300 min budget ({100 * per_month * mins / 300:.0f}%)")
+                  print("\nComfortably under budget means the switch is safe: hash `handle + updatedAt` "
+                        "instead of handles alone and the content-staleness class disappears. "
+                        "Over budget means keep handle-only, or rebuild content changes every Nth run.")
+              else:
+                  print(f"\nOnly {days_covered} days of history — too early to extrapolate.")
+
+          if fails:
+              print(f"\n### Failed runs ({len(fails)})\n")
+              print("A failure means the catalog sync stopped: the site is not picking up new products.\n")
+              for r in fails[:10]:
+                  print(f"- {r['createdAt']} — `{r['conclusion']}` — run {r['databaseId']}")
+          else:
+              print("\n### Failed runs\n\nNone. ✅")
+          PY
+
+          echo "--- report ---"; cat report.md
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post it to the tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          # One long-lived issue rather than a new one each week, so the history
+          # reads as a single thread and only generates one notification.
+          num=$(gh issue list --state all --limit 50 \
+                 --json number,title \
+                 -q ".[] | select(.title == \"$ISSUE_TITLE\") | .number" | head -1)
+          if [ -z "$num" ]; then
+            gh issue create --title "$ISSUE_TITLE" --body-file report.md
+            echo "created the tracking issue"
+          else
+            gh issue comment "$num" --body-file report.md
+            echo "commented on issue #$num"
+          fi

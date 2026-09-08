@@ -198,9 +198,11 @@ jobs:
           if [ "$fingerprint" != "$previous" ]; then
             echo "Catalog gained or lost a product — triggering rebuild"
             echo "changed=true" >> "$GITHUB_OUTPUT"
+            decision='rebuild — catalog gained or lost a product'
           else
             echo "No new or removed products — skipping build"
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            decision='skipped — no new or removed products'
           fi
           printf '%s' "$fingerprint" > fingerprint.txt
 
@@ -217,11 +219,17 @@ jobs:
           # would bake a half-finished page. Once it goes quiet it enters the hash
           # on its own and self-heals, with no human pinged.
           #
-          # Read a week of these with:
-          #   gh run list --workflow=rebuild-on-product-changes.yml --limit 200 \
+          # Easiest read: the weekly-catalog-report workflow tallies these into a
+          # GitHub issue, and every run of this job renders its own verdict as a
+          # job summary. To tally by hand, note that grepping the log for
+          # CONTENT-WATCH also matches this job's echoed source (including this
+          # comment), which reported pure "baseline" while the real verdicts were
+          # WOULD-REBUILD. Echoed source carries an ANSI 36;1m prefix; drop it:
+          #   gh run list --workflow=rebuild-on-product-changes.yml --limit 50 \
           #     --json databaseId -q '.[].databaseId' \
-          #   | xargs -I{} gh run view {} --log \
-          #   | grep -o 'CONTENT-WATCH: [a-zA-Z ]*'
+          #   | while read -r id; do gh run view "$id" --log \
+          #       | grep CONTENT-WATCH | grep -v '36;1m'; done \
+          #   | sed -E 's/.*(CONTENT-WATCH: [A-Za-z-]+).*/\1/' | sort | uniq -c
           # WOULD-REBUILD count x ~2-3 min = the monthly cost of switching.
           QUIET_MINUTES=20
           cutoff=$(date -u -d "$QUIET_MINUTES minutes ago" '+%Y-%m-%dT%H:%M:%SZ')
@@ -232,12 +240,31 @@ jobs:
           prev_content=$(cat content-fingerprint.txt 2>/dev/null || echo "none")
           if [ "$prev_content" = "none" ]; then
             echo "CONTENT-WATCH: baseline (first run, nothing to compare) | settling: $settling"
+            watch='baseline (nothing to compare yet)'
           elif [ "$content_fp" != "$prev_content" ]; then
             echo "CONTENT-WATCH: WOULD-REBUILD | settling: $settling | $content_fp"
+            watch='WOULD-REBUILD (a settled product changed)'
           else
             echo "CONTENT-WATCH: would-skip | settling: $settling"
+            watch='would-skip (no settled content change)'
           fi
           printf '%s' "$content_fp" > content-fingerprint.txt
+
+          # Render the verdict on the run page so reading it never requires
+          # grepping a log — which is what made the tally wrong in the first place.
+          {
+            echo "### Catalog check"
+            echo
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Products (active, published to headless) | \`$count\` |"
+            echo "| Build decision | $decision |"
+            echo "| Content watch (measurement only) | $watch |"
+            echo "| Products still settling (edited < ${QUIET_MINUTES}m ago) | \`$settling\` |"
+            echo "| Handle fingerprint | \`${fingerprint:0:16}\` |"
+            echo
+            echo "Content watch never triggers a build. See the workflow comment for what it is measuring."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Trigger Netlify build
         if: steps.check.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'

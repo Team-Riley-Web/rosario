@@ -100,3 +100,4 @@ unchecked task unless you are starting it.
   ordinary products, the pictured pendant family, and loose Moretti beads.
   Verified against the live 328-product Shopify catalog and with
   `npm run test:ci`: 35 unit tests and 7 browser tests passed.
+- [ ] Homepage "Rings" collection link goes to Murano-filtered rings (shows 1 ring) instead of all rings (~2 pages worth) — the filter should be All, not Murano
